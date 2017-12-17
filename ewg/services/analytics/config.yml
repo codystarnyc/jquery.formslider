@@ -4,9 +4,9 @@ development: &default
   target: 'dist'
   selector: '*.html'
   name: 'google'
-  code: "<script>var _gaq = _gaq || []; _gaq.push(['_setAccount', '{GOOGLE_UA_ID}']); _gaq.push(['_trackPageview']); (function() { var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true; ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s); })();</script>"
+  code: "<script async src='https://www.googletagmanager.com/gtag/js?id=UA-65996211-4'></script><script>window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-65996211-4');</script>"
   params:
-    GOOGLE_UA_ID: 'UA-4255603-1'
+    GOOGLE_UA_ID: 'UA-65996211-4'
 
 test:
   <<: *default
