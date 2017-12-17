@@ -1,0 +1,17 @@
+#!/bin/bash
+
+#command-info: print help
+
+source bootstrap
+
+orange 'Usage: ./app [command] [help|*]'
+green 'Available commands:'
+
+# list all available commands
+for command in "$TERMINAL_APP_COMMAND_PATH"/*
+do
+  # print command info
+  command_print_info $command
+done
+
+newline

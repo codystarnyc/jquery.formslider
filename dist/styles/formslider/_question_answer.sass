@@ -1,0 +1,50 @@
+
+@mixin crazy-hover-effect
+  +transition(all .3s ease-out)
+  box-shadow: 0 7px 6px -6px #999, 0px 0px 25px -7px rgba(0,0,0,0.38)
+  &:hover
+    +transform(scale(1.04))
+    box-shadow: 0 22px 15px -15px #bbb
+  &:active
+    +transform(scale(0.95))
+
++with-answer
+  margin: 0 auto
+  padding: 10px
+  +with-answer-inner
+    +crazy-hover-effect
+    border: 2px solid #ddd
+    border-radius: 5px
+    overflow: hidden
+    padding: 10px 10px 0 10px
+    +min-width-sm
+      max-width: 200px
+
+  +with-answer-image
+    img
+      cursor: pointer
+      max-width: 100%
+      width: auto
+      max-height: 140px
+
+  +with-answer-text
+    cursor: pointer
+    text-align: center
+    padding: 10px 0 7px 0
+    margin: 0 -10px
+    color: #000
+    background-color: #f3f3f3
+    font-size: 4vw
+    letter-spacing: -1px
+    +min-width-xs
+      font-size: 17px
+
+  &:hover, &.selected
+    +with-answer-inner
+      border-color: $answer-active-color
+      +with-answer-text
+        background-color: $answer-active-color
+        color: #fff
+
+  input
+    display: none

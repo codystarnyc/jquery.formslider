@@ -1,0 +1,57 @@
+RewriteEngine on
+
+# redirect old '/web' links, 19.1.2017
+RewriteRule ^web/code(.*)$ https://www.tomhanoldt.info/blog/dev$1 [L,R=301,NC]
+RewriteRule ^web/(.*)$ https://www.tomhanoldt.info/blog/$1 [L,R=301,NC]
+
+# force www
+RewriteCond %{HTTP_HOST} ^tomhanoldt\.info [NC]
+RewriteRule ^(.*)$ https://www.tomhanoldt.info/$1 [L,R=301,NC]
+
+# redirect blog sub domain
+RewriteCond %{HTTPS_HOST} ^blog\.tomhanoldt\.info [NC]
+RewriteRule ^(.*)$ https://www.tomhanoldt.info/blog/$1 [L,R=301,NC]
+
+
+<IfModule mod_deflate.c>
+    # Insert filter
+    SetOutputFilter DEFLATE
+
+    # Netscape 4.x has some problems...
+    BrowserMatch ^Mozilla/4 gzip-only-text/html
+
+    # Netscape 4.06-4.08 have some more problems
+    BrowserMatch ^Mozilla/4\.0[678] no-gzip
+
+    # MSIE masquerades as Netscape, but it is fine
+    # BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+
+    # NOTE: Due to a bug in mod_setenvif up to Apache 2.0.48
+    # the above regex won't work. You can use the following
+    # workaround to get the desired effect:
+    BrowserMatch \bMSI[E] !no-gzip !gzip-only-text/html
+
+    # Don't compress images
+    SetEnvIfNoCase Request_URI \
+    \.(?:gif|jpe?g|png)$ no-gzip dont-vary
+
+    # Make sure proxies don't deliver the wrong content
+    Header append Vary User-Agent env=!dont-vary
+</IfModule>
+
+<FilesMatch "\.(ico|pdf|flv|jpg|jpeg|png|gif|js|css|swf)$">
+  Header set Cache-Control "max-age=290304000, public"
+</FilesMatch>
+
+# 2 DAYS
+<FilesMatch "\.(xml|txt)$">
+  Header set Cache-Control "max-age=172800, public, must-revalidate"
+</FilesMatch>
+
+# 2 HOURS
+<FilesMatch "\.(html|htm|php)$">
+  Header set Cache-Control "max-age=7200, must-revalidate"
+</FilesMatch>
+
+# auth fix
+SetEnvIf Authorization .+ HTTP_AUTHORIZATION=$0

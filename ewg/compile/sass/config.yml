@@ -1,0 +1,18 @@
+development: &default
+  enabled: true
+  minimize: false
+  source: 'src/assets/styles'
+  target: 'dist/styles'
+  selector: '**/*.sass'
+  source_maps: './maps'
+  include_paths:
+    - './dist/scripts'
+    - './dist/'
+
+test:
+  <<: *default
+
+production:
+  <<: *default
+  minimize: true
+  source_maps:

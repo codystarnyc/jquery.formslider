@@ -1,0 +1,15 @@
+.headline.bounce-out-on-half= @config.headline
+
+- if @config.subHeadline?
+  .sub-headline= @config.subHeadline
+
+- if @config.image?
+  = @formslider_image @config.image, alt: @config.headline, title: @config.headline, class: 'image hide-on-half'
+
+.finish.show-on-half{style: "display: none;"}
+  - if @config.finish_image?
+    = @formslider_image @config.finish_image, alt: @config.finish_text, title: @config.finish_text
+
+  - if @config.finish_text?
+    .text
+      = @config.finish_text

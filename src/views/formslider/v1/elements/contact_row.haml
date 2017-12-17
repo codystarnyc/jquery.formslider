@@ -1,0 +1,11 @@
+.row{class: "#{@config.class} with-#{@config.inputs.length}"}
+
+  - for input, index in @config.inputs
+    - input.id = "input_#{@config.class}_#{index}"
+
+    - if index == 0
+      %label{:for => input.id}
+        = @config.label
+
+    = @single_tag_for('input', input)
+    - @config.inputs = []

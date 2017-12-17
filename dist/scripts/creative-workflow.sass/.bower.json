@@ -1,0 +1,31 @@
+{
+  "name": "creative-workflow.sass",
+  "homepage": "https://github.com/creative-workflow/lib-sass",
+  "authors": [
+    "Tom Hanoldt <tom@creative-workflow.berlin>"
+  ],
+  "description": "sass helper library",
+  "main": "",
+  "keywords": [
+    "creative-workflow",
+    "sass",
+    "lib-sass"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "_release": "23e2daa814",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "23e2daa814d48044b68ea135fb0c8b9c54773af1"
+  },
+  "_source": "https://github.com/creative-workflow/lib-sass.git",
+  "_target": "*",
+  "_originalSource": "creative-workflow.sass"
+}

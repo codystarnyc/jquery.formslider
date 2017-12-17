@@ -1,0 +1,40 @@
+@import "mixins/formslider"
+
++with-formslider
+  input.without-spinner::-webkit-outer-spin-button,
+  input.without-spinner::-webkit-inner-spin-button
+    -webkit-appearance: none
+    margin: 0
+
+  +with-formslider-slide
+    text-align: center
+    +with-answers
+      +with-answer
+        display: inline-block
+        vertical-align: top
+        float: left
+        cursor: pointer
+        > *
+          cursor: pointer
+
+        +with-answer-inner
+          display: block
+
+      +with-answer-input
+        display: none
+
+    +with-answer-count(1)
+      +with-answer
+        width: 100%
+
+    +with-answer-count(2)
+      +with-answer
+        width: 50%
+
+    +with-answer-count(3)
+      +with-answer
+        width: 33.33%
+
+    +with-answer-count(4)
+      +with-answer
+        width: 25%

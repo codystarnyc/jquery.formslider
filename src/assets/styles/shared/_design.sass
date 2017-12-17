@@ -1,0 +1,62 @@
+.content-wrapper
+  .content-inner-wrapper
+    max-width: 900px
+    margin: 0 auto
+    padding: 0 15px
+    .row
+      padding: 0
+
+.headline
+  font-weight: bold
+  margin-top: 50px
+  font-size: 10vw
+  +min-width-sm
+    font-size: 40px
+  & a
+    color: inherit
+    &:focus, &:hover, &:active
+      color: inherit
+
+  &.small
+    font-size: 26px
+    font-weight: normal
+    margin-top: 20px
+    +max-width-sm
+      padding: 0 20px
+
+.article
+  margin: 0 auto
+  font-size: 20px
+  +clearfix
+  img
+    max-width: 100%
+    height: auto
+    +inline-block
+  p
+    text-align: left
+    margin: 0 auto
+    padding: 15px 25px
+  b
+    font-weight: bold
+  ul
+    list-style: none
+    margin: 7px 0 0 0
+    padding: 0 0 0 25px
+    li
+      padding: 3px
+      +relative
+      &:before
+        content: '\00bb'
+        +absolute
+        color: $page-color-gray-dark
+        font-weight: bold
+        left: -15px
+
+.button, button
+  +make-button-styling
+
+input
+  +make-input-styling
+
+  a:hover
+    text-decoration: none

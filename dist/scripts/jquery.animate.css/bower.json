@@ -1,0 +1,21 @@
+{
+  "name": "jquery.animate.css",
+  "authors": [
+    "Tom Hanoldt <tom@creative-workflow.berlin>"
+  ],
+  "description": "Combines animate.css via animate.sass and a jQuery plugin for easy integration.",
+  "main": "",
+  "license": "MIT",
+  "homepage": "https://github.com/creative-workflow/jquery.animate.css",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.2.1",
+    "creative-workflow.animate-sass": "^0.9.0"
+  }
+}

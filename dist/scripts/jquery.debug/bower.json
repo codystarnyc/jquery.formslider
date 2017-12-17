@@ -1,0 +1,35 @@
+{
+  "name": "jquery.debug",
+  "version": "1.0.3",
+  "homepage": "https://github.com/creative-workflow/jquery.debug",
+  "authors": [
+    "Tom Hanoldt <monotom@gmail.com>"
+  ],
+  "description": "This plugin helps managing debugging in javascript. It looks for a url param or cookie and prints conditional to the browser console.",
+  "main": "src/jquery.debug.coffee",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "jquery",
+    "debug",
+    "cookie",
+    "url",
+    "detection",
+    "browser"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "node_modules",
+    "bower_components",
+    "spec"
+  ],
+  "devDependencies": {
+    "jasmine-jquery": ">=2.1.0"
+  },
+  "dependencies": {
+    "jquery": ">=1.7.0",
+    "js-url": ">=1.8.6",
+    "js-cookie": ">=1.5.1"
+  }
+}

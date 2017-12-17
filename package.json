@@ -1,0 +1,29 @@
+{
+  "name": "jquery.formslider.github.io",
+  "description": "dsfdsfdsf",
+  "license": "MIT",
+  "scripts": {
+    "generate": "gulp generate-and-exit --production",
+    "serve": "gulp serve",
+    "postinstall": "bower install"
+  },
+  "dependencies": {
+    "browser-sync": "^2.13.0",
+    "colors": "^1.1.2",
+    "del": "^2.2.1",
+    "easy-website-generator": "0.0.15",
+    "ewg-config": "*",
+    "ewg-haml-coffee-gulp": "^1.0.11",
+    "gulp": "*",
+    "gulp-changed": "^1.3.0",
+    "gulp-coffee": "^2.3.2",
+    "gulp-cssnano": "^2.1.2",
+    "gulp-include": "^2.3.1",
+    "gulp-replace": "^0.5.4",
+    "gulp-sass": "^2.3.2",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-uglify": "^1.5.4",
+    "require-dir": "^0.3.0",
+    "run-sequence": "^1.2.1"
+  }
+}

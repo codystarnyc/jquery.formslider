@@ -1,0 +1,40 @@
++with-answers
+  +make-row
+  margin: 0 auto
+  text-align: center
+  padding: 0 5px
+  +min-width-xs
+    padding: 0
+
+  @import "question_answer"
+
++with-answer-count(4)
+  +with-answers
+    max-width: 800px
+  +with-answer
+    +make-xs-column(6)
+    +make-sm-column(3)
+    padding: 10px
+
++with-answer-count(3)
+  +with-answers
+    max-width: 550px
+  +with-answer
+    +make-xs-column(6)
+    +make-sm-column(4)
+
+    &:last-child
+      +max-width-sm
+        float: none
+        margin: 0 auto
+        +inline-block
+        +with-headline
+          height: auto !important
+
++with-answer-count(2)
+  +with-answer
+    +make-sm-column(6)
+
++with-answer-count(1)
+  +with-answer
+    +make-sm-column(12)

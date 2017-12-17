@@ -1,0 +1,85 @@
+development: &default
+  # haml @globals (default)
+  globals:
+    robots:      'index,follow,noodp,noydir'
+    title:       'jquery.formslider | logical slide show'
+    canonical:   'https://www.tomhanoldt.info/index.html'
+    language:    'en'
+    description: 'jquery.formslider integrates a modified Flexslider with logical slide pages that can have features and behaviours provided by plugins.'
+    keywords:    'jquery formslider flexslider slideshow questionaire'
+
+    footer:
+      page_size: '200kb'
+      pagespeed_score: '99/100'
+      seo_score: '97/100'
+
+    opengraph_metatag_data:
+      title: '@globals.title'
+      type: 'website'
+      url: '@globals.canonical'
+      description: '@globals.description'
+      image: 'https://tomhanoldt.info/images/logo.png'
+      site_name: '@globals.canonical'
+
+    twitter_metatag_data:
+      card: 'summary'
+      site: '@CreativeWorkflo'
+      description: '@globals.description'
+      title: '@globals.title'
+      image: 'https://tomhanoldt.info/images/logo.png'
+      url: '@globals.canonical'
+
+    share:
+      url:   'https://tomhanoldt.info'
+      image: 'https://tomhanoldt.info/images/logo.png'
+      title: ''
+      text:  ''
+
+    contact:
+      email: 'tom@creative-workflow.berlin'
+      website:
+        name: 'www.tomhanoldt.info'
+        url: 'https://www.tomhanoldt.info'
+
+  # browser-sync
+  server:
+    port: 9294
+    open: "external"
+    notify: true
+    startPath: 'index.html'
+    server:
+      baseDir: './dist'
+    ui:
+      port: 8080
+      weinre:
+        port: 9090
+    ghostMode:
+      clicks: true
+      forms: true
+      scroll: true
+
+  # do not change unless you know why ;)
+  generators:
+    folder: './ewg'
+
+  paths:
+    src:
+      base:       './src'
+      images:     'assets/images'
+      scripts:    'assets/scripts'
+      styles:     'assets/styles'
+      public:     'assets/public'
+      views:      'views'
+    dist:
+      base:       './dist'
+      images:     'images'
+      scripts:    'scripts'
+      styles:     'styles'
+      public:     ''
+      views:      ''
+
+test:
+  <<: *default
+
+production:
+  <<: *default

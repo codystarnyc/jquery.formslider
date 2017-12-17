@@ -1,0 +1,41 @@
+*
+  outline: none
+
+img
+  max-width: 100%
+  height: auto
+  vertical-align: middle
+  -webkit-backface-visibility: hidden
+
+body
+  -webkit-font-smoothing: antialiased
+  -webkit-text-size-adjust: 100%
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0)
+  overflow-x: hidden
+  overflow-y: scroll
+  color: $page-text-color
+  background-color: $page-background-color
+  font-family: "Libre Franklin","Helvetica Neue",helvetica,arial,sans-serif
+
+a
+  color: $page-link-color
+  text-decoration: none
+  &:hover, &:active, &.focus
+    color: $page-link-color-hover
+    text-decoration: underline
+
++headlines
+  color: $page-headline-color
+  line-height: 1
+  margin: 0
+
+h2
+  border-bottom: 1px solid $page-headline-color
+  padding: 0 5px 5px 5px
+  margin: 0 0 15px 0
+
+h3
+  a
+    padding: 0 5px
+    &:hover
+      text-decoration: none

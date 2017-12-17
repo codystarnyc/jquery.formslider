@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# set app variables
+GITHUB_IO_URL='https://formslider.github.io'
+GITHUB_IO_ORIGIN='git@github.com:formslider/formslider.github.io.git'
+DIST_FOLDER='dist'
+
+# set config variables
+export TERMINAL_APP_LOG_ENABLED=0
+
+export TERMINAL_APP_PATH='scripts'
+export TERMINAL_APP_LOG_PATH='logs'
+export TERMINAL_APP_LIB_PATH="$TERMINAL_APP_PATH/lib"
+export TERMINAL_APP_TEST_PATH="$TERMINAL_APP_PATH/test"
+export TERMINAL_APP_COMMAND_PATH="$TERMINAL_APP_PATH/commands"
+
+# source local bootstrap file
+if [ -f "bootstrap.local" ];
+then
+  source "bootstrap.local"
+fi
+
+# load lib scripts
+for lib_file in $TERMINAL_APP_LIB_PATH/*
+do
+  source $lib_file
+done

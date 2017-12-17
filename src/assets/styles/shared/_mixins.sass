@@ -1,0 +1,75 @@
+@mixin crazy-hover-effect
+  +transition(all .2s ease-out)
+  box-shadow: 0 7px 6px -6px #999
+  box-shadow: 0px 0px 25px -7px rgba(0,0,0,0.48)
+  +relative
+  &:hover, &.selected
+    +transform(scale(1.03))
+    box-shadow: 0 20px 15px -15px #bbb
+    z-index: 1
+  &:active, &:focus
+    +transform(scale(0.95))
+    z-index: 1
+
+
+@mixin simple-hover-effect
+  +transition(all .2s ease-out)
+  +relative
+  &:hover, &.selected
+    box-shadow: 0 7px 6px -6px #999
+    box-shadow: 0px 0px 25px -7px rgba(0,0,0,0.48)
+    z-index: 1
+  &:active, &:focus
+    +transform(scale(0.98))
+    z-index: 1
+
+
+@mixin make-input-styling
+  border: 1px solid #666
+  border-radius: 5px
+  padding: 9px 5px 9px 10px
+  line-height: 1em
+  font-size: 20px
+
+@mixin make-button-text-styling
+  text-align: center
+  font-weight: 700
+  color: #fff
+  padding: 15px 20px 13px 33px
+  line-height: 20px
+  font-size: 16px
+
+@mixin make-button-styling
+  +relative
+  +inline-block
+  border-radius: 5px
+  width: auto
+  border: none
+  transition: none
+  +make-button-text-styling
+
+  cursor: pointer !important
+  background-color: $page-color-green
+  +box-shadow(0px, 3px, 4px, rgba(0,0,0,0.3))
+  +background-gradient(#83d248, $page-color-logo-green)
+  text-decoration: none
+
+  &:hover, &:active, &:focus
+    +box-shadow(0px, 0px, 4px, rgba(0,0,0,0.3))
+    top: 1px
+    left: 1px
+    +background-gradient($page-color-logo-green, #83d248)
+    text-decoration: none
+  &:after
+    display: none !important
+
+  &:before
+    content: ' '
+    background: url('/images/btn-arrow-right-white.png') no-repeat top left transparent
+    color: #fff
+    +absolute
+    width: 16px
+    height: 19px
+    left: 10px
+    top: 15px
+  @content

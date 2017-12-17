@@ -1,0 +1,31 @@
+.teaser
+  text-align: center
+  font-size: 22px
+
+.article
+  opacity: 0
+
+  &.contact
+    .person
+      max-width: 100px
+      float: left
+      margin: 0 20px 20px 0
+
+    p
+      margin-top: 30px
+    ul
+      clear: both
+      margin-left: 30px
+
+  &.features
+    .row
+      +make-row
+    ul
+      +make-xs-column(12)
+      +make-sm-column(4)
+      margin-bottom: 15px
+      li
+        background: url('/images/formslider/v1/check-green.png') no-repeat left center
+        padding: 0 0 5px 30px
+        &:before
+          display: none

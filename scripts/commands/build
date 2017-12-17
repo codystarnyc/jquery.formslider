@@ -1,0 +1,9 @@
+#!/bin/bash
+
+#command-info: build the dist files in production mode
+
+source bootstrap
+
+bower install
+
+ewg generate-and-exit --production

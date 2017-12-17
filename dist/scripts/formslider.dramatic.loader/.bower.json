@@ -1,0 +1,39 @@
+{
+  "name": "formslider.dramatic.loader",
+  "version": "1.0.0",
+  "homepage": "https://github.com/creative-workflow/formslider.dramatic.loader",
+  "authors": [
+    "Tom Hanoldt <tom@creative-workflow.berlin>"
+  ],
+  "description": "This plugin helps managing debugging in javascript. It looks for a url param or cookie and prints conditional to the browser console.",
+  "main": "src/formslider.dramatic.loader.coffee",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "jquery",
+    "debug",
+    "cookie",
+    "url",
+    "detection",
+    "browser"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "node_modules",
+    "bower_components",
+    "spec"
+  ],
+  "dependencies": {
+    "jquery.animate.css": "^1.0.2"
+  },
+  "_release": "1.0.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "1.0.0",
+    "commit": "cc93e7ac579e63c65843e92dce429e33554fddb1"
+  },
+  "_source": "https://github.com/formslider/formslider.dramatic.loader.git",
+  "_target": "^1.0.0",
+  "_originalSource": "formslider.dramatic.loader"
+}

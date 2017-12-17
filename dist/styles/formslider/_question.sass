@@ -1,0 +1,21 @@
++with-formslider-slide('question')
+  @import "question_answers"
+
++with-formslider-slide('question', 0)
+  +with-headline
+    +inline-block
+    +relative
+    &:before
+      +block
+      +absolute
+      left: -40px
+      top: -15px
+      width: 50px
+      height: 60px
+      background: url('/images/formslider/v1/question-arrow-right-green.png') center left no-repeat
+      background-size: 40px
+      content: ' '
+      +min-width-sm
+        background-size: 50px
+        left: -40px
+        top: -8px

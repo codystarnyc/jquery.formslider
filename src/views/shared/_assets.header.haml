@@ -1,0 +1,36 @@
+%title
+  = @globals.title
+
+= @meta_tag 'charset', 'utf-8'
+= @meta_tag_http 'X-UA-Compatible', 'IE=edge'
+
+= @meta_tag 'viewport', 'width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=yes'
+= @meta_tag 'apple-mobile-web-app-status-capable', 'yes'
+= @meta_tag 'apple-mobile-web-app-status-bar-style', 'black'
+
+= @meta_tag 'robots',      @globals.robots
+= @meta_tag 'description', @globals.description
+= @meta_tag 'keywords',    @globals.keywords
+
+= @link_tag '/images/icons/favicon.ico', 'icon', 'image/x-icon'
+= @link_tag '/images/icons/favicon.ico', 'shortcut icon', 'image/x-icon'
+
+%link{rel: 'icon', type: 'image/png', sizes: '16x16',   href: '/images/icons/favicon-16x16.png'}
+%link{rel: 'icon', type: 'image/png', sizes: '32x32',   href: '/images/icons/favicon-32x32.png'}
+%link{rel: 'icon', type: 'image/png', sizes: '96x96',   href: '/images/icons/favicon-96x96.png'}
+%link{rel: 'icon', type: 'image/png', sizes: '192x192', href: '/images/icons/android-icon-192x192.png'}
+%link{rel: 'apple-touch-icon',        sizes: '60x60',   href: '/images/icons/apple-icon-60x60.png'}
+%link{rel: 'apple-touch-icon',        sizes: '120x120', href: '/images/icons/apple-icon-120x120.png'}
+%link{rel: 'apple-touch-icon',        sizes: '180x180', href: '/images/icons/apple-icon-180x180.png'}
+%link{rel: 'manifest',  href: '/images/icons/manifest.json'}
+
+= @meta_tag 'theme-color', '#2f373e'
+= @meta_tag 'msapplication-navbutton-color', '#2f373e'
+= @meta_tag 'msapplication-TileColor', '#ffffff'
+= @meta_tag 'msapplication-TileImage', '/images/icons/ms-icon-144x144.png'
+
+= @canonical_tag  @globals.canonical
+= @opengraph_tags @globals.get('opengraph_metatag_data')
+= @twitter_tags   @globals.get('twitter_metatag_data')
+
+= @inline_stylesheet_link_tag 'style.css'

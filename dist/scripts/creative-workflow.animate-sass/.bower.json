@@ -1,0 +1,34 @@
+{
+  "name": "creative-workflow.animate-sass",
+  "version": "0.9.0",
+  "homepage": "https://github.com/creative-workflow/animate-sass",
+  "authors": [
+    "Tom Gillard <tomgillar@gmail.com>"
+  ],
+  "description": "A Sass library of Dan Eden's Animate.css",
+  "main": "_animate.scss",
+  "keywords": [
+    "animate-sass",
+    "animate.css",
+    "sass",
+    "css",
+    "css3-animations"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "_release": "0.9.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.9.0",
+    "commit": "14daf7832262380ed7264e20c6453064d8ecb91b"
+  },
+  "_source": "https://github.com/creative-workflow/animate-sass.git",
+  "_target": "^0.9.0",
+  "_originalSource": "creative-workflow.animate-sass"
+}

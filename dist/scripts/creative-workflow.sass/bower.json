@@ -1,0 +1,22 @@
+{
+  "name": "creative-workflow.sass",
+  "homepage": "https://github.com/creative-workflow/lib-sass",
+  "authors": [
+    "Tom Hanoldt <tom@creative-workflow.berlin>"
+  ],
+  "description": "sass helper library",
+  "main": "",
+  "keywords": [
+    "creative-workflow",
+    "sass",
+    "lib-sass"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

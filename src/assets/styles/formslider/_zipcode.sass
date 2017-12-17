@@ -1,0 +1,48 @@
++with-formslider-slide('zipcode')
+  +min-width-md
+    min-height: 330px
+  .zipcode-image
+    padding-top: 20px
+    +make-xs-column(12)
+    +make-sm-column(6)
+    text-align: center
+    +min-width-sm
+      text-align: right
+      padding-right: 50px
+    img
+      max-height: 70px
+      +min-width-sm
+        max-height: 200px
+
+  .zipcode-input
+    +make-xs-column(12)
+    +make-sm-column(6)
+    +inline-block
+    text-align: center
+    margin-top: 10px
+    margin-bottom: 30px
+    +min-width-sm
+      text-align: left
+
+    label.label
+      +block
+      font-size: 20px
+      vertical-align: top
+      margin-top: 16px
+      line-height: 33px
+    input
+      width: 140px
+      text-align: left
+      letter-spacing: 1px
+      padding-bottom: 10px
+
+    .button-wrapper
+      text-align: center
+      +min-width-sm
+        text-align: left
+      .next-button
+        margin: 10px
+        +min-width-sm
+          margin: 10px 10px 10px 0
+        width: 140px
+        font-size: 20px

@@ -1,0 +1,189 @@
+version: v1
+
+imagePath: "images/formslider/v1/"
+# image path: from slide || from questionaire
+
+validation:
+  data-msg-required: "required"
+  data-msg-minlength: "to short"
+  data-msg-maxlength: "to long"
+  data-msg-email: "invalid email"
+
+slides:
+# slide id: id || role
+# data: from slide data
+-
+  id: 1
+  role: question
+  headline: "Are you a <b>woman</b> or <b>man</b>?"
+  answers:
+  # next: next from answer || next from slide || next in order
+
+  -
+    id: 1_1
+    image: "1_1.png"
+    label:  "Women"
+  -
+    id: 1_2
+    image: "1_2.png"
+    label:  "Men"
+    next: 4
+  -
+    id: 1_3
+    image: "1_3.png"
+    label:  "Don`t know"
+
+-
+  id: 2
+  role: question
+  headline: "How <b>old</b> are you?"
+  answers:
+  -
+    id: 2_1
+    image: "2_1.png"
+    label:  "Younger than 18"
+  -
+    id: 2_2
+    image: "2_2.png"
+    label:  "Younger than 21"
+  -
+    id: 2_3
+    image: "2_3.png"
+    label:  "Exactly 42"
+  -
+    id: 2_4
+    image: "2_4.png"
+    label:  "I can`t remember and have to look on my identity card"
+
+-
+  id: 3
+  role: question
+  headline: "Are you <b>cute</b>?"
+  next: zipcode
+  answers:
+  -
+    id: 3_1
+    image: "3_1.png"
+    label:  "Yes!"
+  -
+    id: 3_2
+    image: "3_2.png"
+    label:  "No =("
+  -
+    id: 3_3
+    image: "3_3.png"
+    label:  "It depends"
+
+# - id: 4
+#   role: question
+#   headline: "Damn, you answered <b>boy</b> =("
+#   answers:
+#   -
+#     id: 4_1
+#     image: "4_1.png"
+#     label:  "Ok, that was a lie!"
+#     next: 1
+#   -
+#     id: 4_2
+#     image: "4_2.png"
+#     label:  "Yes ...sorry, i will go forward nevertheless"
+#     next: 2
+#   -
+#     id: 4_3
+#     image: "4_3.png"
+#     label:  "Yes ...sorry, let me finish"
+#     next: zipcode
+
+-
+  role: zipcode
+  headline: "<b>Where</b> do you live<b>?</b>"
+  subHeadline: "For calculating your happiness factor based on sun hours ;)"
+  button: "Continue"
+  label: "Post Code:"
+  image: "map.png"
+  input:
+    type: number
+    name: contact[zipcode]
+    maxlength: 5
+    minlength: 5
+    data-force-max-length: 1
+    data-without-spinner: 1
+    required: required
+    autocompletetype: postal-code
+
+-
+  role: loader
+  data:
+    # TODO
+    loader: {duration: 3000}
+
+  headline: "Please wait!"
+  subHeadline: "I will calculate your yearly sun hours."
+  image: "loader-sun.gif"
+  finish_text: "Yay, it worked!"
+  finish_image: "green-tick-big.png"
+-
+  role: contact
+  headline: "Get in <b>contact</b>!"
+  subHeadline: "You have enough sun hours, may be I will join =)"
+  button: "Make me happy ^^"
+  checks:
+    - "opensource"
+    - "made with love"
+    - "production ready"
+  person:
+    image: "person.png"
+    headline: "Approved quality"
+    text: "This formslider runs on various websites and is battle prooved. About 100.000 happy users were attracked in amodern way."
+    name: "Tom Hanoldt, Creative-Workflow"
+
+  rows:
+    -
+      class: name
+      label: "Name:"
+      inputs:
+      -
+        type: text
+        name: contact[first_name]
+        placeholder: "Given Name"
+        required: required
+        minlength: 3
+        autocompletetype: given-name
+
+      -
+        type: text
+        name: contact[last_name]
+        placeholder: "Last Name"
+        required: required
+        minlength: 3
+
+    -
+      class: zipcode
+      label: "Post Code:"
+      inputs:
+      -
+        type: number
+        name: contact[zipcode]
+        placeholder: "Post Code"
+        maxlength: 5
+        minlength: 5
+        data-force-max-length: 1
+        data-without-spinner: 1
+        required: required
+        autocompletetype: postal-code
+
+    -
+      class: email
+      label: "E-Mail:"
+      inputs:
+      -
+        type: email
+        name: contact[email]
+        placeholder: "E-Mail"
+        required: required
+        autocompletetype: email
+-
+  role: confirmation
+  headline: "Thank you =)"
+  content: "Ah sorry ...I didn`t implement the contact form submission ...please write me an email <a href='mailto:tom@creative-workflow.berlin'>tom@creative-workflow.berlin</a>."
+  image: "loader-battery.gif"

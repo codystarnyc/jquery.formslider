@@ -1,0 +1,73 @@
+.header
+  padding-top: $head-menu-height
+
+  .header-wrapper
+    text-align: center
+    padding: 25px 0 25px 0
+    +min-width-sm
+      padding: 65px 35px 25px 35px
+    .article
+      margin: 0 auto
+      opacity: 1
+      color: $header-text-color
+      max-width: 800px
+      font-size: 26px
+      text-align: center
+      +min-width-sm
+        text-align: left
+      .logo
+        +inline-block
+        +min-width-sm
+          margin-left: 15%
+        height: 120px
+        width: 120px
+        .fixed-on-top
+          position: relative
+          +inline-block
+
+          +min-width-sm
+            z-index: 11
+          +max-width-xs
+            text-align: center
+            position: relative !important
+            top: 0 !important
+
+            left: 0 !important
+
+          img
+            +block
+            +transition(width 1.5s, height 1.5s)
+            width: 120px
+            height: 120px
+            border-radius: 50%
+
+          &.fixed
+            img
+              width: 60px
+              height: 60px
+
+      .headline-wrapper
+        text-align: center
+        vertical-align: top
+        .headline
+          color: $header-headline-color
+          +inline-block
+          margin: 30px 5px 30px 0
+          +min-width-xs
+            margin: 30px 0 30px 0
+          +min-width-sm
+            margin: 30px 0 30px 20px
+          line-height: 1
+          font-size: 9vw
+          +min-width-sm
+            font-size: 40px
+
+          .small
+            +block
+            font-weight: normal
+            margin-top: 0
+            padding-left: 10px
+            line-height: 40px
+            font-size: 22px
+            text-align: left
+            font-weight: 100

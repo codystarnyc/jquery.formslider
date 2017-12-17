@@ -1,0 +1,10 @@
+.headline= @config.headline
+
+- if @config.subHeadline?
+  .sub-headline= @config.subHeadline
+
+%input{type: "hidden", name: "slides[#{@config.index}][question]", value: @config.headline}
+
+.answers
+  - for answer in @config.answers
+    = @render_question_answer(answer, @config)

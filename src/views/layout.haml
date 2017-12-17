@@ -1,0 +1,23 @@
+!!!
+%html{lang: @globals.language}
+  %head
+    = @render_partial 'shared/_assets.header'
+
+  %body{class: "#{@body_class}"}
+    .head-menu
+      = @render_partial 'shared/_head_menu'
+
+    %header.header
+      .header-wrapper
+        = @render_partial 'shared/_header'
+
+    .content-wrapper
+      .content-inner-wrapper
+        %main
+          = @body
+
+    %footer.footer
+      .footer-wrapper
+        = @render_partial 'shared/_footer'
+
+    = @render_partial 'shared/_assets.footer'

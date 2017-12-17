@@ -1,0 +1,12 @@
+.headline= @config.headline
+
+- if @config.subHeadline?
+  .sub-headline= @config.subHeadline
+
+
+- if @config.image?
+  = @formslider_image @config.image, alt: @config.headline, title: @config.headline, class: 'image'
+
+- if @config.content?
+  %p
+    = @config.content

@@ -1,0 +1,33 @@
+{
+  "name": "formslider.jquery.tracking",
+  "version": "1.0.3",
+  "homepage": "https://github.com/creative-workflow/formslider.jquery.tracking",
+  "authors": [
+    "Tom Hanoldt <monotom@gmail.com>"
+  ],
+  "description": "This plugin helps managing debugging in javascript. It looks for a url param or cookie and prints conditional to the browser console.",
+  "main": "src/formslider.jquery.tracking.coffee",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "jquery",
+    "debug",
+    "cookie",
+    "url",
+    "detection",
+    "browser"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "node_modules",
+    "bower_components",
+    "spec"
+  ],
+  "devDependencies": {
+    "jasmine-jquery": ">=2.1.0"
+  },
+  "dependencies": {
+    "jquery.tracking": "^1.0.6"
+  }
+}

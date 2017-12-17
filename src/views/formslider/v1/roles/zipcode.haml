@@ -1,0 +1,18 @@
+.headline= @config.headline
+
+- if @config.subHeadline?
+  .sub-headline= @config.subHeadline
+
+- if @config.image?
+  .zipcode-image
+    = @formslider_image @config.image, alt: @config.label, title: @config.label, class: 'image'
+
+.zipcode-input
+  %label.label{:for => @config.input.id}
+    = @config.label
+
+  = @single_tag_for('input', @config.input)
+
+  .button-wrapper
+    %a.next-button{:href => "#", :onclick => "return false;"}
+      = @config.button

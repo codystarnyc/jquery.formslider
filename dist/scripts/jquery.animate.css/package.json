@@ -1,0 +1,33 @@
+{
+  "name": "jquery.animate.css",
+  "version": "1.0.2",
+  "description": "Combines animate.css via animate-sass and a jQuery plugin for easy integration.",
+  "main": "",
+  "scripts": {
+    "test": "grunt",
+    "build": "grunt"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/creative-workflow/jquery.animate.css.git"
+  },
+  "author": "Tom Hanoldt <tom@creative-workflow.berlin>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/creative-workflow/jquery.animate.css/issues"
+  },
+  "homepage": "https://github.com/creative-workflow/jquery.animate.css#readme",
+  "dependencies": {
+    "animate-sass": "^0.8.2",
+    "jquery": "^3.2.1"
+  },
+  "readmeFilename": "README.md",
+  "devDependencies": {
+    "coffeelint": "^1.16.0",
+    "grunt": "*",
+    "grunt-coffeelint": "0.0.16",
+    "grunt-contrib-coffee": "^1.0.0",
+    "grunt-contrib-compress": "^1.4.3",
+    "grunt-contrib-uglify": "^3.0.1"
+  }
+}

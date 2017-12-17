@@ -1,0 +1,63 @@
+.footer
+  margin-top: 40px
+  background-color: $footer-background-color
+  min-height: 280px
+  font-size: 20px
+  +relative
+  +box-shadow(0, 18px, 45px, rgba(0,0,0,0.2), 'inset')
+
+  .footer-wrapper
+    +make-container
+    color: $footer-text-color
+    padding: 40px 0 20px 0
+    height: 100%
+    a, a:hover, a:active, a:focus
+      color: $footer-link-color
+
+    .travis
+      margin-top: 10px
+      height: 20px
+
+    .w3c
+      margin-top: 50px
+      text-align: center
+      a
+        font-size: 14px
+        color: $page-color-green
+      img
+        display: block
+        margin: 0 auto
+
+    .text
+      margin-top: 30px
+      padding: 0 5px
+      text-align: center
+      line-height: 130%
+
+    .github
+      text-align: center
+      img
+        display: block
+        margin: 0 auto
+      a
+        font-size: 14px
+        color: $page-color-green
+
+    .checks
+      margin-top: 20px
+      color: $page-color-green
+      text-align: center
+      .item
+        padding: 5px 30px
+        font-size: 14px
+        +max-width-sm
+          +block
+      a
+        font-size: 14px
+
+    .copyright
+      margin-top: 40px
+      text-align: center
+      font-size: 14px
+      a
+        font-size: 14px

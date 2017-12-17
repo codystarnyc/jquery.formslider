@@ -1,0 +1,10 @@
+
+.answer
+  %label.inner-answer{:for => @config.inputName}
+
+    - if @config.image?
+      = @formslider_image @config.image, alt: @config.label, title: @config.label, class: 'image'
+
+    %input{ id: @config.inputId, name: @config.inputName, value: @config.label, type: 'radio' }
+
+    .text= @config.label

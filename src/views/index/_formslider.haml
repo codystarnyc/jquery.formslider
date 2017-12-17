@@ -1,0 +1,9 @@
+%form
+  .formslider-wrapper.loading
+    .formslider
+      = @render_formslider('src/config/formslider.yml')
+
+.progressbar-wrapper.loading
+  .progress-text 0%
+  .progress-bar
+    .progress{style: "width: 0;"}

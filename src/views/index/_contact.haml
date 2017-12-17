@@ -1,0 +1,17 @@
+
+%article.article.contact.animate-if-in-view
+  %h2.headline
+    get in contact
+
+  = @image_tag 'logo.png', class: 'person'
+
+  %p
+    Feel free to contact me for commercial or open source projects. I am always
+    interested in cool technologies, projects and exchange =)
+
+  %ul
+    %li
+      = @link_to @globals.contact.email, "mailto:#{@globals.contact.email}"
+
+    %li
+      = @link_to @globals.contact.website.name, @globals.contact.website.url

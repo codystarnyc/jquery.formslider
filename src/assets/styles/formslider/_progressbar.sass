@@ -1,0 +1,35 @@
+
++with-formslider-progressbar-wrapper
+  max-width: 800px
+  opacity: 1
+  border-radius: 5px
+  margin: 0 10px
+  padding: 0 20px 10px 20px
+  +min-width-xs
+    margin: 0 20px
+    padding: 0 20px 20px 20px
+  +min-width-sm
+    margin: 10px auto 0 auto
+  +transition(all .3s ease-out)
+  &.loading
+    transition: width 0 linear !important
+    opacity: 0
+
+  +with-formslider-progress-text
+    text-align: center
+    color: #b2b2b8
+    font-size: 14px
+    font-weight: bold
+    padding-bottom: 5px
+
+  +with-formslider-progress-bar
+    height: 15px
+    border: 1px solid #fbf6e9
+    border-radius: 7px
+    +background-gradient(#d2d5d5, #e1e4e4)
+    +with-formslider-progress-bar-brogress
+      +transition(width .8s ease-out)
+      border-radius: 7px
+      height: 12px
+      min-width: 1% !important
+      +background-gradient(#7ec24c, #61ac2a)

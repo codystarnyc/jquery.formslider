@@ -1,0 +1,3 @@
+User-agent: *
+Disallow:
+Sitemap: https://www.tomhanoldt.info/blog/sitemap_index.xml

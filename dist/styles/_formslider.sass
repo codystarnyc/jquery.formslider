@@ -1,0 +1,49 @@
+// $use-all: true
+$use-attention-seekers: true
+$use-bounce: true
+@import "creative-workflow.animate-sass/animate"
+
+@import "jquery.formslider/src/sass/formslider"
+
+$question-color: $page-color-gray-dark
+
+$answer-accent-color: #ff9500
+$answer-background-color: #fff
+$answer-border-color: $page-color-logo-green
+$answer-active-color: $page-color-logo-green
+$answer-color: $page-color-gray-dark
+
++with-formslider('formslider-wrapper')
+  +relative
+  max-width: 800px
+  margin: 20px auto 0 auto
+  &:after
+    opacity: 0
+    transition: opacity .2s linear
+
+  &.loading
+    +with-formslider-slide
+      opacity: 0
+      transition: opacity .2s linear
+
+    &:after
+      +inline-block
+      +absolute
+      content: '...loading'
+      opacity: 1
+      left: 50%
+      top: 40%
+
+  @import "formslider/mixins"
+  @import "formslider/slide"
+  @import "formslider/question"
+  @import "formslider/zipcode"
+  @import "formslider/loader"
+  @import "formslider/contact"
+  @import "formslider/confirmation"
+  @import "formslider/validation"
+
+  .next-button
+    +make-button-styling
+
+@import "formslider/progressbar"

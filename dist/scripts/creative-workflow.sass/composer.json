@@ -1,0 +1,23 @@
+{
+    "name": "creative-workflow/sass",
+    "type": "library",
+    "homepage": "https://github.com/creative-workflow/lib-sass",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tom Hanoldt",
+            "email": "tom@creative-workflow.berlin",
+            "homepage": "https://www.tomhanoldt.info",
+            "role": "Developer"
+        }
+    ],
+    "keywords": [
+      "creative-workflow",
+      "sass",
+      "lib-sass"
+    ],
+    "description": "sass helper library",
+    "autoload" : {
+      "psr-0" : {"./" : ""}
+    }
+}

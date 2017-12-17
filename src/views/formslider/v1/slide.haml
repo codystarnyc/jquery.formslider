@@ -1,0 +1,7 @@
+.slide{'data-role': @config.role, 'data-id': @config.id}
+
+  = @render_formslider_role(@config.role, @config)
+
+  - # very strange variable scoing behaviour occured here, so we reset
+  - # -> see form_slider_helper
+  - @config = {}

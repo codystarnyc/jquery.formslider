@@ -1,0 +1,114 @@
++with-formslider-slide('contact')
+  +min-width-md
+    min-height: 330px
+
+  .contact-wrapper
+    margin: 0 auto
+    text-align: center
+    max-width: 900px
+    +make-row
+    .contact-form
+      +make-xs-column(12)
+      +make-sm-column(6.5)
+      margin: 0 0 5px 0
+      padding: 5px
+      +min-width-sm
+        padding: 0px 0px 0 30px
+        margin: 0 auto 5px auto
+      .row
+        padding: 0 0 5px 0
+        label
+          width: 31%
+          +inline-block
+          &.error
+            display: none !important
+        input
+          width: 69%
+          +placeholder
+            font-weight: 100
+        &.with-2
+          input
+            width: 33.5%
+            &:first-child
+              margin-right: 1%
+
+      .button-row
+        text-align: right
+        padding: 15px 0 15px 0
+        .next-button
+          width: 70%
+
+    .trust
+      +make-xs-column(12)
+      +make-sm-column(5.5)
+      +min-width-sm
+        padding: 0 20px 0 10px
+      .checks
+        display: none
+        list-style-type: none
+        padding-left: 5px
+        padding-bottom: 15px
+        +min-width-sm
+          display: block
+          padding-left: 10px
+        li
+          text-align: left
+          background: url('/images/formslider/v1/check-green.png') no-repeat left center
+          background-size: 20px
+          +inline-block
+          font-size: 2.4vw
+          padding: 0 0 4px 20px
+          color: #666
+          +min-width-sm
+            color: #404040
+            padding: 0 0 4px 25px
+            font-size: 16px
+            +block
+
+      .person
+        +make-row
+        background-color: #fff
+        border: 1px solid #eee
+        padding: 5px 15px 5px 0
+        +min-width-sm
+          padding: 10px 15px 5px 0
+          border-radius: 3px
+          box-shadow: 0 7px 6px -6px #999
+          &:hover
+            background-color: #fafafa
+            box-shadow: 0 12px 9px -9px #999
+            +transition()
+
+        .image
+          padding: 10px
+          +min-width-sm
+            padding: 0 10px 0 10px
+          +make-xs-column(4)
+          img
+            border-radius: 50%
+        .right
+          +make-xs-column(8)
+          text-align: left
+          .headline
+            font-size: 16px
+            font-weight: 600
+            line-height: 120%
+            padding-bottom: 15px
+            +min-width-xs
+              padding-top: 15px
+            +min-width-sm
+              padding-bottom: 5px
+              padding-top: 0
+            +min-width-md
+          .text
+            max-width: 400px
+            font-size: 11px
+            line-height: 12px
+            text-align: justify
+          .name
+            max-width: 400px
+            padding-top: 2px
+            font-size: 11px
+            font-style: italic
+            color: #666
+            text-align: right

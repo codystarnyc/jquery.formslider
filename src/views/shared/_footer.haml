@@ -1,0 +1,39 @@
+.github
+  - github_image = @image_tag('social/github.png', alt: 'code available on github', title: 'code available on github')
+  = @link_to github_image+'code available on github ', 'https://github.com/formslider/jquery.formslider.github.io.src', {target: '_blank'}
+
+  - travis_image = @image_tag('https://travis-ci.org/formslider/jquery.formslider.github.io.src.svg?branch=master', alt: 'travis build status', title: 'travis build status')
+  .travis
+    = @link_to travis_image, 'https://travis-ci.org/formslider/jquery.formslider.github.io.src', {target: '_blank'}
+
+.text
+  This website is hand made with the
+  = @link_to 'easy-website-generator', 'https://github.com/easy-website-generator/easy-website-generator', {target: '_blank'}
+  ,
+  = @link_to 'jquery.formslider', 'https://github.com/formslider/jquery.formslider', {target: '_blank'}
+  and brought to you with love by
+  = @link_to('www.creative-workflow.berlin', 'https://www.creative-workflow.berlin/company.html', {target: '_blank'}) + '.'
+  The page load is below
+  = @globals.footer.page_size
+  at all =)
+
+.w3c
+  = @link_to @image_tag("technics/html5-badge-h-css3-device-performance-semantics.png", {width: "229", height: "64", alt: "HTML5 Powered with CSS3 / Styling, Device Access, Performance &amp; Integration, and Semantics", title: "HTML5 Powered with CSS3 / Styling, Device Access, Performance &amp; Integration, and Semantics"}), 'https://validator.w3.org/nu/?doc=https%3A%2F%2Fwww.tomhanoldt.info', target: '_blank'
+  = @link_to 'html5 valid', 'https://validator.w3.org/nu/?doc=https%3A%2F%2Fwww.tomhanoldt.info', target: '_blank'
+
+.checks
+  %span.item
+    page speed:
+    = @globals.footer.pagespeed_score + ' -> '
+    = @link_to '(check with google insights)', 'https://developers.google.com/speed/pagespeed/insights/?url=https%3A%2F%2Fwww.tomhanoldt.info%2F&tab=desktop', {target: '_blank'}
+
+  %span.item
+    seo score:
+    = @globals.footer.seo_score + ' -> '
+    = @link_to '(check with oneproseo)', 'https://www.advertising.de/sitecheck/?url=https://www.tomhanoldt.info', {target: '_blank'}
+
+
+.copyright
+  = @copyright 'Tom Hanoldt - Creative-Workflow'
+
+  = ' - ' + @link_to 'imprint', 'https://www.creative-workflow.berlin/imprint.html', {class: 'fancybox', 'data-fancybox-type': 'ajax'}

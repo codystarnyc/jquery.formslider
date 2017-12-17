@@ -1,0 +1,20 @@
+
+#!/bin/bash
+
+#command-info: build, commit dist folder and deploy to github.io
+
+source bootstrap
+
+./app build
+
+newline
+
+green 'pushing dist'
+git add ./dist
+git commit -m 'update dist'
+git push
+
+newline
+
+green 'deploying dist'
+git_force_push_subtree $GITHUB_IO_ORIGIN $DIST_FOLDER

@@ -1,0 +1,25 @@
+.headline.bounce-down-on-enter= @config.headline
+
+- if @config.subHeadline?
+  .sub-headline= @config.subHeadline
+
+.contact-wrapper
+  .contact-form
+    - for row in @config.rows
+      = @render_formslider_element('contact_row', row)
+
+    .row.button-row
+      %a.next-button.submit-button{:href => "#", :onclick => "return false;"}
+        = @config.button
+
+  .trust
+    %ul.checks
+      - for check in @config.checks
+        %li= check
+
+    .person
+      .image= @formslider_image @config.person.image, alt: 'person', title: 'person'
+      .right
+        .headline= @config.person.headline
+        .text= @config.person.text
+        .name= @config.person.name

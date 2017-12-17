@@ -1,0 +1,33 @@
+{
+  "name": "flexslider-conditional-before",
+  "version": "2.6.4",
+  "description": "An awesome, fully responsive jQuery slider toolkit.",
+  "main": "jquery.flexslider.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/formslider/FlexSlider.git"
+  },
+  "keywords": [
+    "flexslider",
+    "jquery",
+    "slider",
+    "woothemes",
+    "automattic"
+  ],
+  "author": "WooThemes <jeff@woothemes.com>",
+  "contributors": [
+    "WooThemes <jeff@woothemes.com>",
+    "Creative-Workflow <tom.hanoldt@creative-workflow.berlin>"
+  ],
+  "license": "GPL-2.0",
+  "bugs": {
+    "url": "https://github.com/woothemes/FlexSlider/issues"
+  },
+  "homepage": "https://github.com/formslider/FlexSlider",
+  "dependencies": {
+    "jquery": ">=1.11.3"
+  }
+}
