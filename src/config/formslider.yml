@@ -62,13 +62,13 @@ slides:
   next: zipcode
   answers:
   -
-    id: 3_1
-    image: "3_1.png"
-    label:  "Yes!"
-  -
     id: 3_2
     image: "3_2.png"
     label:  "No =("
+  -
+    id: 3_1
+    image: "3_1.png"
+    label:  "Yes!"
   -
     id: 3_3
     image: "3_3.png"
@@ -134,7 +134,7 @@ slides:
   person:
     image: "person.png"
     headline: "Approved quality"
-    text: "This formslider runs on various websites and is battle proved. About 100.000 happy users were attracted in a modern way."
+    text: "This questionnaire runs on various websites and is battle proved. About 100.000 happy users were attracted in a modern way."
     name: "Tom Hanoldt, Creative-Workflow"
 
   rows:
