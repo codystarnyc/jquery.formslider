@@ -4,8 +4,12 @@ node_js:
   - "node"
 
 before_script:
-  - ./app setup
+  # - bash ./app setup
+  - npm install -g gulp coffee-script easy-website-generator coffeelint bower
+  - npm install
+  # see https://github.com/sass/node-sass/issues/1804
+  - npm rebuild node-sass
 
 script:
-  - ./app lint
-  - ./app build
+  - bash ./app lint
+  - bash ./app build
