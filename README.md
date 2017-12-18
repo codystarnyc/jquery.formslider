@@ -22,12 +22,11 @@ Just run `./app setup` and `./app serve` to run the site in your webbrowser.
 
 ##### instructions for other plattforms
 ```
-npm install -g easy-website-generator coffee-script yarn gulp coffeelint
+npm install -g easy-website-generator yarn bower gulp coffeelint coffee-script
 
 yarn install
 
-# see https://github.com/sass/node-sass/issues/1804
-npm rebuild node-sass
+bower install
 
 ewg serve
 ```
