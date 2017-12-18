@@ -4,9 +4,11 @@ node_js:
   - "node"
 
 before_script:
-  # - bash ./app setup
-  - npm install -g gulp coffee-script easy-website-generator coffeelint bower
-  - npm install
+  # https://github.com/travis-ci/travis-ci/issues/8890
+  - export PATH=$PATH:`yarn global bin`
+  - bash ./app setup
+  #- npm install -g gulp coffee-script easy-website-generator coffeelint bower
+  #- npm install
   # see https://github.com/sass/node-sass/issues/1804
   - npm rebuild node-sass
 
