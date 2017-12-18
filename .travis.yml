@@ -4,8 +4,8 @@ node_js:
   - "node"
 
 before_script:
-  - ./app setup
+  - bash ./app setup
 
 script:
-  - ./app lint
-  - ./app build
+  - bash ./app lint
+  - bash ./app build
