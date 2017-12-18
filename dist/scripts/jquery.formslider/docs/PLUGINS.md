@@ -68,6 +68,7 @@ Default configuration for a plugin.
 These plugins can be used to extend the formslider:
   * [formslider.jquery.tracking](https://github.com/formslider/formslider.jquery.tracking)
   * [formslider.animate.css](https://github.com/formslider/formslider.animate.css)
+  * [formslider.dramatic.loader](https://github.com/formslider/formslider.dramatic.loader)
 
 ### AddSlideClassesPlugin               
 Adds classes based on role and index.
@@ -203,7 +204,7 @@ config: {
 
 
 ### InputSyncPlugin                     
-Syncs iputs with the same name.
+Syncs inputs with the same name.
 Default configuration:
 ```js
 config: {
@@ -237,7 +238,7 @@ config: {
 sed.
 
 ### TabIndexSetterPlugin               
-Fixes tab behaviour, only enables on current slide.
+Fixes tab behavior, only enables on current slide.
 Default configuration:
 ```js
 config: {
@@ -270,7 +271,7 @@ config: {
 
 
 ### ProgressBarPlugin                   
-Manages progess animation.
+Manages progress animation.
 Default configuration:
 ```js
 config: {
@@ -296,7 +297,7 @@ config: {
 
 
 ### TrackSessionInformationPlugin       
-Triggers track events for useragent, device dimension etc and adds an hidden input fieled for later form submission.
+Triggers track events for useragent, device dimension etc and adds an hidden input field for later form submission.
 Triggers after first user interaction for clean unbounce tracking.
 Default configuration:
 ```js
@@ -330,7 +331,7 @@ Triggers:
 Default configuration:
 ```js
 config: {
-  questionAnsweredEvent: 'question-answered'  // event triggered, when a answer was selected
+  questionAnsweredEvent: 'question-answered'  // event triggered, when an answer was selected
 }
 ```
 
@@ -368,6 +369,7 @@ config: {
   selector: '.answer .label'
 }
 ```
+Listens also on event `do-equal-height`. To trigger this event: `@trigger('do-equal-height', slideToEqualize)`.
 
 
 ### ScrollUpPlugin                      
@@ -392,6 +394,17 @@ config: {
 }
 ```
 
+### DoOnEventPlugin
+Generic plugin to for inline implementing a plugin.
+
+Default configuration:
+```js
+config: {
+    'after.question': function (plugin){
+      plugin.track('any after question');
+    }
+}
+```
 
 ### DoOneTimeOnEventPlugin
 Execute a callback first time an event was seen.
@@ -399,8 +412,8 @@ Execute a callback first time an event was seen.
 Default configuration:
 ```js
 config: {
-    'after.question': function (formslider){
-      formslider.track('first time after question');
+    'after.question': function (plugin){
+      plugin.formslider.track('first time after question');
     }
 }
 ```

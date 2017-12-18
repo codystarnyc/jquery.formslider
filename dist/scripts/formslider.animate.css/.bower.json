@@ -1,6 +1,6 @@
 {
   "name": "formslider.animate.css",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "homepage": "https://github.com/creative-workflow/formslider.animate.css",
   "authors": [
     "Tom Hanoldt <tom@creative-workflow.berlin>"
@@ -28,13 +28,13 @@
     "jquery": ">=1.7.0",
     "jquery.animate.css": "^1.0.2"
   },
-  "_release": "1.0.1",
+  "_release": "1.0.2",
   "_resolution": {
     "type": "version",
-    "tag": "1.0.1",
-    "commit": "1d44bdd242957f5b97ae3d5da7216acc6958daee"
+    "tag": "1.0.2",
+    "commit": "38cd1735f78f5e0dd17a47ad607ae0893fdb35c1"
   },
   "_source": "https://github.com/formslider/formslider.animate.css.git",
-  "_target": "^1.0.1",
+  "_target": "^1.0.2",
   "_originalSource": "formslider.animate.css"
 }

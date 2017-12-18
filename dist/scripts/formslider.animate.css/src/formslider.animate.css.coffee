@@ -9,21 +9,16 @@ class @JqueryAnimatePlugin extends AbstractFormsliderPlugin
     prev:
       inEffect:  'swing'
       outEffect: 'swing'
-    actions:
-      before: (plugin, current, direction, next) ->
-        inEffect  = plugin.config[direction].inEffect
-        outEffect = plugin.config[direction].outEffect
-        duration  = plugin.config.duration
-        selector  = plugin.config.selector
-
-        if $(current).data('role') == 'question'
-          $(selector, current).animateCss(outEffect, duration)
-
-        if $(next).data('role') == 'question'
-          $(selector, next).animateCss(inEffect, duration)
 
   init: =>
-    for eventName, callback of @config.actions
-      @on(eventName, (event, current, direction, next) =>
-        callback(@, current, direction, next)
-      )
+    @on('before.question', @doAnimation)
+
+  doAnimation: (event, currentSlide, direction, nextSlide) =>
+    inEffect  = @config[direction].inEffect
+    outEffect = @config[direction].outEffect
+    duration  = @config.duration
+    selector  = @config.selector
+
+    $(selector, nextSlide).animateCss(outEffect, duration, =>
+      @trigger('do-equal-height', event, currentSlide)
+    )

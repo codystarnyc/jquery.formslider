@@ -45,6 +45,8 @@ formslider.plugins.load({
   })
 ```
 
+### Events
+Triggers `do-equal-height` after animation finish.
 
 ### Resources
   * https://github.com/formslider/jquery.formslider
