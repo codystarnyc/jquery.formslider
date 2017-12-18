@@ -45,7 +45,7 @@ Available commands:
 ```
 
 ### Ressources
-> "[jquery.formslider](https://github.com/creative-workflow/jquery.formslider)"
+> "[jquery.formslider](https://github.com/formslider/jquery.formslider/)"
 
 > "[Easy-Website-Generator](https://github.com/easy-website-generator/)"
 
