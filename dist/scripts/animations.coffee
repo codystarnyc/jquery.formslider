@@ -37,7 +37,7 @@ class @AnimationInView extends Animation
     for $el in @animatedElements
       @doAnimatedElement $el
 
-  doAnimatedElement: ($el) =>
+  doAnimatedElement: ($el) ->
     top = $(window).scrollTop() + $(window).height()
     if(top + $el.options.offsetTop > $el.offset().top)
       $el.animate({opacity: 1, top: 0}, $el.options.speed)

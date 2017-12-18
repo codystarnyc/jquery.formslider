@@ -18,14 +18,15 @@ class @Application
             position: 'relative'
             top:      '100px'
 
-    @animationFixedOnTop = new AnimationFixedOnTop(@options.animations.fixedOnTop)
-    @animationInView     = new AnimationInView    (@options.animations.inView)
-    @animationFadeIn     = new AnimationFadeIn    (@options.animations.fadeIn)
+    animations = @options.animations
+    @animationFixedOnTop = new AnimationFixedOnTop(animations.fixedOnTop)
+    @animationInView     = new AnimationInView    (animations.inView)
+    @animationFadeIn     = new AnimationFadeIn    (animations.fadeIn)
     @fancybox            = new Fancybox()
     @tooltips            = new Tooltips('.tooltip')
 
 (($) ->
 
-    window.application = new Application()
+  window.application = new Application()
 
 )(jQuery)
