@@ -1,4 +1,4 @@
-# source repo for: jquery.formslider.github.io [![Build Status](https://travis-ci.org/creative-workflow/jquery.formslider.github.io.svg?branch=master)](https://travis-ci.org/creative-workflow/jquery.formslider.github.io)
+# source repo for: formslider.github.io [![Build Status](https://travis-ci.org/creative-workflow/jquery.formslider.github.io.svg?branch=master)](https://travis-ci.org/creative-workflow/jquery.formslider.github.io)
 
 ###### Supports:
   * css styling with [sass](http://sass-lang.com/documentation/file.SASS_REFERENCE.html) and pre build helpers
