@@ -9,7 +9,7 @@ development: &default
     keywords:    'jquery formslider flexslider slideshow questionaire'
 
     footer:
-      page_size: '200kb'
+      page_size: '700kb'
       pagespeed_score: '99/100'
       seo_score: '97/100'
 

@@ -3,7 +3,7 @@ bower_components
 node_modules
 .DS_Store
 npm-debug.log
-docs/styles/*.sass
-docs/scripts/*.coffee
+dist/styles/*.sass
+dist/scripts/*.coffee
 bootstrap.local
 config/exports
