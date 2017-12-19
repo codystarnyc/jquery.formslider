@@ -34,7 +34,7 @@ formslider = $('.formslider-wrapper').formslider(
 formslider.plugins.load({
   class: 'JqueryAnimatePlugin',
   config:
-    duration: 1000
+    duration: 800
     selector: '.answer'
     next:
       inEffect:  'swingReverse'
@@ -44,9 +44,6 @@ formslider.plugins.load({
       outEffect: 'swing'
   })
 ```
-
-### Events
-Triggers `do-equal-height` after animation finish.
 
 ### Resources
   * https://github.com/formslider/jquery.formslider

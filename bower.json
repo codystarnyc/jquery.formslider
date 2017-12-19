@@ -18,9 +18,9 @@
     "fancybox": "^2.1.5",
     "jquery": ">=1.8.0",
     "creative-workflow.sass": "*",
-    "formslider.animate.css": "^1.0.2",
+    "formslider.animate.css": "^1.0.3",
     "formslider.jquery.tracking": "^1.0.0",
     "formslider.dramatic.loader": "^1.0.0",
-    "jquery.formslider": "^1.0.8"
+    "jquery.formslider": "^1.0.9"
   }
 }

@@ -7,12 +7,13 @@
     extend(JqueryAnimatePlugin, superClass);
 
     function JqueryAnimatePlugin() {
+      this.doAnimation = bind(this.doAnimation, this);
       this.init = bind(this.init, this);
       return JqueryAnimatePlugin.__super__.constructor.apply(this, arguments);
     }
 
     JqueryAnimatePlugin.config = {
-      duration: 1000,
+      duration: 800,
       selector: '.answer',
       next: {
         inEffect: 'swingReverse',
@@ -21,37 +22,21 @@
       prev: {
         inEffect: 'swing',
         outEffect: 'swing'
-      },
-      actions: {
-        before: function(plugin, current, direction, next) {
-          var duration, inEffect, outEffect, selector;
-          inEffect = plugin.config[direction].inEffect;
-          outEffect = plugin.config[direction].outEffect;
-          duration = plugin.config.duration;
-          selector = plugin.config.selector;
-          if ($(current).data('role') === 'question') {
-            $(selector, current).animateCss(outEffect, duration);
-          }
-          if ($(next).data('role') === 'question') {
-            return $(selector, next).animateCss(inEffect, duration);
-          }
-        }
       }
     };
 
     JqueryAnimatePlugin.prototype.init = function() {
-      var callback, eventName, ref, results;
-      ref = this.config.actions;
-      results = [];
-      for (eventName in ref) {
-        callback = ref[eventName];
-        results.push(this.on(eventName, (function(_this) {
-          return function(event, current, direction, next) {
-            return callback(_this, current, direction, next);
-          };
-        })(this)));
-      }
-      return results;
+      return this.on('before.question', this.doAnimation);
+    };
+
+    JqueryAnimatePlugin.prototype.doAnimation = function(event, currentSlide, direction, nextSlide) {
+      var duration, inEffect, outEffect, selector;
+      inEffect = this.config[direction].inEffect;
+      outEffect = this.config[direction].outEffect;
+      duration = this.config.duration;
+      selector = this.config.selector;
+      $(selector, currentSlide).animateCss(outEffect, duration);
+      return $(selector, nextSlide).animateCss(outEffect, duration);
     };
 
     return JqueryAnimatePlugin;

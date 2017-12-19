@@ -1,6 +1,6 @@
 {
   "name": "jquery.formslider",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "homepage": "https://github.com/formslider/jquery.formslider",
   "authors": [
     "Tom Hanoldt <tom@creative-workflow.berlin>"
@@ -28,13 +28,13 @@
     "jquery-validation": "^1.17.0",
     "jquery.debug": "^1.0.3"
   },
-  "_release": "1.0.8",
+  "_release": "1.0.9",
   "_resolution": {
     "type": "version",
-    "tag": "1.0.8",
-    "commit": "1b595a9e36f111cf77d9976e2568a37c3bf046a9"
+    "tag": "1.0.9",
+    "commit": "55fcbebf70157695edd3175e02a37d45ab0e1fb9"
   },
   "_source": "https://github.com/formslider/jquery.formslider.git",
-  "_target": "^1.0.8",
+  "_target": "^1.0.9",
   "_originalSource": "jquery.formslider"
 }

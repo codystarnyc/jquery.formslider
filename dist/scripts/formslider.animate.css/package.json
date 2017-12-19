@@ -1,6 +1,6 @@
 {
   "name": "formslider.animate.css",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "This plugin adds animate.css capabilities to jquery.fromslider.",
   "main": "dist/formslider.animate.css.js",
   "repository": {

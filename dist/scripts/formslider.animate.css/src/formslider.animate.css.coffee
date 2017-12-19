@@ -1,7 +1,7 @@
 
 class @JqueryAnimatePlugin extends AbstractFormsliderPlugin
   @config =
-    duration: 1000
+    duration: 800
     selector: '.answer'
     next:
       inEffect:  'swingReverse'
@@ -19,6 +19,6 @@ class @JqueryAnimatePlugin extends AbstractFormsliderPlugin
     duration  = @config.duration
     selector  = @config.selector
 
-    $(selector, nextSlide).animateCss(outEffect, duration, =>
-      @trigger('do-equal-height', event, currentSlide)
-    )
+    $(selector, currentSlide).animateCss(outEffect, duration)
+
+    $(selector, nextSlide).animateCss(outEffect, duration)
