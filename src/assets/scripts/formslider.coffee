@@ -28,7 +28,11 @@
     plugins: [
       # { class: 'NextSlideResolverPlugin' }
       { class: 'AddSlideClassesPlugin'          }
-      { class: 'JqueryAnimatePlugin'            }
+      {
+        class: 'JqueryAnimatePlugin'
+        config:
+          duration: 600
+      }
       { class: 'JqueryValidatePlugin'           }
       { class: 'ArrowNavigationPlugin'          }
       { class: 'AnswerClickPlugin'              }
