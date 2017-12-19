@@ -58,7 +58,11 @@
       { class: 'ContactSlidePlugin'            }
       { class: 'ConfirmationSlidePlugin'       }
       { class: 'EqualHeightPlugin'             }
-      { class: 'ScrollUpPlugin'                }
+      {
+        class: 'ScrollUpPlugin'
+        config:
+          scrollUpOffset: 40
+      }
       { class: 'LazyLoadPlugin'                }
       { class: 'TrackSessionInformationPlugin' }
       { class: 'TrackUserInteractionPlugin'    }
