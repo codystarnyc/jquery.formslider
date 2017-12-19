@@ -26,7 +26,8 @@ class @Application
     @tooltips            = new Tooltips('.tooltip')
 
 (($) ->
-
-  window.application = new Application()
+  Raven.context( ->
+    window.application = new Application()
+  )
 
 )(jQuery)

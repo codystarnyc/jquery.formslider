@@ -11,7 +11,6 @@
 = @javascript_include_tag 'animations.js'
 = @javascript_include_tag 'fancybox.js'
 = @javascript_include_tag 'tooltips.js'
-= @javascript_include_tag 'main.js'
 
 
 = @javascript_include_tag 'jquery.tracking/dist/jquery.tracking.min.js'
@@ -19,4 +18,9 @@
 - # included in assets/scripts/formslider.coffee
 - # @javascript_include_tag 'jquery.formslider/dist/jquery.formslider.min.js'
 
+%script{crossorigin: "anonymous", src: @globals.sentry.cdn}
+%script
+  = "Raven.config('#{@globals.sentry.ravenEndpoint}').install()"
+
 = @javascript_include_tag 'formslider.js'
+= @javascript_include_tag 'main.js'
