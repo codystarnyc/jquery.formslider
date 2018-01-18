@@ -1884,9 +1884,9 @@ gulplog@^1.0.0:
   dependencies:
     glogg "^1.0.0"
 
-"haml-coffee@git://github.com/easy-website-generator/haml-coffee.git":
+"haml-coffee@git://github.com/easy-website-generator/haml-coffee":
   version "1.14.1"
-  resolved "git://github.com/easy-website-generator/haml-coffee.git#335dc5b35ccd19d4f096ee69fc4a9820c3c76c25"
+  resolved "git://github.com/easy-website-generator/haml-coffee#335dc5b35ccd19d4f096ee69fc4a9820c3c76c25"
   dependencies:
     coffee-script ">= 1.1.3"
     console "^0.5.2"

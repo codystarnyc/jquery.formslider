@@ -187,18 +187,29 @@ config: {
   errorEventName:   'form-submission-error',
   loadHiddenFrameOnSuccess: 'url',
 
-  strategy:{
-    type:     'collect',
+  formSelector: 'form',
+
+  submitter: {
+    class: 'FormSubmitterCollect',
     endpoint: '#',
     method:   'POST'
-
-    // type: 'submit',        // trivial submit
-    // formSelector: 'form'
-
-    // make sure to load https://github.com/jquery-form/form
-    // type: 'ajaxSubmit',
-    // formSelector: 'form'
   }
+
+  submitter: {
+    class: 'FormSubmitterCollect',
+    endpoint: '#',
+    method:   'POST'
+  }  
+
+  // submitter: {
+  //   class: 'FormSubmitterSubmit'
+  // }    
+
+  // make sure to load https://github.com/jquery-form/form
+  // submitter: {
+  //   class: 'FormSubmitterAjax',
+  //   jquery-form configuration
+  // }    
 }
 ```
 
@@ -208,7 +219,7 @@ Syncs inputs with the same name.
 Default configuration:
 ```js
 config: {
-  selector: 'input:visible',
+  selector: 'input',
   attribute: 'name'
 }
 ```
@@ -219,7 +230,7 @@ Can trigger next if key pressed.
 Default configuration:
 ```js
 config: {
-  selector: 'input:visible',
+  selector: 'input',
   keyCode: 13                 //enter
 }
 ```
@@ -263,7 +274,7 @@ Manipulates loading classes on ready.
 Default configuration:
 ```js
 config: {
-  selector: '.progressbar-wrapper, .formslider-wrapper',
+  selector: '.nextbar-wrapper, .formslider-wrapper',
   loadingClass: 'loading',          // will be removed
   loadedClass: 'loaded'             // will be added
 }
@@ -271,7 +282,8 @@ config: {
 
 
 ### ProgressBarPlugin                   
-Manages progress animation.
+Manages progress animation, looks for data attributes on progress bar wrapper. Use `data-type="steps"` for ex.
+
 Default configuration:
 ```js
 config: {
@@ -346,7 +358,7 @@ config: {
 }
 ```
 
-For you custom loader implementation have alook at https://github.com/formslider/jquery.formslider/src/plugins/pages/loader/abstract.coffee.
+For you custom loader implementation have alook at https://github.com/formslider/jquery.formslider/tree/master/src/coffee/plugins/slides/loader.
 
 
 ### ContactSlidePlugin                   
@@ -373,7 +385,8 @@ Listens also on event `do-equal-height`. To trigger this event: `@trigger('do-eq
 
 
 ### ScrollUpPlugin                      
-Scrolls up if a question is not in viewport. Depends on [isInViewport](https://github.com/zeusdeux/isInViewport).
+Scrolls up if a question is not in viewport and logs warning if no element found by `@config.selector`.
+
 Default configuration:
 ```js
 config: {
