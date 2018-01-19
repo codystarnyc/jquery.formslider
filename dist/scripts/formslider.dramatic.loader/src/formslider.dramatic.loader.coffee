@@ -28,7 +28,10 @@ class @DramaticLoaderIplementation extends AbstractFormsliderLoader
       )
     )
 
-    @finishAnimation()
+    setTimeout(
+      @finishAnimation,
+      @config.duration
+    )
 
   finishAnimation: =>
     setTimeout(

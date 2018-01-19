@@ -51,6 +51,7 @@
           class: 'LoaderSlidePlugin'
           config:
             loaderClass: 'DramaticLoaderIplementation'
+            duration: 600
         }
         { class: 'ContactSlidePlugin'            }
         { class: 'ConfirmationSlidePlugin'       }

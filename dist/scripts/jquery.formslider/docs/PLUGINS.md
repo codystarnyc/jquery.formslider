@@ -2,7 +2,7 @@
 # Plugins
 
 ## Registering plugins
-You can register plugins at initialization time (see [README.md](../README.md)).
+You can register plugins at initialization time (see [README.md](INTEGRATION.md)).
 
 Or after initialization:
 ```js
@@ -17,15 +17,18 @@ formslider.loadPlugin({
 ```
 
 
-## Global configuration
-The configuration passed to a plugin consists of:
-### Global plugin config
+## Plugin configuration
+The configuration consists of three levels:
+
+### 1. The default config
+Default configuration for a plugin provided by source code.
+
+### 2. Global plugin config
 Passed during initialization.
 ```js
 $('.my-formslider').formslider({
   driver:{
-    class:    'DriverFlexslider' ,
-    selector: '.formslider > .slide'
+    ...
   },
 
   pluginsGlobalConfig: {
@@ -40,7 +43,7 @@ $('.my-formslider').formslider({
 });
 ```
 
-### The initial config
+### 3. The initial config
 Passed during initialization.
 ```js
 $('.my-formslider').formslider({
@@ -58,8 +61,16 @@ $('.my-formslider').formslider({
 
 ```
 
-### The default config
-Default configuration for a plugin.
+### Merge data attributes into config
+You can merge slide data attributes into the current plugin config:
+```
+coffee
+
+@config = @configWithDataFrom(@wrapper)
+```
+
+Have a look at [AbstractFormsliderPlugin::configWithDataFromElement](EXTENDING.md#configwithdatafromelement)
+and  [ProgressBarPlugin](https://github.com/formslider/jquery.formslider/blob/master/src/coffee/plugins/progress/progress_bar.coffee#L27) for an example implementation.
 
 
 ## Available plugins
@@ -237,7 +248,7 @@ config: {
 
 
 ### ArrowNavigationPlugin               
-Can trigger next/prev if arrow keys pres
+Can trigger next/prev if arrow keys pressed.
 Default configuration:
 ```js
 config: {
@@ -246,7 +257,25 @@ config: {
   keyCodeRight: 39
 }
 ```
-sed.
+
+### DirectionPolicyPlugin
+Prevent going forward or backward based on events.
+Default configuration:
+```js
+config: {
+  cancelEventOn: []
+}
+```
+
+Example implemenatation:
+```coffee
+
+class @ContactSlidePlugin extends DirectionPolicyPlugin
+  @config =
+    cancelEventOn: ['leaving.contact.prev']
+
+```
+
 
 ### TabIndexSetterPlugin               
 Fixes tab behavior, only enables on current slide.
@@ -291,8 +320,8 @@ config: {
   selectorText: '.progress-text',
   selectorProgress: '.progress',
   animationSpeed: 300,
-  type: 'percent',             // animate progress in percent or 'steps' (1/6)
-  initialProgress: '15',
+  adapter: 'ProgressBarAdapterPercent',  // animate progress in percent or 'steps' (1/6) (ProgressBarAdapterSteps)
+  initialProgress: '15',                 // initial bar width, when type percent also the initial value
   dontCountOnRoles: [
     'loader'
     'contact'
@@ -310,7 +339,7 @@ config: {
 
 ### TrackSessionInformationPlugin       
 Triggers track events for useragent, device dimension etc and adds an hidden input field for later form submission.
-Triggers after first user interaction for clean unbounce tracking.
+Triggers after first user interaction for clean bounce rate tracking.
 Default configuration:
 ```js
 config: {
