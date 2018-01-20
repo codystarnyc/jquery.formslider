@@ -1,0 +1,31 @@
+{
+  "name": "formslider.history.js",
+  "version": "1.0.0",
+  "homepage": "https://github.com/creative-workflow/formslider.history.js",
+  "authors": [
+    "Tom Hanoldt <tom@creative-workflow.berlin>"
+  ],
+  "description": "This plugin uses history.js for history manipulating and supports also older browsers and html4.",
+  "main": "src/formslider.history.js.coffee",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "jquery",
+    "debug",
+    "cookie",
+    "url",
+    "detection",
+    "browser"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "node_modules",
+    "bower_components",
+    "spec"
+  ],
+  "dependencies": {
+    "jquery": ">=1.7.0",
+    "history.js": "^1.8.0"
+  }
+}

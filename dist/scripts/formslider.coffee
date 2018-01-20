@@ -4,7 +4,11 @@
 #= include dist/scripts/jquery.animate.css/src/jquery.animate.css.coffee
 #= include dist/scripts/formslider.animate.css/src/formslider.animate.css.coffee
 #= include dist/scripts/formslider.dramatic.loader/src/formslider.dramatic.loader.coffee
+
 #= include dist/scripts/formslider.jquery.tracking/src/formslider.jquery.tracking.coffee
+
+#= include dist/scripts/formslider.history.js/src/formslider.history.js.coffee
+
 # coffeelint: enable=max_line_length
 
 (($) ->
@@ -34,7 +38,7 @@
         { class: 'ArrowNavigationPlugin'          }
         { class: 'AnswerClickPlugin'              }
         { class: 'InputFocusPlugin'               }
-        { class: 'BrowserHistoryPlugin'           }
+        { class: 'HistoryJsPlugin'                }
         { class: 'NormalizeInputAttributesPlugin' }
         { class: 'FormSubmissionPlugin'           }
         { class: 'InputSyncPlugin'                }
@@ -53,8 +57,6 @@
             loaderClass: 'DramaticLoaderIplementation'
             duration: 600
         }
-        { class: 'ContactSlidePlugin'            }
-        { class: 'ConfirmationSlidePlugin'       }
         { class: 'EqualHeightPlugin'             }
         {
           class: 'ScrollUpPlugin'
@@ -73,6 +75,24 @@
                 class: 'JqueryTrackingGTagmanagerAdapter'
               }
             ]
+        }
+        {
+          class: 'DirectionPolicyByRolePlugin'
+          config:
+            zipcode:
+              commingFrom: ['question']
+              goingTo: ['loader', 'question']
+
+            loader:
+              commingFrom: ['zipcode']
+              goingTo: ['contact']
+
+            contact:
+              commingFrom: ['loader']
+              goingTo: ['confirmation']
+
+            confirmation:
+              goingTo: ['none']
         }
       ]
     )

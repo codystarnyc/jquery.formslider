@@ -1,6 +1,10 @@
 
 @mixin with-body-class($class)
-  body.#{$class} &
+  .#{$class} &
+    @content
+
+@mixin with-html-class($class)
+  .#{$class} &
     @content
 
 @mixin clearfix
