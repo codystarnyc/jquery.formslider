@@ -18,6 +18,9 @@
 - # included in assets/scripts/formslider.coffee
 - # @javascript_include_tag 'jquery.formslider/dist/jquery.formslider.min.js'
 
+= @javascript_include_tag 'history.js/scripts/bundled/html4+html5/native.history.js'
+
+
 %script{crossorigin: "anonymous", src: @globals.sentry.cdn}
 %script
   = "Raven.config('#{@globals.sentry.ravenEndpoint}').install()"
