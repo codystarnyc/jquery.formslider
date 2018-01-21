@@ -36,6 +36,7 @@
         { class: 'JqueryAnimatePlugin'            }
         { class: 'JqueryValidatePlugin'           }
         { class: 'ArrowNavigationPlugin'          }
+        { class: 'SlideVisibilityPlugin'          }
         { class: 'AnswerClickPlugin'              }
         { class: 'InputFocusPlugin'               }
         { class: 'HistoryJsPlugin'                }

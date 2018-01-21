@@ -115,7 +115,8 @@ The Plugin triggers the following events:
 @trigger('question-answered', $answer, value, slideIndex)
 ```
 
-
+### SlideVisibilityPlugin
+Hides slides before and after current until transition is allowed
 
 ### InputFocusPlugin                    
 Focusses first input on current slide.
@@ -261,22 +262,29 @@ config: {
 }
 ```
 
+
 ### DirectionPolicyByRolePlugin
 Prevent going forward or backward based on events.
 Default configuration:
 ```js
-config: {
-  cancelEventOn: []
+{
+  class: 'DirectionPolicyByRolePlugin'
+  config:
+    zipcode:
+      commingFrom: ['question']
+      goingTo: ['loader', 'question']
+
+    loader:
+      commingFrom: ['zipcode']
+      goingTo: ['contact']
+
+    contact:
+      commingFrom: ['loader']
+      goingTo: ['confirmation']
+
+    confirmation:
+      goingTo: ['none']
 }
-```
-
-Example implemenatation:
-```coffee
-
-class @ContactSlidePlugin extends DirectionPolicyByRolePlugin
-  @config =
-    cancelEventOn: ['leaving.contact.prev']
-
 ```
 
 
