@@ -1,3 +1,8 @@
+#= include animation.coffee
+#= include animations.coffee
+#= include fancybox.coffee
+#= include tooltips.coffee
+
 class @Application
   constructor: ->
     @options =

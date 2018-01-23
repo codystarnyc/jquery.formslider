@@ -1,10 +1,12 @@
 # coffeelint: disable=max_line_length
-#= include dist/scripts/jquery.formslider/src/coffee/jquery.formslider.coffee
+#= include ../../../dist/scripts/jquery.formslider/src/coffee/jquery.formslider.coffee
 
-#= include dist/scripts/jquery.animate.css/src/jquery.animate.css.coffee
-#= include dist/scripts/formslider.animate.css/src/formslider.animate.css.coffee
-#= include dist/scripts/formslider.dramatic.loader/src/formslider.dramatic.loader.coffee
-#= include dist/scripts/formslider.jquery.tracking/src/formslider.jquery.tracking.coffee
+#= include ../../../dist/scripts/jquery.animate.css/src/jquery.animate.css.coffee
+#= include ../../../dist/scripts/formslider.animate.css/src/formslider.animate.css.coffee
+#= include ../../../dist/scripts/formslider.dramatic.loader/src/formslider.dramatic.loader.coffee
+
+#= include ../../../dist/scripts/jquery.tracking/src/jquery.tracking.coffee
+#= include ../../../dist/scripts/formslider.jquery.tracking/src/formslider.jquery.tracking.coffee
 # coffeelint: enable=max_line_length
 
 (($) ->
