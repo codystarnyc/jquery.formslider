@@ -116,7 +116,13 @@ The Plugin triggers the following events:
 ```
 
 ### SlideVisibilityPlugin
-Hides slides before and after current until transition is allowed
+Hides slides before and after current until transition is allowed.
+Default configuration:
+```js
+config: {
+  hideAnimationDuration: 300
+}
+```
 
 ### InputFocusPlugin                    
 Focusses first input on current slide.
@@ -293,7 +299,7 @@ Fixes tab behavior, only enables on current slide.
 Default configuration:
 ```js
 config: {
-  selector: 'input:visible, a, select, textarea, button'
+  selector: 'input, a, select, textarea, button, area, object'
 }
 ```
 

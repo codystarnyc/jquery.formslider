@@ -1,5 +1,13 @@
 # Changelog
 
+##### 1.0.19
+  * add `hideAnimationDuration` to `SlideVisibilityPlugin`
+
+##### 1.0.18
+  * fix `TabIndexSetterPlugin`, start from 1 and count up per slide -> fixes autofill
+  * add area and object for tabindex setting and apply also to non visible because they get ignored
+  * move slide `SlideVisibilityPlugin` plugin from progress to views
+
 ##### 1.0.17
   * add `scrollTo` and `checkElement` method to `ScrollUpPlugin` so that they can be overridden
   * remove left and right check from `ScrollUpPlugin`
