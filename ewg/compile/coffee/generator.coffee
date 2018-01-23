@@ -5,22 +5,11 @@ sourcemaps  = require 'gulp-sourcemaps'
 stage       = require('ewg-config').stage
 include     = require 'gulp-include'
 
-#
-# .pipe(
-#         include({
-#           extensions: 'coffee'
-#           includePaths: __dirname
-#         }))
-#
 g.generate (config, index) =>
   g.src("#{config.source}/#{config.selector}")
    .pipe(
      include({
        extensions: 'coffee'
-       includePaths: [
-         __dirname + '/../../..'
-         __dirname + '/../../../dist/scripts/jquery.formslider/src/coffee' 
-       ]
       }))
    .pipe(
       sourcemaps.init())
