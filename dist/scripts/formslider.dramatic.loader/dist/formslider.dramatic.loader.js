@@ -38,7 +38,7 @@
           }, 400);
         });
       });
-      return this.finishAnimation();
+      return setTimeout(this.finishAnimation, this.config.duration);
     };
 
     DramaticLoaderIplementation.prototype.finishAnimation = function() {

@@ -1,6 +1,6 @@
 {
   "name": "formslider.dramatic.loader",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "This plugin adds animate.css capabilities to jquery.fromslider.",
   "main": "dist/formslider.dramatic.loader.js",
   "repository": {

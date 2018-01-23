@@ -37,6 +37,6 @@
     "commit": "f1d07ea90b2d9ae55917a394dec26c6366b0570c"
   },
   "_source": "https://github.com/formslider/formslider.jquery.tracking.git",
-  "_target": "^1.0.0",
+  "_target": "*",
   "_originalSource": "formslider.jquery.tracking"
 }

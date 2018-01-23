@@ -5,9 +5,16 @@
 = @stylesheet_link_tag 'scripts/tooltipster/dist/css/tooltipster.bundle.min.css'
 = @stylesheet_link_tag 'scripts/tooltipster/dist/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-light.min.css'
 
+
+%script{crossorigin: "anonymous", src: @globals.sentry.cdn}
+%script
+  = "Raven.config('#{@globals.sentry.ravenEndpoint}').install()"
+
 = @javascript_include_tag 'fancybox/source/jquery.fancybox.pack.js'
 = @javascript_include_tag 'tooltipster/dist/js/tooltipster.bundle.min.js'
-= @javascript_include_tag 'main.js'
 
 = @javascript_include_tag 'jquery.formslider/dist/jquery.formslider.dependencies.min.js'
+= @javascript_include_tag 'history.js/scripts/bundled/html4+html5/native.history.js'
+
+= @javascript_include_tag 'main.js'
 = @javascript_include_tag 'formslider.js'

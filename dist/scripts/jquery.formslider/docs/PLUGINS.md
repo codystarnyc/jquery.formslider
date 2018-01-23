@@ -2,7 +2,7 @@
 # Plugins
 
 ## Registering plugins
-You can register plugins at initialization time (see [README.md](../README.md)).
+You can register plugins at initialization time (see [README.md](INTEGRATION.md)).
 
 Or after initialization:
 ```js
@@ -17,15 +17,18 @@ formslider.loadPlugin({
 ```
 
 
-## Global configuration
-The configuration passed to a plugin consists of:
-### Global plugin config
+## Plugin configuration
+The configuration consists of three levels:
+
+### 1. The default config
+Default configuration for a plugin provided by source code.
+
+### 2. Global plugin config
 Passed during initialization.
 ```js
 $('.my-formslider').formslider({
   driver:{
-    class:    'DriverFlexslider' ,
-    selector: '.formslider > .slide'
+    ...
   },
 
   pluginsGlobalConfig: {
@@ -40,7 +43,7 @@ $('.my-formslider').formslider({
 });
 ```
 
-### The initial config
+### 3. The initial config
 Passed during initialization.
 ```js
 $('.my-formslider').formslider({
@@ -49,7 +52,8 @@ $('.my-formslider').formslider({
     {
       class: 'BrowserHistoryPlugin'
       config:{
-        updateHash: true
+        updateHash: false,
+        resetStatesOnLoad: true
       }
     }
   ]
@@ -58,8 +62,16 @@ $('.my-formslider').formslider({
 
 ```
 
-### The default config
-Default configuration for a plugin.
+### Merge data attributes into config
+You can merge slide data attributes into the current plugin config:
+```
+coffee
+
+@config = @configWithDataFrom(@wrapper)
+```
+
+Have a look at [AbstractFormsliderPlugin::configWithDataFromElement](EXTENDING.md#configwithdatafromelement)
+and  [ProgressBarPlugin](https://github.com/formslider/jquery.formslider/blob/master/src/coffee/plugins/progress/progress_bar.coffee#L27) for an example implementation.
 
 
 ## Available plugins
@@ -69,6 +81,7 @@ These plugins can be used to extend the formslider:
   * [formslider.jquery.tracking](https://github.com/formslider/formslider.jquery.tracking)
   * [formslider.animate.css](https://github.com/formslider/formslider.animate.css)
   * [formslider.dramatic.loader](https://github.com/formslider/formslider.dramatic.loader)
+  * [formslider.hitory.js](https://github.com/formslider/formslider.hitory.js)
 
 ### AddSlideClassesPlugin               
 Adds classes based on role and index.
@@ -102,7 +115,8 @@ The Plugin triggers the following events:
 @trigger('question-answered', $answer, value, slideIndex)
 ```
 
-
+### SlideVisibilityPlugin
+Hides slides before and after current until transition is allowed
 
 ### InputFocusPlugin                    
 Focusses first input on current slide.
@@ -121,7 +135,8 @@ Adds browser history entries.
 Default configuration:
 ```js
 config: {
-  updateHash: true    // change browser hash or not
+  updateHash: false,          // change browser url or not
+  resetStatesOnLoad: true    // only allow states since browser reload
 }
 ```
 
@@ -187,18 +202,29 @@ config: {
   errorEventName:   'form-submission-error',
   loadHiddenFrameOnSuccess: 'url',
 
-  strategy:{
-    type:     'collect',
+  formSelector: 'form',
+
+  submitter: {
+    class: 'FormSubmitterCollect',
     endpoint: '#',
     method:   'POST'
-
-    // type: 'submit',        // trivial submit
-    // formSelector: 'form'
-
-    // make sure to load https://github.com/jquery-form/form
-    // type: 'ajaxSubmit',
-    // formSelector: 'form'
   }
+
+  submitter: {
+    class: 'FormSubmitterCollect',
+    endpoint: '#',
+    method:   'POST'
+  }  
+
+  // submitter: {
+  //   class: 'FormSubmitterSubmit'
+  // }    
+
+  // make sure to load https://github.com/jquery-form/form
+  // submitter: {
+  //   class: 'FormSubmitterAjax',
+  //   jquery-form configuration
+  // }    
 }
 ```
 
@@ -208,7 +234,7 @@ Syncs inputs with the same name.
 Default configuration:
 ```js
 config: {
-  selector: 'input:visible',
+  selector: 'input',
   attribute: 'name'
 }
 ```
@@ -219,14 +245,14 @@ Can trigger next if key pressed.
 Default configuration:
 ```js
 config: {
-  selector: 'input:visible',
+  selector: 'input',
   keyCode: 13                 //enter
 }
 ```
 
 
 ### ArrowNavigationPlugin               
-Can trigger next/prev if arrow keys pres
+Can trigger next/prev if arrow keys pressed.
 Default configuration:
 ```js
 config: {
@@ -235,7 +261,32 @@ config: {
   keyCodeRight: 39
 }
 ```
-sed.
+
+
+### DirectionPolicyByRolePlugin
+Prevent going forward or backward based on events.
+Default configuration:
+```js
+{
+  class: 'DirectionPolicyByRolePlugin'
+  config:
+    zipcode:
+      commingFrom: ['question']
+      goingTo: ['loader', 'question']
+
+    loader:
+      commingFrom: ['zipcode']
+      goingTo: ['contact']
+
+    contact:
+      commingFrom: ['loader']
+      goingTo: ['confirmation']
+
+    confirmation:
+      goingTo: ['none']
+}
+```
+
 
 ### TabIndexSetterPlugin               
 Fixes tab behavior, only enables on current slide.
@@ -263,7 +314,7 @@ Manipulates loading classes on ready.
 Default configuration:
 ```js
 config: {
-  selector: '.progressbar-wrapper, .formslider-wrapper',
+  selector: '.nextbar-wrapper, .formslider-wrapper',
   loadingClass: 'loading',          // will be removed
   loadedClass: 'loaded'             // will be added
 }
@@ -271,7 +322,8 @@ config: {
 
 
 ### ProgressBarPlugin                   
-Manages progress animation.
+Manages progress animation, looks for data attributes on progress bar wrapper. Use `data-type="steps"` for ex.
+
 Default configuration:
 ```js
 config: {
@@ -279,8 +331,8 @@ config: {
   selectorText: '.progress-text',
   selectorProgress: '.progress',
   animationSpeed: 300,
-  type: 'percent',             // animate progress in percent or 'steps' (1/6)
-  initialProgress: '15',
+  adapter: 'ProgressBarAdapterPercent',  // animate progress in percent or 'steps' (1/6) (ProgressBarAdapterSteps)
+  initialProgress: '15',                 // initial bar width, when type percent also the initial value
   dontCountOnRoles: [
     'loader'
     'contact'
@@ -298,7 +350,7 @@ config: {
 
 ### TrackSessionInformationPlugin       
 Triggers track events for useragent, device dimension etc and adds an hidden input field for later form submission.
-Triggers after first user interaction for clean unbounce tracking.
+Triggers after first user interaction for clean bounce rate tracking.
 Default configuration:
 ```js
 config: {
@@ -346,7 +398,7 @@ config: {
 }
 ```
 
-For you custom loader implementation have alook at https://github.com/formslider/jquery.formslider/src/plugins/pages/loader/abstract.coffee.
+For you custom loader implementation have alook at https://github.com/formslider/jquery.formslider/tree/master/src/coffee/plugins/slides/loader.
 
 
 ### ContactSlidePlugin                   
@@ -373,14 +425,21 @@ Listens also on event `do-equal-height`. To trigger this event: `@trigger('do-eq
 
 
 ### ScrollUpPlugin                      
-Scrolls up if a question is not in viewport. Depends on [isInViewport](https://github.com/zeusdeux/isInViewport).
+Scrolls up if a question is not in viewport and logs warning if no element found by `@config.selector`.
+
 Default configuration:
 ```js
 config: {
   selector: '.headline',
-  duration: 200,
+  duration: 500,
   tolerance: -30
   scrollUpOffset: 30
+  scrollTo: function(plugin, $element){
+    return Math.max(0, $element.offset().top - plugin.config.scrollUpOffset);
+  },
+  checkElement: function(plugin, slide){
+    retrun $(plugin.config.selector, slide);
+  }
 }
 ```
 

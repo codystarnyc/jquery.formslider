@@ -102,6 +102,7 @@
       this.cancel = bind(this.cancel, this);
       this.off = bind(this.off, this);
       this.on = bind(this.on, this);
+      this.configWithDataFrom = bind(this.configWithDataFrom, this);
       this.config = ObjectExtender.extend({}, this.constructor.config, config);
       this.container = this.formslider.container;
       this.slides = this.formslider.slides;
@@ -112,6 +113,20 @@
 
     AbstractFormsliderPlugin.prototype.init = function() {
       return null;
+    };
+
+    AbstractFormsliderPlugin.prototype.configWithDataFrom = function(element) {
+      var $element, config, data, key, value;
+      config = ObjectExtender.extend({}, this.config);
+      $element = $(element);
+      for (key in config) {
+        value = config[key];
+        data = $element.data(key);
+        if (data !== void 0) {
+          config[key] = data;
+        }
+      }
+      return config;
     };
 
     AbstractFormsliderPlugin.prototype.on = function(eventName, callback) {
@@ -192,7 +207,6 @@
     extend(FormSubmissionPlugin, superClass);
 
     function FormSubmissionPlugin() {
-      this.collectInputs = bind(this.collectInputs, this);
       this.onFail = bind(this.onFail, this);
       this.onDone = bind(this.onDone, this);
       this.onSubmit = bind(this.onSubmit, this);
@@ -204,44 +218,32 @@
       submitOnEvents: ['validation.valid.contact'],
       successEventName: 'form-submitted',
       errorEventName: 'form-submission-error',
-      loadHiddenFrameOnSuccess: 'url',
-      strategy: {
-        type: 'collect',
+      loadHiddenFrameOnSuccess: null,
+      formSelector: 'form',
+      submitter: {
+        "class": 'FormSubmitterCollect',
         endpoint: '#',
         method: 'POST'
       }
     };
 
     FormSubmissionPlugin.prototype.init = function() {
-      var eventName, j, len, ref, results;
+      var SubmitterClass, eventName, j, len, ref;
+      this.form = $(this.config.formSelector);
       ref = this.config.submitOnEvents;
-      results = [];
       for (j = 0, len = ref.length; j < len; j++) {
         eventName = ref[j];
-        results.push(this.on(eventName, this.onSubmit));
+        this.on(eventName, this.onSubmit);
       }
-      return results;
+      SubmitterClass = window[this.config.submitter["class"]];
+      return this.submitter = new SubmitterClass(this, this.config.submitter, this.form);
     };
 
     FormSubmissionPlugin.prototype.onSubmit = function(event, currentSlide) {
-      var $form;
-      return this.isCanceled(event);
-      switch (this.config.strategy.type) {
-        case 'submit':
-          $form = $(this.config.formSelector);
-          return $form.submit();
-        case 'ajaxSubmit':
-          $form = $(this.config.formSelector);
-          $form.ajaxSubmit(this.config.strategy);
-          return $form.data('jqxhr').done(this.onDone).fail(this.onFail);
-        case 'collect':
-          return $.ajax({
-            cache: false,
-            url: this.config.strategy.endpoint,
-            method: this.config.strategy.method,
-            data: this.collectInputs()
-          }).done(this.onDone).fail(this.onFail);
+      if (this.isCanceled(event)) {
+        return;
       }
+      return this.submitter.submit(event, currentSlide);
     };
 
     FormSubmissionPlugin.prototype.onDone = function() {
@@ -253,30 +255,6 @@
     FormSubmissionPlugin.prototype.onFail = function() {
       this.logger.error('onFail', this.config.errorEventName);
       return this.trigger(this.config.errorEventName);
-    };
-
-    FormSubmissionPlugin.prototype.collectInputs = function() {
-      var $input, $inputs, $other, $others, input, j, k, len, len1, other, result;
-      result = {};
-      $inputs = $('input', this.container);
-      for (j = 0, len = $inputs.length; j < len; j++) {
-        input = $inputs[j];
-        $input = $(input);
-        if ($input.is(':checkbox') || $input.is(':radio')) {
-          if ($input.is(':checked')) {
-            result[$input.attr('name')] = $input.val();
-          }
-        } else {
-          result[$input.attr('name')] = $input.val();
-        }
-      }
-      $others = $('select, textarea', this.container);
-      for (k = 0, len1 = $others.length; k < len1; k++) {
-        other = $others[k];
-        $other = $(other);
-        result[$other.attr('name')] = $other.val();
-      }
-      return result;
     };
 
     FormSubmissionPlugin.prototype.loadHiddenFrameOnSuccess = function(url) {
@@ -297,6 +275,109 @@
     return FormSubmissionPlugin;
 
   })(AbstractFormsliderPlugin);
+
+  this.FormSubmitterAbstract = (function() {
+    function FormSubmitterAbstract(plugin1, config1, form) {
+      this.plugin = plugin1;
+      this.config = config1;
+      this.form = form;
+      this.supressNaturalFormSubmit = bind(this.supressNaturalFormSubmit, this);
+    }
+
+    FormSubmitterAbstract.prototype.supressNaturalFormSubmit = function() {
+      return this.form.submit(function(e) {
+        e.preventDefault();
+        return false;
+      });
+    };
+
+    return FormSubmitterAbstract;
+
+  })();
+
+  this.FormSubmitterAjax = (function(superClass) {
+    extend(FormSubmitterAjax, superClass);
+
+    function FormSubmitterAjax(plugin1, config1, form) {
+      this.plugin = plugin1;
+      this.config = config1;
+      this.form = form;
+      this.submit = bind(this.submit, this);
+      FormSubmitterAjax.__super__.constructor.call(this, this.plugin, this.config, this.form);
+      this.supressNaturalFormSubmit();
+    }
+
+    FormSubmitterAjax.prototype.submit = function(event, slide) {
+      this.form.ajaxSubmit(this.config);
+      return this.form.data('jqxhr').done(this.plugin.onDone).fail(this.plugin.onFail);
+    };
+
+    return FormSubmitterAjax;
+
+  })(FormSubmitterAbstract);
+
+  this.FormSubmitterCollect = (function(superClass) {
+    extend(FormSubmitterCollect, superClass);
+
+    function FormSubmitterCollect(plugin1, config1, form) {
+      this.plugin = plugin1;
+      this.config = config1;
+      this.form = form;
+      this.collectInputs = bind(this.collectInputs, this);
+      this.submit = bind(this.submit, this);
+      FormSubmitterCollect.__super__.constructor.call(this, this.plugin, this.config, this.form);
+      this.supressNaturalFormSubmit();
+    }
+
+    FormSubmitterCollect.prototype.submit = function(event, slide) {
+      return $.ajax({
+        cache: false,
+        url: this.config.endpoint,
+        method: this.config.method,
+        data: this.collectInputs()
+      }).done(this.plugin.onDone).fail(this.plugin.onFail);
+    };
+
+    FormSubmitterCollect.prototype.collectInputs = function() {
+      var $input, $inputs, $other, $others, input, j, k, len, len1, other, result;
+      result = {};
+      $inputs = $('input', this.plugin.container);
+      for (j = 0, len = $inputs.length; j < len; j++) {
+        input = $inputs[j];
+        $input = $(input);
+        if ($input.is(':checkbox') || $input.is(':radio')) {
+          if ($input.is(':checked')) {
+            result[$input.attr('name')] = $input.val();
+          }
+        } else {
+          result[$input.attr('name')] = $input.val();
+        }
+      }
+      $others = $('select, textarea', this.plugin.container);
+      for (k = 0, len1 = $others.length; k < len1; k++) {
+        other = $others[k];
+        $other = $(other);
+        result[$other.attr('name')] = $other.val();
+      }
+      return result;
+    };
+
+    return FormSubmitterCollect;
+
+  })(FormSubmitterAbstract);
+
+  this.FormSubmitterSubmit = (function(superClass) {
+    extend(FormSubmitterSubmit, superClass);
+
+    function FormSubmitterSubmit() {
+      return FormSubmitterSubmit.__super__.constructor.apply(this, arguments);
+    }
+
+    FormSubmitterSubmit.prototype.submit = function(event, slide) {};
+
+    return FormSubmitterSubmit;
+
+  })(FormSubmitterAbstract);
 
   this.InputFocusPlugin = (function(superClass) {
     extend(InputFocusPlugin, superClass);
@@ -348,7 +429,7 @@
     }
 
     InputSyncPlugin.config = {
-      selector: 'input:visible',
+      selector: 'input',
       attribute: 'name'
     };
 
@@ -571,7 +652,7 @@
       $slide = $(slide);
       this._addAnswerCountClasses(index, $slide);
       this._addSlideNumberClass(index, $slide);
-      this._addRoleClass(index, $slide);
+      this._addRoleClass($slide);
       return this._addSlideIdClass($slide);
     };
 
@@ -581,7 +662,7 @@
       return $slide.addClass("answer-count-" + answerCount).data('answer-count', answerCount);
     };
 
-    AddSlideClassesPlugin.prototype._addRoleClass = function(index, $slide) {
+    AddSlideClassesPlugin.prototype._addRoleClass = function($slide) {
       var role;
       role = $slide.data('role');
       return $slide.addClass("slide-role-" + role);
@@ -701,12 +782,14 @@
     }
 
     BrowserHistoryPlugin.config = {
-      updateHash: true
+      updateHash: true,
+      resetStatesOnLoad: true
     };
 
     BrowserHistoryPlugin.prototype.init = function() {
       this.on('after', this.onAfter);
       this.dontUpdateHistoryNow = false;
+      this.time = new Date().getTime();
       this.pushCurrentHistoryState();
       return $(window).bind('popstate', this.handleHistoryChange);
     };
@@ -727,22 +810,78 @@
       }
       this.logger.debug('pushCurrentHistoryState', hash);
       return history.pushState({
-        index: this.formslider.index()
+        index: this.formslider.index(),
+        time: this.time
       }, "index " + (this.formslider.index()), hash);
     };
 
     BrowserHistoryPlugin.prototype.handleHistoryChange = function(event) {
-      var newIndex, ref;
+      var ref, state;
       if (((ref = event.originalEvent) != null ? ref.state : void 0) == null) {
         return;
       }
-      newIndex = event.originalEvent.state.index;
-      this.logger.debug('handleHistoryChange', newIndex);
+      state = event.originalEvent.state;
+      if (this.config.resetStatesOnLoad) {
+        if (state.time !== this.time) {
+          return;
+        }
+      }
+      this.logger.debug('handleHistoryChange', state.index);
       this.dontUpdateHistoryNow = true;
-      return this.formslider.goto(newIndex);
+      return this.formslider.goto(state.index);
     };
 
     return BrowserHistoryPlugin;
+
+  })(AbstractFormsliderPlugin);
+
+  this.DirectionPolicyByRolePlugin = (function(superClass) {
+    extend(DirectionPolicyByRolePlugin, superClass);
+
+    function DirectionPolicyByRolePlugin() {
+      this.checkPermissions = bind(this.checkPermissions, this);
+      this.init = bind(this.init, this);
+      return DirectionPolicyByRolePlugin.__super__.constructor.apply(this, arguments);
+    }
+
+    DirectionPolicyByRolePlugin.config = {};
+
+    DirectionPolicyByRolePlugin.prototype.init = function() {
+      return this.on('leaving', this.checkPermissions);
+    };
+
+    DirectionPolicyByRolePlugin.prototype.checkPermissions = function(event, current, direction, next) {
+      var currentRole, nextRole, permissions;
+      currentRole = $(current).data('role');
+      nextRole = $(next).data('role');
+      if (!currentRole || !nextRole) {
+        return;
+      }
+      if (currentRole in this.config) {
+        permissions = this.config[currentRole];
+        if ('goingTo' in permissions) {
+          if (indexOf.call(permissions.goingTo, 'none') >= 0) {
+            return this.cancel(event);
+          }
+          if (indexOf.call(permissions.goingTo, nextRole) < 0) {
+            return this.cancel(event);
+          }
+        }
+      }
+      if (nextRole in this.config) {
+        permissions = this.config[nextRole];
+        if ('commingFrom' in permissions) {
+          if (indexOf.call(permissions.commingFrom, 'none') >= 0) {
+            return this.cancel(event);
+          }
+          if (indexOf.call(permissions.commingFrom, currentRole) < 0) {
+            return this.cancel(event);
+          }
+        }
+      }
+    };
+
+    return DirectionPolicyByRolePlugin;
 
   })(AbstractFormsliderPlugin);
 
@@ -792,7 +931,7 @@
     }
 
     NextOnKeyPlugin.config = {
-      selector: 'input:visible',
+      selector: 'input',
       keyCode: 13
     };
 
@@ -884,17 +1023,82 @@
 
   })(AbstractFormsliderPlugin);
 
+  this.ProgressBarAdapterAbstract = (function() {
+    function ProgressBarAdapterAbstract(plugin1, config1) {
+      this.plugin = plugin1;
+      this.config = config1;
+    }
+
+    return ProgressBarAdapterAbstract;
+
+  })();
+
+  this.ProgressBarAdapterPercent = (function(superClass) {
+    extend(ProgressBarAdapterPercent, superClass);
+
+    function ProgressBarAdapterPercent() {
+      this._setPercentStepCallback = bind(this._setPercentStepCallback, this);
+      this._setPercent = bind(this._setPercent, this);
+      this.set = bind(this.set, this);
+      return ProgressBarAdapterPercent.__super__.constructor.apply(this, arguments);
+    }
+
+    ProgressBarAdapterPercent.prototype.set = function(indexFromZero, percent) {
+      return this._setPercent(percent);
+    };
+
+    ProgressBarAdapterPercent.prototype._setPercent = function(percent) {
+      var startFrom;
+      startFrom = parseInt(this.plugin.progressText.text()) || 13;
+      return $({
+        Counter: startFrom
+      }).animate({
+        Counter: percent
+      }, {
+        duration: this.config.animationSpeed,
+        queue: false,
+        easing: 'swing',
+        step: this._setPercentStepCallback
+      });
+    };
+
+    ProgressBarAdapterPercent.prototype._setPercentStepCallback = function(percent) {
+      return this.plugin.progressText.text(Math.ceil(percent) + '%');
+    };
+
+    return ProgressBarAdapterPercent;
+
+  })(ProgressBarAdapterAbstract);
+
+  this.ProgressBarAdapterSteps = (function(superClass) {
+    extend(ProgressBarAdapterSteps, superClass);
+
+    function ProgressBarAdapterSteps() {
+      this._setSteps = bind(this._setSteps, this);
+      this.set = bind(this.set, this);
+      return ProgressBarAdapterSteps.__super__.constructor.apply(this, arguments);
+    }
+
+    ProgressBarAdapterSteps.prototype.set = function(indexFromZero, percent) {
+      return this._setSteps(indexFromZero + 1);
+    };
+
+    ProgressBarAdapterSteps.prototype._setSteps = function(indexFromOne) {
+      return this.plugin.progressText.text(indexFromOne + "/" + this.plugin.countMax);
+    };
+
+    return ProgressBarAdapterSteps;
+
+  })(ProgressBarAdapterAbstract);
+
   this.ProgressBarPlugin = (function(superClass) {
     extend(ProgressBarPlugin, superClass);
 
     function ProgressBarPlugin() {
       this.show = bind(this.show, this);
       this.hide = bind(this.hide, this);
-      this._setSteps = bind(this._setSteps, this);
-      this._setPercentStepCallback = bind(this._setPercentStepCallback, this);
-      this._setPercent = bind(this._setPercent, this);
-      this.set = bind(this.set, this);
       this.shouldBeVisible = bind(this.shouldBeVisible, this);
+      this.set = bind(this.set, this);
       this.doUpdate = bind(this.doUpdate, this);
       this.slidesThatCount = bind(this.slidesThatCount, this);
       this.init = bind(this.init, this);
@@ -906,8 +1110,8 @@
       selectorText: '.progress-text',
       selectorProgress: '.progress',
       animationSpeed: 300,
-      type: 'percent',
-      initialProgress: '15',
+      adapter: 'ProgressBarAdapterPercent',
+      initialProgress: null,
       dontCountOnRoles: ['loader', 'contact', 'confirmation'],
       hideOnRoles: ['zipcode', 'loader', 'contact', 'confirmation']
     };
@@ -916,11 +1120,12 @@
       this.on('after', this.doUpdate);
       this.visible = true;
       this.wrapper = $(this.config.selectorWrapper);
-      this.progress = $(this.config.selectorText, this.wrapper);
+      this.config = this.configWithDataFrom(this.wrapper);
+      this.progressText = $(this.config.selectorText, this.wrapper);
       this.bar = $(this.config.selectorProgress, this.wrapper);
-      this.type = this.config.type;
       this.bar.css('transition-duration', (this.config.animationSpeed / 1000) + 's');
       this.countMax = this.slidesThatCount();
+      this.adapter = new window[this.config.adapter](this, this.config);
       return this.set(0);
     };
 
@@ -946,54 +1151,25 @@
       return this.set(index);
     };
 
-    ProgressBarPlugin.prototype.shouldBeVisible = function(slide) {
-      var ref;
-      return !(ref = $(slide).data('role'), indexOf.call(this.config.hideOnRoles, ref) >= 0);
-    };
-
     ProgressBarPlugin.prototype.set = function(indexFromZero) {
-      var indexFromOne, percent;
+      var percent;
       if (indexFromZero > this.countMax) {
         indexFromZero = this.countMax;
       }
       if (indexFromZero < 0) {
         indexFromZero = 0;
       }
-      indexFromOne = indexFromZero + 1;
-      percent = (indexFromOne / this.countMax) * 100;
+      percent = ((indexFromZero + 1) / this.countMax) * 100;
+      if (this.config.initialProgress && indexFromZero === 0) {
+        percent = this.config.initialProgress;
+      }
       this.bar.css('width', percent + '%');
-      if (this.config.type === 'steps') {
-        this._setSteps(indexFromOne);
-        this._setSteps(indexFromOne);
-        return;
-      }
-      if ((this.config.initialProgress != null) && indexFromZero < 1) {
-        percent = Math.max(this.config.initialProgress, percent);
-      }
-      return this._setPercent(percent);
+      return this.adapter.set(indexFromZero, percent);
     };
 
-    ProgressBarPlugin.prototype._setPercent = function(percent) {
-      var startFrom;
-      startFrom = parseInt(this.progress.text()) || 13;
-      return $({
-        Counter: startFrom
-      }).animate({
-        Counter: percent
-      }, {
-        duration: this.config.animationSpeed,
-        queue: false,
-        easing: 'swing',
-        step: this._setPercentStepCallback
-      });
-    };
-
-    ProgressBarPlugin.prototype._setPercentStepCallback = function(percent) {
-      return this.progress.text(Math.ceil(percent) + '%');
-    };
-
-    ProgressBarPlugin.prototype._setSteps = function(indexFromOne) {
-      return this.progress.text(indexFromOne + "/" + this.countMax);
+    ProgressBarPlugin.prototype.shouldBeVisible = function(slide) {
+      var ref;
+      return !(ref = $(slide).data('role'), indexOf.call(this.config.hideOnRoles, ref) >= 0);
     };
 
     ProgressBarPlugin.prototype.hide = function() {
@@ -1020,47 +1196,43 @@
 
   })(AbstractFormsliderPlugin);
 
-  this.ConfirmationSlidePlugin = (function(superClass) {
-    extend(ConfirmationSlidePlugin, superClass);
+  this.SlideVisibilityPlugin = (function(superClass) {
+    extend(SlideVisibilityPlugin, superClass);
 
-    function ConfirmationSlidePlugin() {
-      this.onLeaving = bind(this.onLeaving, this);
+    function SlideVisibilityPlugin() {
+      this.hideAdjescentSlides = bind(this.hideAdjescentSlides, this);
+      this.showNextSlide = bind(this.showNextSlide, this);
       this.init = bind(this.init, this);
-      return ConfirmationSlidePlugin.__super__.constructor.apply(this, arguments);
+      return SlideVisibilityPlugin.__super__.constructor.apply(this, arguments);
     }
 
-    ConfirmationSlidePlugin.prototype.init = function() {
-      return this.on('leaving.confirmation', this.onLeaving);
+    SlideVisibilityPlugin.config = {};
+
+    SlideVisibilityPlugin.prototype.init = function() {
+      this.on('before', this.showNextSlide);
+      this.on('after', this.hideAdjescentSlides);
+      this.hide(this.slides);
+      return this.show(this.slideByIndex(this.formslider.index()));
     };
 
-    ConfirmationSlidePlugin.prototype.onLeaving = function(event, current, direction, next) {
-      return this.cancel(event);
+    SlideVisibilityPlugin.prototype.showNextSlide = function(event, current, direction, next) {
+      return this.show(next);
     };
 
-    return ConfirmationSlidePlugin;
-
-  })(AbstractFormsliderPlugin);
-
-  this.ContactSlidePlugin = (function(superClass) {
-    extend(ContactSlidePlugin, superClass);
-
-    function ContactSlidePlugin() {
-      this.onLeaving = bind(this.onLeaving, this);
-      this.init = bind(this.init, this);
-      return ContactSlidePlugin.__super__.constructor.apply(this, arguments);
-    }
-
-    ContactSlidePlugin.prototype.init = function() {
-      return this.on('leaving.contact', this.onLeaving);
+    SlideVisibilityPlugin.prototype.hideAdjescentSlides = function(event, current, direction, prev) {
+      this.hide(this.slideByIndex(this.formslider.index() + 1));
+      return this.hide(prev);
     };
 
-    ContactSlidePlugin.prototype.onLeaving = function(event, current, direction, next) {
-      if (direction === 'prev') {
-        return this.cancel(event);
-      }
+    SlideVisibilityPlugin.prototype.hide = function(slide) {
+      return $(slide).css('opacity', 0).data('slide-visibility', 0);
     };
 
-    return ContactSlidePlugin;
+    SlideVisibilityPlugin.prototype.show = function(slide) {
+      return $(slide).css('opacity', 1).data('slide-visibility', 1);
+    };
+
+    return SlideVisibilityPlugin;
 
   })(AbstractFormsliderPlugin);
 
@@ -1070,7 +1242,7 @@
     function LoaderSlidePlugin() {
       this.isLoading = bind(this.isLoading, this);
       this.onLeaving = bind(this.onLeaving, this);
-      this.onLOaderStart = bind(this.onLOaderStart, this);
+      this.onLoaderStart = bind(this.onLoaderStart, this);
       this.init = bind(this.init, this);
       return LoaderSlidePlugin.__super__.constructor.apply(this, arguments);
     }
@@ -1081,11 +1253,11 @@
     };
 
     LoaderSlidePlugin.prototype.init = function() {
-      this.on('after.loader', this.onLOaderStart);
+      this.on('after.loader', this.onLoaderStart);
       return this.on('leaving.loader', this.onLeaving);
     };
 
-    LoaderSlidePlugin.prototype.onLOaderStart = function(event, currentSlide, direction, nextSlide) {
+    LoaderSlidePlugin.prototype.onLoaderStart = function(event, currentSlide, direction, nextSlide) {
       var LoaderClass;
       if (this.isLoading()) {
         return;
@@ -1096,9 +1268,6 @@
     };
 
     LoaderSlidePlugin.prototype.onLeaving = function(event, current, direction, next) {
-      if (direction === 'prev') {
-        this.cancel(event);
-      }
       if (this.isLoading()) {
         return this.cancel(event);
       }
@@ -1390,9 +1559,15 @@
 
     ScrollUpPlugin.config = {
       selector: '.headline',
-      duration: 200,
+      duration: 500,
       tolerance: 80,
-      scrollUpOffset: 30
+      scrollUpOffset: 30,
+      scrollTo: function(plugin, $element) {
+        return Math.max(0, $element.offset().top - plugin.config.scrollUpOffset);
+      },
+      checkElement: function(plugin, slide) {
+        return $(plugin.config.selector, slide);
+      }
     };
 
     ScrollUpPlugin.prototype.init = function() {
@@ -1402,27 +1577,28 @@
 
     ScrollUpPlugin.prototype.onAfter = function(e, current, direction, prev) {
       var $element;
-      $element = $(this.config.selector, current);
+      $element = this.config.checkElement(this, current);
+      if (!$element.length) {
+        this.logger.warn("no element found for selector " + this.config.selector);
+        return;
+      }
       if (this.isOnScreen($element)) {
         return;
       }
       return $("html, body").animate({
-        scrollTop: Math.max(0, $element.offset().top - this.config.scrollUpOffset)
+        scrollTop: this.config.scrollTo(this, $element)
       }, this.config.duration);
     };
 
     ScrollUpPlugin.prototype.isOnScreen = function($element) {
       var bounds, viewport;
       viewport = {
-        top: this.window.scrollTop(),
-        left: this.window.scrollLeft()
+        top: this.window.scrollTop()
       };
-      viewport.right = viewport.left + this.window.width();
       viewport.bottom = viewport.top + this.window.height();
       bounds = $element.offset();
-      bounds.right = bounds.left + $element.outerWidth();
       bounds.bottom = bounds.top + $element.outerHeight();
-      return !(viewport.right < bounds.left || viewport.left > bounds.right || viewport.bottom < bounds.top - this.config.tolerance || viewport.top > bounds.bottom - this.config.tolerance);
+      return !(viewport.bottom < bounds.top - this.config.tolerance || viewport.top > bounds.bottom - this.config.tolerance);
     };
 
     return ScrollUpPlugin;
@@ -1743,9 +1919,13 @@
 
     FormSlider.prototype.onBefore = function(currentIndex, direction, nextIndex) {
       var current, currentRole, event, eventData, next, nextRole, ref, ref1;
+      if (currentIndex === nextIndex) {
+        return false;
+      }
       if (this.locking.locked) {
         return false;
       }
+      this.locking.lock();
       current = this.slides.get(currentIndex);
       currentRole = $(current).data('role');
       next = this.driver.get(nextIndex);
@@ -1761,12 +1941,14 @@
       this.lastCurrent = current;
       this.lastNext = next;
       this.lastCurrentRole = nextRole;
-      this.lastDirection = direction;
-      return true;
+      return this.lastDirection = direction;
     };
 
     FormSlider.prototype.onAfter = function() {
       var eventData, ref, ref1;
+      if (!this.locking.locked) {
+        return;
+      }
       eventData = [this.lastNext, this.lastDirection, this.lastCurrent];
       (ref = this.events).trigger.apply(ref, ["after." + this.lastCurrentRole + "." + this.lastDirection].concat(slice.call(eventData)));
       if (!this.firstInteraction) {
@@ -1777,6 +1959,7 @@
     };
 
     FormSlider.prototype.onReady = function() {
+      this.ready = true;
       this.events.trigger('ready');
       return this.locking.unlock();
     };

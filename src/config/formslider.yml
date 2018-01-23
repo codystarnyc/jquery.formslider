@@ -26,7 +26,7 @@ slides:
   -
     id: 1_2
     image: "1_2.png"
-    label:  "Men"
+    label:  "Boy"
     next: 4
   -
     id: 1_3

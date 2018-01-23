@@ -41,6 +41,12 @@ development: &default
         name: 'www.tomhanoldt.info'
         url: 'https://www.tomhanoldt.info'
 
+
+    sentry:
+      cdn: 'https://cdn.ravenjs.com/3.21.0/raven.min.js'
+      ravenEndpoint: 'https://eeff9ed9f15c4f209bc511705cd85705@sentry.io/261643'
+
+
   # browser-sync
   server:
     port: 9294

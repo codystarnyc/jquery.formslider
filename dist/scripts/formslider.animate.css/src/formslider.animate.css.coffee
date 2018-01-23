@@ -11,7 +11,7 @@ class @JqueryAnimatePlugin extends AbstractFormsliderPlugin
       outEffect: 'swing'
 
   init: =>
-    @on('before.question', @doAnimation)
+    @on('before', @doAnimation)
 
   doAnimation: (event, currentSlide, direction, nextSlide) =>
     inEffect  = @config[direction].inEffect
