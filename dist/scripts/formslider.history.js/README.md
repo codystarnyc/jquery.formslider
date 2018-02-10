@@ -24,12 +24,17 @@ formslider = $('.formslider-wrapper').formslider(
 )
 
 formslider.plugins.load({
-  class: 'HistoryJsPlugin',
+  class: 'HistoryJsController',
   config:
     updateUrl: false
     resetStatesOnLoad: true
   })
 ```
+
+### Changelog
+##### 1.1.0
+  * rename `HistoryJsPlugin` -> `HistoryJsController` follow formslider 1.1 naming style
+  * memorize index
 
 ### Resources
   * https://github.com/formslider/jquery.formslider

@@ -23,6 +23,7 @@ slides:
     id: 1_1
     image: "1_1.png"
     label:  "Women"
+    next: 2
   -
     id: 1_2
     image: "1_2.png"
@@ -32,6 +33,28 @@ slides:
     id: 1_3
     image: "1_3.png"
     label:  "Don`t know"
+    next: 2
+
+-
+  id: 4
+  role: question
+  headline: "Damn, you answered <b>boy</b> =("
+  answers:
+  -
+    id: 4_1
+    image: "4_1.png"
+    label:  "Ok, that was a lie!"
+    next: 1
+  -
+    id: 4_2
+    image: "4_2.png"
+    label:  "Yes ...sorry, i will go forward nevertheless"
+    next: 2
+  -
+    id: 4_3
+    image: "4_3.png"
+    label:  "Yes ...sorry, let me finish"
+    next: zipcode
 
 -
   id: 2
@@ -74,26 +97,6 @@ slides:
     image: "3_3.png"
     label:  "It depends"
 
-# - id: 4
-#   role: question
-#   headline: "Damn, you answered <b>boy</b> =("
-#   answers:
-#   -
-#     id: 4_1
-#     image: "4_1.png"
-#     label:  "Ok, that was a lie!"
-#     next: 1
-#   -
-#     id: 4_2
-#     image: "4_2.png"
-#     label:  "Yes ...sorry, i will go forward nevertheless"
-#     next: 2
-#   -
-#     id: 4_3
-#     image: "4_3.png"
-#     label:  "Yes ...sorry, let me finish"
-#     next: zipcode
-
 -
   role: zipcode
   headline: "<b>Where</b> do you live<b>?</b>"
@@ -122,6 +125,7 @@ slides:
   image: "loader-sun.gif"
   finish_text: "Yay, it worked!"
   finish_image: "green-tick-big.png"
+  
 -
   role: contact
   headline: "Get in <b>contact</b>!"

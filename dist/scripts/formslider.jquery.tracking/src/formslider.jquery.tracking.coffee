@@ -1,7 +1,9 @@
-class @JqueryTrackingPlugin extends AbstractFormsliderPlugin
+class @JqueryTracking extends AbstractFormsliderPlugin
   @config =
     initialize: true
     eventCategory: 'formslider'
+    trackFormSubmission: true
+    conversionErrorEvantName: 'conversion-error'
 
     # this is only relevant if initialize is set to true
     sessionLifeTimeDays: 1 #s ync with google analytics session lifetime
@@ -10,8 +12,8 @@ class @JqueryTrackingPlugin extends AbstractFormsliderPlugin
     sourceParamName:   'utm_source'
     campaignParamName: 'utm_campaign'
     storageParams: {
-      'utm_source': 'organic' #source
-      'utm_campaign': 'organic' #campaign
+      'utm_source': 'organic'   # source
+      'utm_campaign': 'organic' # campaign
     }
     adapter: [ ]
 
@@ -19,9 +21,19 @@ class @JqueryTrackingPlugin extends AbstractFormsliderPlugin
     $.tracking(@config) if @config.initialize
 
     @on('track', @onTrack)
-    @on('form-submitted', ->
-      $.tracking.conversion()
-    )
+
+    return unless @config.trackFormSubmission
+
+    submissionPlugin = @formslider.plugins.get('FormSubmissionPlugin')
+    if submissionPlugin
+      @on(submissionPlugin.config.successEventName, @onTrackConversion)
+      @on(submissionPlugin.config.errorEventName,   @onTrackConversionError)
+
+  onTrackConversion: ->
+    $.tracking.conversion()
+
+  onTrackConversionError: =>
+    $.tracking.event(@config.eventCategory, @config.conversionErrorEvantName)
 
   onTrack: (event, source, value, category=null) =>
     $.tracking.event(category || @config.eventCategory, source, value, '', '')

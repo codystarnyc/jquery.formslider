@@ -22,15 +22,28 @@ $use-bounce: true
 ```
 
 ## Load the loader
-Set the loader class for the LoaderSlidePlugin. See [formslider](https://github.com/formslider/jquery.formslider) for more infos.
+See [formslider](https://github.com/formslider/jquery.formslider) for more infos.
 
 ```coffee
 {
-  class: 'LoaderSlidePlugin'
+  class: 'DramaticLoader'
   config:
-    loaderClass: 'DramaticLoaderIplementation'
+    duration: 2500
+    finishAnimationDuration: 2500
+    hideElementsOnHalf:      '.hide-on-half'
+    showElementsOnHalf:      '.show-on-half'
+    bounceOutOnHalf:         '.bounce-out-on-half'
+    bounceDownOnNext:        '.bounce-down-on-enter'
 }
 ```
+
+### Changelog
+##### 1.1.1
+  * re publish
+
+##### 1.1.0
+  * loader are now direct subclasses of `AbstractFormsliderPlugin`
+  * rename `DramaticLoaderIplementation` -> `DramaticLoader` follow formslider 1.1 naming style
 
 
 ### Resources

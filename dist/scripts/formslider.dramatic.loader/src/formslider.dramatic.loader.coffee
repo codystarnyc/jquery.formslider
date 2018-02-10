@@ -1,5 +1,5 @@
 
-class @DramaticLoaderIplementation extends AbstractFormsliderLoader
+class @DramaticLoader extends AbstractFormsliderLoader
   @config =
     duration: 2500
     finishAnimationDuration: 2500
@@ -9,9 +9,9 @@ class @DramaticLoaderIplementation extends AbstractFormsliderLoader
     bounceDownOnNext:        '.bounce-down-on-enter'
 
   doAnimation: =>
-    @plugin.on('leaving.next', @doAnimationOnNextSlide)
+    @on('leaving.next', @doAnimationOnNextSlide)
 
-    @plugin.logger.debug "doAnimation(#{@config.finishAnimationDuration})"
+    @logger.debug "doAnimation(#{@config.finishAnimationDuration})"
 
     $elementsToHide      = $(@config.hideElementsOnHalf, @slide)
     $elementsToShow      = $(@config.showElementsOnHalf, @slide)

@@ -3,47 +3,48 @@
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
 
-  this.HistoryJsPlugin = (function(superClass) {
-    extend(HistoryJsPlugin, superClass);
+  this.HistoryJsController = (function(superClass) {
+    extend(HistoryJsController, superClass);
 
-    function HistoryJsPlugin() {
+    function HistoryJsController() {
       this.handleHistoryChange = bind(this.handleHistoryChange, this);
       this.pushCurrentHistoryState = bind(this.pushCurrentHistoryState, this);
       this.onAfter = bind(this.onAfter, this);
       this.init = bind(this.init, this);
-      return HistoryJsPlugin.__super__.constructor.apply(this, arguments);
+      return HistoryJsController.__super__.constructor.apply(this, arguments);
     }
 
-    HistoryJsPlugin.config = {
+    HistoryJsController.config = {
       updateUrl: false,
       resetStatesOnLoad: true
     };
 
-    HistoryJsPlugin.prototype.init = function() {
+    HistoryJsController.prototype.init = function() {
       this.on('after', this.onAfter);
       this.time = new Date().getTime();
       this.pushCurrentHistoryState();
       return History.Adapter.bind(window, 'statechange', this.handleHistoryChange);
     };
 
-    HistoryJsPlugin.prototype.onAfter = function() {
+    HistoryJsController.prototype.onAfter = function() {
       return this.pushCurrentHistoryState();
     };
 
-    HistoryJsPlugin.prototype.pushCurrentHistoryState = function() {
-      var hash;
+    HistoryJsController.prototype.pushCurrentHistoryState = function() {
+      var hash, index;
+      index = this.index();
       hash = null;
       if (this.config.updateUrl) {
-        hash = "?slide=" + (this.formslider.index());
+        hash = "?slide=" + index;
       }
-      this.logger.debug('pushCurrentHistoryState', "index:" + (this.formslider.index()));
+      this.logger.debug('pushCurrentHistoryState', "index:" + index);
       return History.pushState({
-        index: this.formslider.index(),
+        index: index,
         time: this.time
       }, null, hash);
     };
 
-    HistoryJsPlugin.prototype.handleHistoryChange = function(event) {
+    HistoryJsController.prototype.handleHistoryChange = function(event) {
       var ref, state;
       state = History.getState();
       if (!((state != null ? (ref = state.data) != null ? ref.index : void 0 : void 0) > -1)) {
@@ -58,7 +59,7 @@
       return this.formslider.goto(state.data.index);
     };
 
-    return HistoryJsPlugin;
+    return HistoryJsController;
 
   })(AbstractFormsliderPlugin);
 

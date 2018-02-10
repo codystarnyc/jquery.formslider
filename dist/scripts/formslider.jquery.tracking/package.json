@@ -1,6 +1,6 @@
 {
   "name": "formslider.jquery.tracking",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "This plugin adds animate.css capabilities to jquery.fromslider.",
   "main": "dist/formslider.jquery.tracking.js",
   "repository": {

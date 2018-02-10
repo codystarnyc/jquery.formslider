@@ -1,4 +1,8 @@
 
+# TODO think about implementing drivers as plugins
+#      introduce events for "driver.goto", "driver.reorder" etc.
+#      you can have multiple driver -> make sure the index is synchron
+
 class @DriverFlexslider
   @config =
     selector:       '.formslider > .slide'
@@ -15,7 +19,7 @@ class @DriverFlexslider
   constructor: (@container, @config, @onBefore, @onAfter, @onReady) ->
     @config = ObjectExtender.extend({}, DriverFlexslider.config, @config)
     @config.after             = @_internOnAfter
-    @config.conditionalBefore = @onBefore
+    @config.conditionalBefore = @_internOnBefore
     @config.start             = @onReady
 
     @slides                   = $(@config.selector, @container)
@@ -23,33 +27,25 @@ class @DriverFlexslider
     @container.flexslider(@config)
     @instance = @container.data('flexslider')
 
-  next: =>
-    @container.flexslider("next")
-
-  prev: =>
-    @container.flexslider("prev")
-
   goto: (indexFromZero) =>
-    @container.flexslider(indexFromZero, true)
-
-  get: (indexFromZero) =>
-    indexFromZero = @index() if indexFromZero == undefined
-    @slides.get(indexFromZero)
+    @container.flexslider(indexFromZero, true, true)
+    #@instance.flexAnimate(indexFromZero, true)
 
   index: =>
     @instance.currentSlide
 
+  _internOnBefore: (currentIndex, direction, nextIndex) =>
+    result = @onBefore(currentIndex, direction, nextIndex)
+    return result if result == false
+
+    # fix: onAfter callback gets triggert to early when using css transitions
+    @start = +new Date() if @config.useCSS
+
   _internOnAfter: (slider) =>
-    # will be triggered on window resize after first slide
+    # fix: flexslider falsy triggers onAfter on initialization
     return if slider.lastSlide == slider.currentSlide
 
-    @onAfter(slider)
+    return @onAfter() unless @config.useCSS
 
-  removeSlide: (slide) =>
-    @instance.removeSlide(slide)
-
-  addSlide: (slide, position) =>
-    @instance.addSlide(slide, position)
-
-  moveSlide: (slide, position) =>
-    @instance.moveSlide(slide, position)
+    # fix: onAfter callback gets triggert to early when using css transitions
+    setTimeout(@onAfter, @config.animationSpeed - ((+new Date()) - @start))

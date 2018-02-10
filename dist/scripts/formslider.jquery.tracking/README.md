@@ -24,7 +24,7 @@ formslider = $('.formslider-wrapper').formslider(
 );
 
 formslider.plugins.load({
-  class: 'JqueryTrackingPlugin',
+  class: 'JqueryTracking',
   config: {
     initialize: true ,                  // initialize $.tracking(config) or not
     eventCategory: 'formslider',        // default category
@@ -33,11 +33,27 @@ formslider.plugins.load({
       {
         class: 'JqueryTrackingGTagmanagerAdapter'  
       }
-    ]
+    ],
+
+    trackFormSubmission: true,
+    conversionErrorEvantName: 'conversion-error'
   }
   })
 ```
 
+The Plugin will listen on 'track'-Events which will be triggerd from the plugins `TrackSessionInformationPlugin` and `TrackUserInteractionPlugin` (see [PLUGINS.md](https://github.com/formslider/jquery.formslider/blob/master/docs/PLUGINS.md#tracksessioninformationplugin)).
+
+You can utilize this by simple doing:
+```js
+$('.my-formslider').formslider().events.trigger('track', name, value [, category=config.eventCategory]);
+```
+
+The plugin looks also for the plugin `FormSubmissionPlugin` and triggers conversion error or calls the `$.tracking.conversion()` method on success.
+
+### Changelog
+##### 1.1.0
+  * rename `JqueryTrackingPlugin` -> `JqueryTracking` follow formslider 1.1 naming style
+  * rename `listenOnFormSubmissionPlugin` -> `trackFormSubmission`
 
 ### Resources
   * https://github.com/formslider/jquery.formslider

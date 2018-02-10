@@ -16,7 +16,9 @@
     $.debug(1)
 
     window.formslider = $('.formslider-wrapper').formslider(
-      version: 1
+      version: 1.1
+
+      silenceAfterTransition: 100
 
       driver:
         class:    'DriverFlexslider'
@@ -30,44 +32,46 @@
         answerSelectedClass: 'selected'
 
       plugins: [
-        # { class: 'NextSlideResolverPlugin' }
-        { class: 'AddSlideClassesPlugin'          }
-        { class: 'JqueryAnimatePlugin'            }
-        { class: 'JqueryValidatePlugin'           }
-        { class: 'ArrowNavigationPlugin'          }
-        { class: 'SlideVisibilityPlugin'          }
-        { class: 'AnswerClickPlugin'              }
-        { class: 'InputFocusPlugin'               }
-        { class: 'HistoryJsPlugin'                }
-        { class: 'NormalizeInputAttributesPlugin' }
-        { class: 'FormSubmissionPlugin'           }
-        { class: 'InputSyncPlugin'                }
-        { class: 'NextOnKeyPlugin'                }
-        { class: 'TabIndexSetterPlugin'           }
-        { class: 'NextOnClickPlugin'              }
+        # prev/next controller plugin
+        { class: 'BrowserHistoryController' }
+        { class: 'OrderByIdController'      }
+        { class: 'NativeOrderController'    }
+
+        #view
+        { class: 'JqueryAnimate'            }
+
+        { class: 'SlideVisibility'          }
+        { class: 'LazyLoad'                 }
+        { class: 'EqualHeight'              }
+        { class: 'LoadingState'             }
         {
-          class: 'LoadingStatePlugin'
+          class: 'ScrollUp'
           config:
-            selector: '.progressbar-wrapper, .formslider-wrapper'
+              scrollUpOffset: 40
         }
-        { class: 'ProgressBarPlugin'             }
+
+        # progressbar
+        { class: 'ProgressBarPercent'       }
+
+        # form
+        { class: 'AnswerMemory'             }
+        { class: 'AnswerClick'              }
+        { class: 'JqueryValidate'           }
+        { class: 'TabIndexSetter'           }
+        { class: 'InputSync'                }
+        { class: 'InputNormalizer'          }
+        { class: 'InputFocus'               }
+        { class: 'FormSubmission'           }
+
+        # navigation
+        { class: 'NavigateOnClick'          }
+        { class: 'NavigateOnKey'            }
+
+        # tracking
+        { class: 'TrackUserInteraction'     }
+        { class: 'TrackSessionInformation'  }
         {
-          class: 'LoaderSlidePlugin'
-          config:
-            loaderClass: 'DramaticLoaderIplementation'
-            duration: 600
-        }
-        { class: 'EqualHeightPlugin'             }
-        {
-          class: 'ScrollUpPlugin'
-          config:
-            scrollUpOffset: 40
-        }
-        { class: 'LazyLoadPlugin'                }
-        { class: 'TrackSessionInformationPlugin' }
-        { class: 'TrackUserInteractionPlugin'    }
-        {
-          class: 'JqueryTrackingPlugin'
+          class: 'JqueryTracking'
           config:
             initialize: true
             cookiePath: 'formslider.github.io'
@@ -77,8 +81,18 @@
               }
             ]
         }
+
+        # loader
         {
-          class: 'DirectionPolicyByRolePlugin'
+          class: 'DramaticLoader'
+          config:
+            duration: 600
+        }
+
+        # generic
+        { class: 'AddSlideClasses'          }
+        {
+          class: 'DirectionPolicyByRole'
           config:
             zipcode:
               commingFrom: ['question']

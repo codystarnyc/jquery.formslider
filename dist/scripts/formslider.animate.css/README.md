@@ -45,6 +45,11 @@ formslider.plugins.load({
   })
 ```
 
+### Changelog
+##### 1.1.0
+  * rename `JqueryAnimatePlugin` -> `JqueryAnimate` follow formslider 1.1 naming style
+
+
 ### Resources
   * https://github.com/formslider/jquery.formslider
   * https://github.com/formslider/formslider.animate.css

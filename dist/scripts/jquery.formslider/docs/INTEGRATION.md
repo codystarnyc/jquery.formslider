@@ -84,67 +84,106 @@ $('.formslider-wrapper').formslider(
   version: 1
 
   driver:
-    class:          'DriverFlexslider'
-    selector:       '.formslider > .slide'
+    class:    'DriverFlexslider'
+    selector: '.formslider > .slide'
     animationSpeed: 600
-    animation:      'slide'
     smoothHeight:   true
+    touch:          true
 
   pluginsGlobalConfig:
-    transitionSpeed: 600
     answersSelector: '.answers'
     answerSelector:  '.answer'
     answerSelectedClass: 'selected'
 
   plugins: [
-    { class: 'AddSlideClassesPlugin'          }
-    { class: 'JqueryAnimatePlugin'            }
-    { class: 'JqueryValidatePlugin'           }
-    { class: 'ArrowNavigationPlugin'          }
-    { class: 'AnswerClickPlugin'              }
-    { class: 'InputFocusPlugin'               }
-    { class: 'BrowserHistoryPlugin'           }
-    { class: 'NormalizeInputAttributesPlugin' }
+    # prev/next controller plugin
+    { class: 'BrowserHistoryController'   }
+    { class: 'OrderByIdController'   }
+    { class: 'NativeOrderController' }
+
+    #view
+    { class: 'SlideVisibility'          }
+    { class: 'LazyLoad'                 }
+    { class: 'EqualHeight'              }
+    { class: 'ScrollUp'                 }
+    { class: 'LoadingState'             }
+
+    # progressbar
     {
-      class: 'FormSubmissionPlugin'           
+      class: 'ProgressBarPercent'
       config:
-        loadHiddenFrameOnSuccess: '/converted'
-        submitter:
-          class:    'FormSubmitterCollect'
-          endpoint: '/submit'
-          method:   'POST'
-    }
-    { class: 'InputSyncPlugin'                }
-    { class: 'NextOnKeyPlugin'                }
-    { class: 'TabIndexSetterPlugin'           }
-    { class: 'NextOnClickPlugin'              }
-    {
-      class: 'LoadingStatePlugin'
-      config:
-        selector: '.progressbar-wrapper, .formslider-wrapper'
+        selectorWrapper: '.progressbar-wrapper.percent'
+        initialProgress: 23
     }
     {
-      class: 'ProgressBarPlugin'             
+      class: 'ProgressBarSteps'
       config:
-        initialProgress: 15
+        selectorWrapper: '.progressbar-wrapper.steps'
+    }
+
+    # form
+    { class: 'AnswerMemory'             }
+    { class: 'AnswerClick'              }
+    { class: 'JqueryValidate'           }
+    { class: 'TabIndexSetter'           }
+    { class: 'InputSync'                }
+    { class: 'InputNormalizer'          }
+    { class: 'InputFocus'               }
+    { class: 'FormSubmission'           }
+
+    # navigation
+    { class: 'NavigateOnClick'          }
+    { class: 'NavigateOnKey'            }
+
+    # tracking
+    { class: 'TrackUserInteraction'     }
+    {
+      class: 'TrackSessionInformation'
+      config:
+        onReady: (plugin) ->
+          plugin.inform('custom-information-var', 'custom-information-val')
+    }
+
+    # loader
+    {
+      class: 'SimpleLoader'
+      config:
+        loaderClass: 'SimpleLoaderImplementation'
+        duration: 1000
+    }
+
+    # generic
+    { class: 'AddSlideClasses'          }
+    {
+      class: 'DoOnEvent'
+      config:
+        'after.question': (plugin) ->
+          plugin.track('any time after question')
     }
     {
-      class: 'LoaderSlidePlugin'       
+      class: 'DoOneTimeOnEvent'
       config:
-        duration: 2500   
+        'after.question': (plugin) ->
+          plugin.track('first time after question')
     }
-    { class: 'ContactSlidePlugin'            }
-    { class: 'ConfirmationSlidePlugin'       }
-    { class: 'EqualHeightPlugin'             }
     {
-      class: 'ScrollUpPlugin'
+      class: 'DirectionPolicyByRole'
       config:
-        selector: '.headline'
-        scrollUpOffset: 40
+        zipcode:
+          commingFrom: ['question']
+          goingTo: ['loader', 'question']
+
+        loader:
+          commingFrom: ['zipcode']
+          goingTo: ['contact']
+
+        contact:
+          commingFrom: ['loader']
+          goingTo: ['confirmation']
+
+        confirmation:
+          goingTo: ['none']
     }
-    { class: 'LazyLoadPlugin'                }
-    { class: 'TrackSessionInformationPlugin' }
-    { class: 'TrackUserInteractionPlugin'    }
   ]
 )
 

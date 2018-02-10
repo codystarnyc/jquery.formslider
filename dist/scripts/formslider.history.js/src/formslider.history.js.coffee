@@ -1,4 +1,4 @@
-class @HistoryJsPlugin extends AbstractFormsliderPlugin
+class @HistoryJsController extends AbstractFormsliderPlugin
   @config =
     updateUrl: false
     resetStatesOnLoad: true
@@ -9,20 +9,20 @@ class @HistoryJsPlugin extends AbstractFormsliderPlugin
     @time = new Date().getTime()
 
     @pushCurrentHistoryState()
-
     History.Adapter.bind(window, 'statechange', @handleHistoryChange)
 
   onAfter: =>
     @pushCurrentHistoryState()
 
   pushCurrentHistoryState: =>
-    hash = null
-    hash = "?slide=#{@formslider.index()}" if @config.updateUrl
+    index = @index()
+    hash  = null
+    hash  = "?slide=#{index}" if @config.updateUrl
 
-    @logger.debug('pushCurrentHistoryState', "index:#{@formslider.index()}")
+    @logger.debug('pushCurrentHistoryState', "index:#{index}")
 
     History.pushState(
-      { index: @formslider.index(), time: @time },
+      { index: index, time: @time },
       null,
       hash
     )
@@ -36,6 +36,5 @@ class @HistoryJsPlugin extends AbstractFormsliderPlugin
       return unless state.data.time == @time
 
     @logger.debug('handleHistoryChange', state.data.index)
-
 
     @formslider.goto(state.data.index)

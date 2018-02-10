@@ -1,5 +1,5 @@
 
-class @JqueryAnimatePlugin extends AbstractFormsliderPlugin
+class @JqueryAnimate extends AbstractFormsliderPlugin
   @config =
     duration: 800
     selector: '.answer'
@@ -11,7 +11,7 @@ class @JqueryAnimatePlugin extends AbstractFormsliderPlugin
       outEffect: 'swing'
 
   init: =>
-    @on('before', @doAnimation)
+    @on('before.question', @doAnimation)
 
   doAnimation: (event, currentSlide, direction, nextSlide) =>
     inEffect  = @config[direction].inEffect

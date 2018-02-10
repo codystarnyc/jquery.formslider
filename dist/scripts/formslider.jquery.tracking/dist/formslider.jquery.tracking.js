@@ -3,18 +3,21 @@
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
 
-  this.JqueryTrackingPlugin = (function(superClass) {
-    extend(JqueryTrackingPlugin, superClass);
+  this.JqueryTracking = (function(superClass) {
+    extend(JqueryTracking, superClass);
 
-    function JqueryTrackingPlugin() {
+    function JqueryTracking() {
       this.onTrack = bind(this.onTrack, this);
+      this.onTrackConversionError = bind(this.onTrackConversionError, this);
       this.init = bind(this.init, this);
-      return JqueryTrackingPlugin.__super__.constructor.apply(this, arguments);
+      return JqueryTracking.__super__.constructor.apply(this, arguments);
     }
 
-    JqueryTrackingPlugin.config = {
+    JqueryTracking.config = {
       initialize: true,
       eventCategory: 'formslider',
+      trackFormSubmission: true,
+      conversionErrorEvantName: 'conversion-error',
       sessionLifeTimeDays: 1,
       cookiePrefix: 'tracking_',
       cookiePath: '.example.com',
@@ -27,24 +30,38 @@
       adapter: []
     };
 
-    JqueryTrackingPlugin.prototype.init = function() {
+    JqueryTracking.prototype.init = function() {
+      var submissionPlugin;
       if (this.config.initialize) {
         $.tracking(this.config);
       }
       this.on('track', this.onTrack);
-      return this.on('form-submitted', function() {
-        return $.tracking.conversion();
-      });
+      if (!this.config.trackFormSubmission) {
+        return;
+      }
+      submissionPlugin = this.formslider.plugins.get('FormSubmissionPlugin');
+      if (submissionPlugin) {
+        this.on(submissionPlugin.config.successEventName, this.onTrackConversion);
+        return this.on(submissionPlugin.config.errorEventName, this.onTrackConversionError);
+      }
     };
 
-    JqueryTrackingPlugin.prototype.onTrack = function(event, source, value, category) {
+    JqueryTracking.prototype.onTrackConversion = function() {
+      return $.tracking.conversion();
+    };
+
+    JqueryTracking.prototype.onTrackConversionError = function() {
+      return $.tracking.event(this.config.eventCategory, this.config.conversionErrorEvantName);
+    };
+
+    JqueryTracking.prototype.onTrack = function(event, source, value, category) {
       if (category == null) {
         category = null;
       }
       return $.tracking.event(category || this.config.eventCategory, source, value, '', '');
     };
 
-    return JqueryTrackingPlugin;
+    return JqueryTracking;
 
   })(AbstractFormsliderPlugin);
 

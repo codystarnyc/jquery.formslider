@@ -1,4 +1,4 @@
-class @AnswerClickPlugin extends AbstractFormsliderPlugin
+class @AnswerClick extends AbstractFormsliderPlugin
   init: =>
     $answers = $(@config.answerSelector, @container)
     $answers.on('mouseup', @onAnswerClicked)
@@ -15,5 +15,5 @@ class @AnswerClickPlugin extends AbstractFormsliderPlugin
     @trigger('question-answered',
       $answer,
       $('input', $answer).val(),
-      @formslider.index()
+      @index()
     )

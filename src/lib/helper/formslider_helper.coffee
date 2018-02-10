@@ -26,7 +26,7 @@ module.exports =
   render_question_answer: (answer, slide) ->
     answer.inputName = "slides[#{@config.index}][answer]"
     answer.inputId   = "question_#{@config.index}_answer_#{}"
-    answer.next = answer.next || slide.next || 'native'
+    answer.next = answer.next || slide.next
 
     @render_formslider_element('answer', answer)
 

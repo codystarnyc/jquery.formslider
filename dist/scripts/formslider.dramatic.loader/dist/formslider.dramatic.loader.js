@@ -3,17 +3,17 @@
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
 
-  this.DramaticLoaderIplementation = (function(superClass) {
-    extend(DramaticLoaderIplementation, superClass);
+  this.DramaticLoader = (function(superClass) {
+    extend(DramaticLoader, superClass);
 
-    function DramaticLoaderIplementation() {
+    function DramaticLoader() {
       this.doAnimationOnNextSlide = bind(this.doAnimationOnNextSlide, this);
       this.finishAnimation = bind(this.finishAnimation, this);
       this.doAnimation = bind(this.doAnimation, this);
-      return DramaticLoaderIplementation.__super__.constructor.apply(this, arguments);
+      return DramaticLoader.__super__.constructor.apply(this, arguments);
     }
 
-    DramaticLoaderIplementation.config = {
+    DramaticLoader.config = {
       duration: 2500,
       finishAnimationDuration: 2500,
       hideElementsOnHalf: '.hide-on-half',
@@ -22,10 +22,10 @@
       bounceDownOnNext: '.bounce-down-on-enter'
     };
 
-    DramaticLoaderIplementation.prototype.doAnimation = function() {
+    DramaticLoader.prototype.doAnimation = function() {
       var $elementsToBounceOut, $elementsToHide, $elementsToShow;
-      this.plugin.on('leaving.next', this.doAnimationOnNextSlide);
-      this.plugin.logger.debug("doAnimation(" + this.config.finishAnimationDuration + ")");
+      this.on('leaving.next', this.doAnimationOnNextSlide);
+      this.logger.debug("doAnimation(" + this.config.finishAnimationDuration + ")");
       $elementsToHide = $(this.config.hideElementsOnHalf, this.slide);
       $elementsToShow = $(this.config.showElementsOnHalf, this.slide);
       $elementsToBounceOut = $(this.config.bounceOutOnHalf, this.slide);
@@ -41,11 +41,11 @@
       return setTimeout(this.finishAnimation, this.config.duration);
     };
 
-    DramaticLoaderIplementation.prototype.finishAnimation = function() {
+    DramaticLoader.prototype.finishAnimation = function() {
       return setTimeout(this.stop, this.config.finishAnimationDuration);
     };
 
-    DramaticLoaderIplementation.prototype.doAnimationOnNextSlide = function(event, current, direction, next) {
+    DramaticLoader.prototype.doAnimationOnNextSlide = function(event, current, direction, next) {
       var $elementsToBounceDown;
       $elementsToBounceDown = $(this.config.bounceDownOnNext, next);
       return $elementsToBounceDown.css({
@@ -55,7 +55,7 @@
       }, 600);
     };
 
-    return DramaticLoaderIplementation;
+    return DramaticLoader;
 
   })(AbstractFormsliderLoader);
 
