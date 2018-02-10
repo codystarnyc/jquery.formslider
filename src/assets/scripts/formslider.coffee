@@ -33,7 +33,7 @@
 
       plugins: [
         # prev/next controller plugin
-        { class: 'BrowserHistoryController' }
+        { class: 'HistoryJsController'      }
         { class: 'OrderByIdController'      }
         { class: 'NativeOrderController'    }
 
