@@ -44,12 +44,8 @@ Available commands:
 ```
 
 ### Ressources
-> "[jquery.formslider](https://github.com/formslider/jquery.formslider/)"
-
-> "[Easy-Website-Generator](https://github.com/easy-website-generator/)"
-
-> "[Creative-Workflow](http://www.creative-workflow.berlin/company.html)"
-
-> "[Easy-Terminal-App](https://github.com/creative-workflow/easy-terminal-app)"
-
-> "[www.tomhanoldt.info](http://www.tomhanoldt.info)"
+  * [jquery.formslider](https://github.com/formslider/jquery.formslider/)
+  * [Easy-Website-Generator](https://github.com/easy-website-generator/)
+  * [Easy-Terminal-App](https://github.com/creative-workflow/easy-terminal-app)
+  * [Creative-Workflow](https://github.com/creative-workflow)
+  * [www.tomhanoldt.info](http://www.tomhanoldt.info)
