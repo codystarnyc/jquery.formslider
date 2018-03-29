@@ -8,6 +8,7 @@ validation:
   data-msg-minlength: "to short"
   data-msg-maxlength: "to long"
   data-msg-email: "invalid email"
+  data-msg-tel: "invalid phone number"
 
 slides:
 # slide id: id || role
@@ -125,7 +126,7 @@ slides:
   image: "loader-sun.gif"
   finish_text: "Yay, it worked!"
   finish_image: "green-tick-big.png"
-  
+
 -
   role: contact
   headline: "Get in <b>contact</b>!"
@@ -175,6 +176,17 @@ slides:
         data-without-spinner: 1
         required: required
         autocompletetype: postal-code
+
+    -
+      class: tel
+      label: "Phone:"
+      inputs:
+      -
+        type: tel
+        name: contact[tel]
+        placeholder: "Phone"
+        required: required
+        autocompletetype: tel-local
 
     -
       class: email
