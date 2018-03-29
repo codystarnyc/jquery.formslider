@@ -71,7 +71,7 @@ coffee
 ```
 
 Have a look at [AbstractFormsliderPlugin::configWithDataFromElement](EXTENDING.md#configwithdatafromelement)
-and  [ProgressBarPlugin](https://github.com/formslider/jquery.formslider/blob/master/src/coffee/plugins/progress/progress_bar.coffee#L27) for an example implementation.
+and  [ProgressBarPlugin](https://github.com/formslider/jquery.formslider/blob/master/src/coffee/plugins/progressbar/absract.coffee#L35) for an example implementation.
 
 
 ## Available plugins
@@ -98,13 +98,13 @@ config: {
 
 The Plugin triggers the following events:
 ```coffee
-@trigger('question-answered', $answer, value, slideIndex)
+@trigger('question-answered', questionId, answerId, asnwerValue, slideIndex)
 ```
 
 ##### *AnswerMemory*
 Memorizes answers for later usage.
 
-Access by `@formslider.plugins.get('AnswerMemory').memoryBySlideId`.
+Access by `@formslider.plugins.get('AnswerMemory').memoryByQuestionId`.
 
 
 ##### *FormSubmission*
@@ -124,13 +124,8 @@ config: {
     class: 'FormSubmitterCollect',
     endpoint: '#',
     method:   'POST'
+    visitedSlideSelector: '.slide-visited'
   }
-
-  submitter: {
-    class: 'FormSubmitterCollect',
-    endpoint: '#',
-    method:   'POST'
-  }  
 
   // submitter: {
   //   class: 'FormSubmitterSubmit'
@@ -151,7 +146,6 @@ Default configuration:
 ```js
 config: {
   selector: 'input:visible',
-  waitBeforeFocus: 50           // have to wait a little for flexslider reasons
   disableOnMobile: true
 }
 ```
@@ -162,8 +156,10 @@ Does some normalization on inputs.
 Adds
   * `required="required"` if `required` attribute isset
   * `aria-required` if `required` attribute isset
-  * `x-inputmode` id `inputmode` isset
-  * `x-autocompletetype` id `autocompletetype` isset
+  * adds `inputmode="..."` for inptuts of type number, tel, email, url
+  * `x-inputmode` if `inputmode` isset
+  * `x-autocompletetype` if `autocompletetype` or `autocomplete` isset
+  * `autocomplete` and `autocompletetype` if one of them isset
 
 Default configuration:
 ```js
@@ -185,19 +181,27 @@ config: {
 
 
 ##### *JqueryValidate*
-Validates inputs before leaving a slide. Uses [jquery-validation](https://github.com/jquery-validation/jquery-validation).
+Validates inputs on current slide before leaving this slide. Will stop leaving when not all inputs are valid. Uses [jquery-validation](https://github.com/jquery-validation/jquery-validation).
+
 Default configuration:
 ```js
 config: {
-  selector: 'input:visible'
-  validateOnEvents: ['leaving.next']
-  forceMaxLengthJs: "javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-  messages:
-    required:  'Required'
-    maxlength: 'To long'
-    minlength: 'To short'
-    email:     'Enter valid E-Mail'
-
+  selector: 'input:visible:not([readonly])',
+  validateOnEvents: ['leaving.next'],
+  forceMaxLengthJs: "javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);",
+  pattern:{
+    numeric: '\\d*',
+    tel: '^[0-9/\\-\\+\\s\\(\\)]*$'
+  },
+  messages:{
+    required:  'Required',
+    maxlength: 'To long',
+    minlength: 'To short',
+    tel:       'Enter valid phone number',
+    email:     'Enter valid email',
+    number:    'Enter valid number',
+    pattern:   'Invalid input'
+  }
 }
 ```
 
@@ -208,18 +212,32 @@ The plugin automatically detects the following attributes:
   * maxlength
   * type="email"
   * type="number"
+  * type="tel"
+  * pattern="..."
   * data-force-max-length="1"   # will truncate input if longer
   * data-without-spinner"1"     # will prevent spinner input on number types
 ```
 
 The Plugin triggers the following events:
 ```coffee
-@trigger("validation.prepared")
 @trigger("validation.valid.#{currentRole}", currentSlide)
 @trigger("validation.invalid.#{currentRole}", currentSlide)
+$(window).trigger('resize') # if one ore more inputs are invalid -> height could be adjusted
 ```
 
-_Note:_ This plugin will log an error if no surrounding form tag was found.
+_Note:_ This plugin will throw an error if no surrounding form tag is present.
+
+_Note:_ `data-without-spinner"1"` needs some additional styling:
+```sass
+input.without-spinner
+  -moz-appearance: textfield
+
+input.without-spinner::-webkit-outer-spin-button,
+input.without-spinner::-webkit-inner-spin-button
+  -webkit-appearance: none
+  margin: 0
+```
+
 
 
 ###  generic plugins
@@ -231,11 +249,13 @@ Adds:
   * class `slide-role-[slideRole]` based on slide attribute `data-role=slideRole`
   * class `slide-number-[index]` based on slide order  
   * attribute `data-slide-number=[index]`
+  * adds `slide-visited` class to slide after transition
 
 Default configuration:
 ```js
 config: {
-  answerSelector:  '.answer' // from global config
+  answerSelector:  '.answer', // from global config
+  slideVisitedClass: 'slide-visited'
 }
 ```
 
@@ -401,6 +421,7 @@ Default configuration:
   animationSpeed: 300,
   initialProgress: null, // initial bar width in percent
   animateHeight: true,
+  dataKeyForMaxLength: 'progressbar-longest-path', // set count max based on data attribute
   dontCountOnRoles: [
     'loader',
     'contact',
@@ -412,6 +433,9 @@ Default configuration:
     'contact',
     'confirmation'
   ]
+  // if you need to manually adjust max length when using OrderByIdController
+  // dataKeyForMaxLength: 'progressbar-longest-path'
+
 }
 ```
 
@@ -443,6 +467,14 @@ config: {
       plugin.inform('channel', $.tracking.channel());
       plugin.inform('campaign', $.tracking.campaign());
     }
+  },
+  buildHiddenInput: function(name, value){
+    $('<input>', {
+      type: 'hidden',
+      name: "info[#{name}]",
+      class: 'info',
+      value: value
+    });
   }
 }
 ```
@@ -520,11 +552,4 @@ config: {
 
 
 ##### *SlideVisibility*
-Hides slides before and after current until transition is allowed.
-Hides slides before and after current until transition is allowed.
-Default configuration:
-```js
-config: {
-  hideAnimationDuration: 300
-}
-```
+Hides slides before and after current slide until transition is allowed.

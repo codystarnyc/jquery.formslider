@@ -19,8 +19,6 @@ class @HistoryJsController extends AbstractFormsliderPlugin
     hash  = null
     hash  = "?slide=#{index}" if @config.updateUrl
 
-    @logger.debug('pushCurrentHistoryState', "index:#{index}")
-
     History.pushState(
       { index: index, time: @time },
       null,
@@ -28,6 +26,8 @@ class @HistoryJsController extends AbstractFormsliderPlugin
     )
 
   handleHistoryChange: (event) =>
+    return if @formslider.locking.locked
+
     state = History.getState()
 
     return unless state?.data?.index > -1

@@ -17,12 +17,23 @@ class @AbstractFormsliderProgressBar extends AbstractFormsliderPlugin
       'contact'
       'confirmation'
     ]
+    # if you need to manually adjust max length when using OrderByIdController
+    # dataKeyForMaxLength: 'progressbar-longest-path'
 
   init: =>
+    @on('after.next', =>
+      @currentIndex++
+    )
+    @on('after.prev', =>
+      @currentIndex--
+    )
     @on('after', @doUpdate)
+    @on('ready', =>
+      @setCountMax()
+      @_set(@currentIndex)
+    )
 
     @visible  = true
-    @countMax = @slidesThatCount()
     @wrapper  = $(@config.selectorWrapper)
     @config   = @configWithDataFrom(@wrapper)
 
@@ -30,13 +41,26 @@ class @AbstractFormsliderProgressBar extends AbstractFormsliderPlugin
     @bar          = $(@config.selectorProgress, @wrapper)
     @bar.css('transition-duration', (@config.animationSpeed / 1000) + 's')
 
-    @_set(0)
+    @currentIndex = 0
 
   set: (indexFromZero, percent) ->
     # this is the method you have to implement
 
-  # TODO calculate longest path based on controller plugins
-  #      do it on init and after each transition
+
+  setCountMax: (slide = null) =>
+    unless @config?.dataKeyForMaxLength
+      @countMax = @slidesThatCount()
+      return
+
+    # set count max from slide data attribute if set
+    slide = @slideByIndex() if slide == null
+    possibleCountMax = $(slide).data(@config.dataKeyForMaxLength)
+
+    return unless possibleCountMax
+
+    possibleCountMax = parseInt(possibleCountMax, 10)
+    @countMax = possibleCountMax
+
   slidesThatCount: =>
     substract = 0
     for role in @config.dontCountOnRoles
@@ -45,16 +69,16 @@ class @AbstractFormsliderProgressBar extends AbstractFormsliderPlugin
     @slides.length - substract
 
   doUpdate: (_event, current, direction, prev) =>
-    index = @index()
+    @setCountMax(current)
     unless @shouldBeVisible(current)
-      @_set(index)
+      @_set(@currentIndex)
       return @hide()
 
     @show()
-    @_set(index) # we are on first step initial
+    @_set(@currentIndex) # we are on first step initial
 
   _set: (indexFromZero) =>
-    indexFromZero = @countMax if indexFromZero > @countMax
+    indexFromZero = @countMax - 1 if indexFromZero > @countMax - 1
     indexFromZero = 0 if indexFromZero < 0
 
     percent = ((indexFromZero + 1) / @countMax) * 100

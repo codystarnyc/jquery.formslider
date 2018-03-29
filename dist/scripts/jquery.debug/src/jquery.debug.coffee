@@ -12,6 +12,7 @@ class root.JQueryDebug
       '127.0'
       '192.168'
       'localhost'
+      '0.0.0.0'
     ]
 
   constructor: (@options) ->
@@ -59,9 +60,9 @@ class root.JQueryDebug
     !@isDevelopment()
 
   _log: (type, args)=>
-    return if !@debugEnabled
+    return unless @debugEnabled
     try
-      @_console[type].apply @_console, args
+      @_console[type]?.apply(@_console, args)
     catch err
       # do nothing if we cannot log
 

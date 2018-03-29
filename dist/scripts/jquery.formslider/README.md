@@ -4,11 +4,11 @@
 
 This jquery.formslider integrates a modified [Flexslider](https://github.com/formslider/FlexSlider) with logical slide pages that can have features and behaviors provided by plugins.
 
-The main goal is to have different actions triggered depending on what type the actual slide page is. You can stop going forward when a formula is invalid for example.
+The main goal is to have different actions and policies triggered depending on what role the actual slide is. For example: You can stop going forward when a formula input is invalid.
 
-The Library is very small, performance optimized, full responsive and touch capable. You can easily write you own plugins and implement custom slide behavior.
+The jquery.formslider runs in production, is performance optimized, full responsive and touch capable. You can easily write you own plugins and implement custom slide behaviors.
 
-Have a look at the example implementation [formslider.github.io](https://formslider.github.io/).
+Check out the demo implementation: [formslider.github.io](https://formslider.github.io/).
 
 ## Installation
 ```bash
@@ -22,15 +22,17 @@ npm install jquery.formslider --save
 ## Integration
 Check out this guide: [INTEGRATION](docs/INTEGRATION.md).
 
-### Example use case
-A possible use case is as follows:
-  * you have a few **question slides** the user can answer and go forth and back
-  * there is a **zipcode slide** the user enters a valid zip code
-  * the **loader slide** makes a loading animation while navigation is blocked
-  * the **contact slide** collects contact information and submits them together with the answers if the input is valid
-  * the **confirmation slide** show information while no further navigation allowed
+Source code for a minmal setup without any styling: https://github.com/formslider/jquery.formslider.demo.
 
-This functionality is provided by plugins. You can develop your own flow as you like by extend or configure plugins.
+### Example use case
+This is a typical use case for marketer customers journey:
+  * you have a few **question slides** the user can answer and go forth and back
+  * there is a **zipcode slide** the user can enter a 4-5 digit zipcode
+  * the **loader slide** shows a loading animation while navigation is blocked
+  * the **contact slide** collects contact information and submits them together with the answers
+  * the **confirmation slide** shows error/success message and gives more deeplinks
+
+This functionality is provided by core or optional plugins. You can also develop your own logical flow by extend, interact  or configure these plugins.
 
 ### List of bundeled (core-)plugins
 ```bash

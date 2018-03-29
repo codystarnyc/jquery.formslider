@@ -51,6 +51,9 @@ $('.my-formslider').formslider().events.trigger('track', name, value [, category
 The plugin looks also for the plugin `FormSubmissionPlugin` and triggers conversion error or calls the `$.tracking.conversion()` method on success.
 
 ### Changelog
+##### 1.1.1
+  * update dependencies `jquery.tracking`
+
 ##### 1.1.0
   * rename `JqueryTrackingPlugin` -> `JqueryTracking` follow formslider 1.1 naming style
   * rename `listenOnFormSubmissionPlugin` -> `trackFormSubmission`

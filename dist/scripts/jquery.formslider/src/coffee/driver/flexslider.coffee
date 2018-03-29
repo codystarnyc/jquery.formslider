@@ -20,7 +20,7 @@ class @DriverFlexslider
     @config = ObjectExtender.extend({}, DriverFlexslider.config, @config)
     @config.after             = @_internOnAfter
     @config.conditionalBefore = @_internOnBefore
-    @config.start             = @onReady
+    @config.start             = @_internOnReady
 
     @slides                   = $(@config.selector, @container)
 
@@ -29,10 +29,24 @@ class @DriverFlexslider
 
   goto: (indexFromZero) =>
     @container.flexslider(indexFromZero, true, true)
-    #@instance.flexAnimate(indexFromZero, true)
+
+    # @instance.flexAnimate(indexFromZero, true)
+
+    # animationSpeed = @instance.vars.animationSpeed
+    # @instance.vars.animationSpeed = 0
+    # @instance.flexAnimate(indexFromZero)
+    # @instance.vars.animationSpeed = animationSpeed
 
   index: =>
     @instance.currentSlide
+
+  _internOnReady: (slider) =>
+    # fix: trigger resize on ready, so smooth height will not fail
+    setTimeout(
+      =>
+        $(window).trigger('resize')
+        @onReady()
+    , 10)
 
   _internOnBefore: (currentIndex, direction, nextIndex) =>
     result = @onBefore(currentIndex, direction, nextIndex)

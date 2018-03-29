@@ -16,7 +16,7 @@
     JqueryTracking.config = {
       initialize: true,
       eventCategory: 'formslider',
-      trackFormSubmission: true,
+      listenOnFormSubmissionPlugin: true,
       conversionErrorEvantName: 'conversion-error',
       sessionLifeTimeDays: 1,
       cookiePrefix: 'tracking_',
@@ -36,10 +36,10 @@
         $.tracking(this.config);
       }
       this.on('track', this.onTrack);
-      if (!this.config.trackFormSubmission) {
+      if (!this.config.listenOnFormSubmissionPlugin) {
         return;
       }
-      submissionPlugin = this.formslider.plugins.get('FormSubmissionPlugin');
+      submissionPlugin = this.formslider.plugins.get('FormSubmission');
       if (submissionPlugin) {
         this.on(submissionPlugin.config.successEventName, this.onTrackConversion);
         return this.on(submissionPlugin.config.errorEventName, this.onTrackConversionError);

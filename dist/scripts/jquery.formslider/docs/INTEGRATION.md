@@ -1,5 +1,7 @@
 # Integration
 
+A minimal demo can bechecked out here: https://github.com/formslider/jquery.formslider.demo.
+
 ## Load dependencies
 Insert the following dependencies into you html file:
 ```html
@@ -64,7 +66,7 @@ A Minimal Markup looks like this:
 _Note:_ The classes like `headline` etc. are fully customizable.
 
 ### Initialize the formslider minimal
-Insert the following code into you html file:
+Insert the following code into a html file and open in browser:
 ```js
 <script>
 (function($){
@@ -91,8 +93,9 @@ $('.formslider-wrapper').formslider(
     touch:          true
 
   pluginsGlobalConfig:
-    answersSelector: '.answers'
-    answerSelector:  '.answer'
+    questionSelector: '.question-input'
+    answersSelector:  '.answers'
+    answerSelector:   '.answer'
     answerSelectedClass: 'selected'
 
   plugins: [

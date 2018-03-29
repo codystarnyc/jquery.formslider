@@ -1,6 +1,6 @@
 {
   "name": "formslider.history.js",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "This plugin uses history.js for history manipulating and supports also older browsers and html4.",
   "main": "dist/formslider.history.js",
   "repository": {

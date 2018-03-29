@@ -1,6 +1,6 @@
 {
   "name": "jquery.animate.css",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "Combines animate.css via animate-sass and a jQuery plugin for easy integration.",
   "main": "",
   "scripts": {

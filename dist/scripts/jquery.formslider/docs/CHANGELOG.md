@@ -1,5 +1,58 @@
 # Changelog
 
+##### 1.1.10
+  * fix `JqueryValidate` transition prevention
+  * better integration tests for `JqueryValidate`
+
+##### 1.1.9
+  * add specs for plugin `JqueryValidate`
+  * better performance for `JqueryValidate`
+  * better error checking in `Logger`
+
+##### 1.1.8
+  * refactor `JqueryValidate`, real validation for number, email, tel or pattern based
+  * refactor `InputNormalizer`, adds `inputmode="..."` for inptuts of type number, tel, email, url
+  * add `@slide` to `AbstractFormsliderLoader`
+  * track google client id via `formslider.tracking` plugin
+  * add class `info` to hidden user information inputs
+  * add `buildHiddenInput` to config for `TrackSessionInformation`
+  * fix `FormSubmitterCollect` selects informational inputs now via class
+  * fix `InputSync` now handles radios/checkbox correctly
+  * add `syncGlobal` to `InputSync` so we can sync outside the the formslider
+
+##### 1.1.7
+  * fix trigger resize after `JqueryValidate.onValidate`
+  * fix `FormSubmission` null/false check for `loadHiddenFrameOnSuccess`
+  * `FormSubmitterAbstract` respects now static config for submitter implementation
+  * `AddSlideClasses` now adds a class to a slide that indicates that a slide was visited
+  * `FormSubmitterCollect` now selects inputs only from visited slides
+
+##### 1.1.6
+  * fix 100% check for `AbstractFormsliderProgressBar`
+
+##### 1.1.5
+  * fix resize issue with `DriverFlexslider`
+  * fix loading issue with `AbstractFormsliderProgressBar`
+
+##### 1.1.4
+  * dont set `dataKeyForMaxLength` per default for `AbstractFormsliderProgressBar`
+
+##### 1.1.3
+  * adjust `SlideVisibility` plugin for unordered jumps, enhance performance
+  * remove `waitBeforeFocus` option from `InputFocus` as it works as expected after fixing after trigger timer issue with 1.1.0
+  * return an event even when there is no listener (`EventManager`)
+  * `BrowserHostoryController` only react if slider is unlocked
+  * `AbstractFormsliderProgressBar` now respects the data attribute `dataKeyForMaxLength`
+  * enhance `InputNormalizer`
+  * `AnswerMemory` plugin now memorizes by question input id and answer input id
+  * `JqueryValidate` validtates now only writable inputs (not readonly)
+  * `AnswerClick` trigger now events in form of @trigger('question-answered', questionId, answerId, asnwerValue, slideIndex)
+  * `TrackUserInteraction` respects new `AnswerClick` event signature
+
+##### 1.1.2
+  * add link to minimal demo implementation
+  * fix empty first initialization with jquery plugin
+
 ##### 1.1.1
   * " `OrderByIdController`:reset prev-id after navigating back"
   * re introduce formlsider.index

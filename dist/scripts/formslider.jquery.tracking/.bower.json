@@ -1,6 +1,6 @@
 {
   "name": "formslider.jquery.tracking",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "homepage": "https://github.com/creative-workflow/formslider.jquery.tracking",
   "authors": [
     "Tom Hanoldt <monotom@gmail.com>"
@@ -28,13 +28,13 @@
     "jasmine-jquery": ">=2.1.0"
   },
   "dependencies": {
-    "jquery.tracking": "^1.0.6"
+    "jquery.tracking": "^1.0.8"
   },
-  "_release": "1.1.0",
+  "_release": "1.1.1",
   "_resolution": {
     "type": "version",
-    "tag": "1.1.0",
-    "commit": "e8b275dfa93c9faefbf6b602682d4882c82194c3"
+    "tag": "1.1.1",
+    "commit": "159c9952d945e6acb329acf71a01e7753aa6efb6"
   },
   "_source": "https://github.com/formslider/formslider.jquery.tracking.git",
   "_target": "*",

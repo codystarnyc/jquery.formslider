@@ -28,12 +28,13 @@
       this.onReady = onReady;
       this._internOnAfter = bind(this._internOnAfter, this);
       this._internOnBefore = bind(this._internOnBefore, this);
+      this._internOnReady = bind(this._internOnReady, this);
       this.index = bind(this.index, this);
       this.goto = bind(this.goto, this);
       this.config = ObjectExtender.extend({}, DriverFlexslider.config, this.config);
       this.config.after = this._internOnAfter;
       this.config.conditionalBefore = this._internOnBefore;
-      this.config.start = this.onReady;
+      this.config.start = this._internOnReady;
       this.slides = $(this.config.selector, this.container);
       this.container.flexslider(this.config);
       this.instance = this.container.data('flexslider');
@@ -45,6 +46,15 @@
 
     DriverFlexslider.prototype.index = function() {
       return this.instance.currentSlide;
+    };
+
+    DriverFlexslider.prototype._internOnReady = function(slider) {
+      return setTimeout((function(_this) {
+        return function() {
+          $(window).trigger('resize');
+          return _this.onReady();
+        };
+      })(this), 10);
     };
 
     DriverFlexslider.prototype._internOnBefore = function(currentIndex, direction, nextIndex) {
@@ -176,20 +186,21 @@
     }
 
     AnswerClick.prototype.init = function() {
-      var $answers;
-      $answers = $(this.config.answerSelector, this.container);
-      return $answers.on('mouseup', this.onAnswerClicked);
+      return this.container.on('mouseup', this.config.answerSelector, this.onAnswerClicked);
     };
 
     AnswerClick.prototype.onAnswerClicked = function(event) {
-      var $allAnswersinRow, $answer, $answerRow;
+      var $allAnswersinRow, $answer, $answerInput, $answerRow, $questionInput, $slide;
       event.preventDefault();
       $answer = $(event.currentTarget);
       $answerRow = $answer.closest(this.config.answersSelector);
       $allAnswersinRow = $(this.config.answerSelector, $answerRow);
       $allAnswersinRow.removeClass(this.config.answerSelectedClass);
       $answer.addClass(this.config.answerSelectedClass);
-      return this.trigger('question-answered', $answer, $('input', $answer).val(), this.index());
+      $slide = this.slideByIndex();
+      $questionInput = $(this.config.questionSelector, $slide);
+      $answerInput = $('input', $answer);
+      return this.trigger('question-answered', $questionInput.prop('id'), $answerInput.prop('id'), $answerInput.val(), this.index());
     };
 
     return AnswerClick;
@@ -207,17 +218,15 @@
 
     AnswerMemory.prototype.init = function() {
       this.on('question-answered', this.memorize);
-      return this.memoryBySlideId = {};
+      return this.memoryByQuestionId = {};
     };
 
-    AnswerMemory.prototype.memorize = function(event, $answer, value, slideIndex) {
-      var $slide, slideId;
-      $slide = $(this.slides.get(slideIndex));
-      slideId = $slide.data('id');
-      return this.memoryBySlideId[slideId] = {
-        id: $('input', $answer).prop('id'),
+    AnswerMemory.prototype.memorize = function(event, questionId, answerId, value) {
+      this.memoryByQuestionId[questionId] = {
+        id: answerId,
         value: value
       };
+      return this.trigger('answer-memory-updated', this.memoryByQuestionId);
     };
 
     return AnswerMemory;
@@ -279,7 +288,8 @@
     };
 
     FormSubmission.prototype.loadHiddenFrameOnSuccess = function(url) {
-      if (this.config.loadHiddenFrameOnSuccess == null) {
+      var ref;
+      if (!((ref = this.config) != null ? ref.loadHiddenFrameOnSuccess : void 0)) {
         return;
       }
       return $('<iframe>', {
@@ -303,6 +313,7 @@
       this.config = config1;
       this.form = form;
       this.supressNaturalFormSubmit = bind(this.supressNaturalFormSubmit, this);
+      this.config = ObjectExtender.extend({}, this.constructor.config, this.config);
     }
 
     FormSubmitterAbstract.prototype.supressNaturalFormSubmit = function() {
@@ -340,6 +351,10 @@
   this.FormSubmitterCollect = (function(superClass) {
     extend(FormSubmitterCollect, superClass);
 
+    FormSubmitterCollect.config = {
+      visitedSlideSelector: '.slide-visited'
+    };
+
     function FormSubmitterCollect(plugin1, config1, form) {
       this.plugin = plugin1;
       this.config = config1;
@@ -360,11 +375,18 @@
     };
 
     FormSubmitterCollect.prototype.collectInputs = function() {
-      var $input, $inputs, $other, $others, input, j, k, len, len1, other, result;
+      var $container, $input, $inputs, input, j, k, len, len1, result;
       result = {};
-      $inputs = $('input', this.plugin.container);
+      $inputs = $("input.info", $container);
       for (j = 0, len = $inputs.length; j < len; j++) {
         input = $inputs[j];
+        $input = $(input);
+        result[$input.attr('name')] = $input.val();
+      }
+      $container = $(this.config.visitedSlideSelector, $container);
+      $inputs = $('input, select, textarea', $container);
+      for (k = 0, len1 = $inputs.length; k < len1; k++) {
+        input = $inputs[k];
         $input = $(input);
         if ($input.is(':checkbox') || $input.is(':radio')) {
           if ($input.is(':checked')) {
@@ -373,12 +395,6 @@
         } else {
           result[$input.attr('name')] = $input.val();
         }
-      }
-      $others = $('select, textarea', this.plugin.container);
-      for (k = 0, len1 = $others.length; k < len1; k++) {
-        other = $others[k];
-        $other = $(other);
-        result[$other.attr('name')] = $other.val();
       }
       return result;
     };
@@ -411,7 +427,6 @@
 
     InputFocus.config = {
       selector: 'input:visible',
-      waitBeforeFocus: 200,
       disableOnMobile: true
     };
 
@@ -431,9 +446,7 @@
         }
         return;
       }
-      return setTimeout(function() {
-        return $input.first().focus();
-      }, this.config.waitBeforeFocus);
+      return $input.first().focus();
     };
 
     return InputFocus;
@@ -444,35 +457,78 @@
     extend(InputNormalizer, superClass);
 
     function InputNormalizer() {
-      this.prepareInputs = bind(this.prepareInputs, this);
+      this.mormalizeInputs = bind(this.mormalizeInputs, this);
       this.init = bind(this.init, this);
       return InputNormalizer.__super__.constructor.apply(this, arguments);
     }
 
     InputNormalizer.config = {
-      selector: 'input:visible'
+      selector: 'input'
     };
 
     InputNormalizer.prototype.init = function() {
-      return this.prepareInputs();
+      return this.mormalizeInputs();
     };
 
-    InputNormalizer.prototype.prepareInputs = function() {
-      $(this.config.selector, this.container).each(function(index, input) {
-        var $input, attribute, j, len, ref;
-        $input = $(input);
-        if ($input.attr('required')) {
-          $input.data('required', 'required');
-          $input.data('aria-required', 'true');
+    InputNormalizer.prototype.mormalizeInputs = function() {
+      $(this.config.selector, this.container).each((function(_this) {
+        return function(index, input) {
+          var $input;
+          $input = $(input);
+          _this.normalizeRequired($input);
+          _this.normalizeAutocomplete($input);
+          _this.normalizeInputmode($input);
+          return _this.normalizeXAttributes($input);
+        };
+      })(this));
+    };
+
+    InputNormalizer.prototype.normalizeRequired = function($input) {
+      if (!$input.attr('required')) {
+        return;
+      }
+      $input.data('required', 'required');
+      return $input.data('aria-required', 'true');
+    };
+
+    InputNormalizer.prototype.normalizeAutocomplete = function($input) {
+      var autocompleete;
+      autocompleete = $input.attr('autocompletetype');
+      if (!autocompleete) {
+        autocompleete = $input.attr('autocomplete');
+      }
+      if (!autocompleete) {
+        return;
+      }
+      $input.attr('autocompletetype', autocompleete);
+      return $input.attr('autocomplete', autocompleete);
+    };
+
+    InputNormalizer.prototype.normalizeInputmode = function($input) {
+      if ($input.attr('inputmode')) {
+        return;
+      }
+      switch ($input.attr('type')) {
+        case 'number':
+          return $input.attr('inputmode', 'numeric');
+        case 'tel':
+          return $input.attr('inputmode', 'tel');
+        case 'email':
+          return $input.attr('inputmode', 'email');
+        case 'url':
+          return $input.attr('inputmode', 'url');
+      }
+    };
+
+    InputNormalizer.prototype.normalizeXAttributes = function($input) {
+      var attribute, j, len, ref;
+      ref = ['inputmode', 'autocompletetype'];
+      for (j = 0, len = ref.length; j < len; j++) {
+        attribute = ref[j];
+        if ($input.attr(attribute)) {
+          $input.attr("x-" + attribute, $input.attr(attribute));
         }
-        ref = ['inputmode', 'autocompletetype'];
-        for (j = 0, len = ref.length; j < len; j++) {
-          attribute = ref[j];
-          if ($input.attr(attribute)) {
-            $input.data("x-" + attribute, $input.attr(attribute));
-          }
-        }
-      });
+      }
     };
 
     return InputNormalizer;
@@ -483,6 +539,8 @@
     extend(InputSync, superClass);
 
     function InputSync() {
+      this.writeInputs = bind(this.writeInputs, this);
+      this.readInputs = bind(this.readInputs, this);
       this.onAfter = bind(this.onAfter, this);
       this.init = bind(this.init, this);
       return InputSync.__super__.constructor.apply(this, arguments);
@@ -490,7 +548,8 @@
 
     InputSync.config = {
       selector: 'input',
-      attribute: 'name'
+      attribute: 'name',
+      syncGlobal: false
     };
 
     InputSync.prototype.init = function() {
@@ -499,22 +558,49 @@
     };
 
     InputSync.prototype.onAfter = function(event, currentSlide, direction, prevSlide) {
-      var $inputsHere, $inputsThere;
-      $inputsHere = $(this.config.selector, prevSlide);
-      $inputsHere.each((function(_this) {
+      var $inputsHere;
+      $inputsHere = this.readInputs(prevSlide);
+      return this.writeInputs(currentSlide, $inputsHere);
+    };
+
+    InputSync.prototype.readInputs = function(slide) {
+      var $inputsHere;
+      $inputsHere = $(this.config.selector, slide);
+      return $inputsHere.each((function(_this) {
         return function(index, input) {
           var $input;
           $input = $(input);
-          return _this.storage[$input.attr(_this.config.attribute)] = $input.val();
+          if ($input.is(':checkbox') || $input.is(':radio')) {
+            if ($input.is(':checked')) {
+              return _this.storage[$input.attr(_this.config.attribute)] = $input.val();
+            }
+          } else {
+            return _this.storage[$input.attr(_this.config.attribute)] = $input.val();
+          }
         };
       })(this));
-      $inputsThere = $(this.config.selector, currentSlide);
-      return $inputsThere.each((function(_this) {
+    };
+
+    InputSync.prototype.writeInputs = function(slide, $inputsHere) {
+      var $inputsThere;
+      if (this.config.syncGlobal) {
+        $inputsThere = $(this.config.selector);
+      } else {
+        $inputsThere = $(this.config.selector, slide);
+      }
+      return $inputsThere.not($inputsHere).each((function(_this) {
         return function(index, input) {
           var $input, inputName;
           $input = $(input);
           inputName = $input.attr(_this.config.attribute);
-          if (_this.storage[inputName]) {
+          if (!_this.storage[inputName]) {
+            return;
+          }
+          if ($input.is(':checkbox') || $input.is(':radio')) {
+            if ($input.attr('value') === _this.storage[inputName]) {
+              return $input.attr('checked', 'checked');
+            }
+          } else {
             return $input.val(_this.storage[inputName]);
           }
         };
@@ -530,20 +616,29 @@
 
     function JqueryValidate() {
       this.prepareInputs = bind(this.prepareInputs, this);
+      this.setupValidationRules = bind(this.setupValidationRules, this);
+      this.validate = bind(this.validate, this);
       this.onValidate = bind(this.onValidate, this);
       this.init = bind(this.init, this);
       return JqueryValidate.__super__.constructor.apply(this, arguments);
     }
 
     JqueryValidate.config = {
-      selector: 'input:visible',
+      selector: 'input:visible:not([readonly])',
       validateOnEvents: ['leaving.next'],
       forceMaxLengthJs: "javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);",
+      pattern: {
+        numeric: '\\d*',
+        tel: '^[0-9/\\-\\+\\s\\(\\)]*$'
+      },
       messages: {
         required: 'Required',
         maxlength: 'To long',
         minlength: 'To short',
-        email: 'Enter valid E-Mail'
+        tel: 'Enter valid phone number',
+        email: 'Enter valid email',
+        number: 'Enter valid number',
+        pattern: 'Invalid input'
       }
     };
 
@@ -554,55 +649,101 @@
         eventName = ref[j];
         this.on(eventName, this.onValidate);
       }
-      this.prepareInputs();
-      return this.trigger("validation.prepared");
+      return this.setupValidationRules();
     };
 
-    JqueryValidate.prototype.onValidate = function(event, currentSlide, direction, nextSlide) {
+    JqueryValidate.prototype.onValidate = function(event, currentSlide, direction, prevSlide) {
       var $inputs, currentRole;
+      currentRole = $(currentSlide).data('role');
       $inputs = $(this.config.selector, currentSlide);
-      if (!$inputs.length) {
+      if (this.validate($inputs)) {
+        this.trigger("validation.valid." + currentRole, currentSlide);
         return;
       }
-      currentRole = $(currentSlide).data('role');
-      if (!$inputs.valid()) {
-        $inputs.filter('.error').first().focus();
-        this.trigger("validation.invalid." + currentRole, currentSlide);
-        event.canceled = true;
-        return false;
-      }
-      return this.trigger("validation.valid." + currentRole, currentSlide);
+      this.trigger("validation.invalid." + currentRole, currentSlide);
+      event.canceled = true;
+      return setTimeout(function() {
+        return $(window).trigger('resize');
+      }, 400);
     };
 
-    JqueryValidate.prototype.prepareInputs = function() {
-      return $(this.config.selector, this.container).each((function(_this) {
+    JqueryValidate.prototype.validate = function($inputs) {
+      if (!$inputs.length) {
+        return true;
+      }
+      this.prepareInputs($inputs);
+      if ($inputs.valid()) {
+        return true;
+      }
+      $inputs.filter('.error').first().focus();
+      return false;
+    };
+
+    JqueryValidate.prototype.setupValidationRules = function() {
+      jQuery.validator.addMethod('pattern', function(value, element, options) {
+        return value.match($(element).attr('pattern'));
+      });
+      jQuery.validator.addMethod('tel', (function(_this) {
+        return function(value, element, options) {
+          var pattern;
+          pattern = $(element).attr('pattern') || _this.config.pattern.tel;
+          return value.match(pattern);
+        };
+      })(this));
+      return jQuery.validator.addMethod('number', (function(_this) {
+        return function(value, element, options) {
+          var pattern;
+          pattern = $(element).attr('pattern') || _this.config.pattern.number;
+          return value.match(pattern);
+        };
+      })(this));
+    };
+
+    JqueryValidate.prototype.setAttrUnless = function($target, attributeName, value) {
+      if (!$target.attr(attributeName)) {
+        return $target.attr(attributeName, value);
+      }
+    };
+
+    JqueryValidate.prototype.prepareInputs = function($inputs) {
+      return $inputs.each((function(_this) {
         return function(index, input) {
-          var $input, attribute, j, len, ref;
+          var $input, attribute, j, k, len, len1, ref, ref1;
           $input = $(input);
-          if ($input.attr('required')) {
-            $input.data('data-rule-required', 'true');
-            $input.data('data-msg-required', _this.config.messages.required);
+          switch ($input.attr('type')) {
+            case 'number':
+              $input.attr('data-rule-number', 'true');
+              _this.setAttrUnless($input, "data-msg-number", _this.config.messages.number);
+              break;
+            case 'tel':
+              $input.attr('data-rule-tel', 'true');
+              _this.setAttrUnless($input, "data-msg-tel", _this.config.messages.tel);
+              break;
+            case 'email':
+              $input.attr('data-rule-email', 'true');
+              _this.setAttrUnless($input, 'data-msg-email', _this.config.messages.email);
           }
-          if ($input.data('type') === 'number') {
-            $input.attr('pattern', '\\d*');
-            $input.attr('inputmode', 'numeric');
-          }
-          if ($input.data('without-spinner')) {
-            $input.addClass('without-spinner');
-          }
-          ref = ['maxlength', 'minlength'];
+          ref = ['required', 'pattern'];
           for (j = 0, len = ref.length; j < len; j++) {
             attribute = ref[j];
             if ($input.attr(attribute)) {
-              $input.data("data-rule-" + attribute, $input.attr(attribute));
-              $input.data("data-msg-" + attribute, _this.config.messages[attribute]);
+              $input.attr("data-rule-" + attribute, 'true');
+              _this.setAttrUnless($input, "data-msg-" + attribute, _this.config.messages[attribute]);
             }
           }
-          if ($input.data('force-max-length')) {
+          ref1 = ['maxlength', 'minlength'];
+          for (k = 0, len1 = ref1.length; k < len1; k++) {
+            attribute = ref1[k];
+            if ($input.attr(attribute)) {
+              _this.setAttrUnless($input, "data-rule-" + attribute, $input.attr(attribute));
+              _this.setAttrUnless($input, "data-msg-" + attribute, _this.config.messages[attribute]);
+            }
+          }
+          if ($input.attr('data-force-max-length')) {
             $input.attr('oninput', _this.config.forceMaxLengthJs);
           }
-          if ($input.attr('type') === 'email') {
-            return $input.data('data-msg-email', _this.config.messages.email);
+          if ($input.attr('data-without-spinner')) {
+            return $input.addClass('without-spinner');
           }
         };
       })(this));
@@ -616,14 +757,20 @@
     extend(AddSlideClasses, superClass);
 
     function AddSlideClasses() {
+      this.addVisitedClass = bind(this.addVisitedClass, this);
       this._addAnswerCountClasses = bind(this._addAnswerCountClasses, this);
       this._doWithSlide = bind(this._doWithSlide, this);
       this.init = bind(this.init, this);
       return AddSlideClasses.__super__.constructor.apply(this, arguments);
     }
 
+    AddSlideClasses.config = {
+      slideVisitedClass: 'slide-visited'
+    };
+
     AddSlideClasses.prototype.init = function() {
-      return this.slides.each(this._doWithSlide);
+      this.slides.each(this._doWithSlide);
+      return this.on('after', this.addVisitedClass);
     };
 
     AddSlideClasses.prototype._doWithSlide = function(index, slide) {
@@ -658,6 +805,11 @@
         id = $slide.data('role');
       }
       return $slide.addClass("slide-id-" + id);
+    };
+
+    AddSlideClasses.prototype.addVisitedClass = function(event, current, direction, prev) {
+      $(prev).addClass(this.config.slideVisitedClass);
+      return $(current).addClass(this.config.slideVisitedClass);
     };
 
     return AddSlideClasses;
@@ -732,7 +884,8 @@
     AbstractFormsliderLoader.prototype.init = function() {
       this.on('after.loader', this.onLoaderStart);
       this.on('leaving.loader', this.onLeaving);
-      return this.locking = new Locking(false);
+      this.locking = new Locking(false);
+      return this.slide = this.slideByRole('loader');
     };
 
     AbstractFormsliderLoader.prototype.onLoaderStart = function(event, currentSlide, direction, nextSlide) {
@@ -748,12 +901,13 @@
     };
 
     AbstractFormsliderLoader.prototype.start = function() {
+      var ref, ref1;
       if (this.locking.locked) {
         return false;
       }
       this.locking.lock();
-      this.logger.debug("start(" + this.config.duration + ")");
-      return setTimeout(this.doAnimation, this.config.duration);
+      this.logger.debug("start(" + (((ref = this.config) != null ? ref.duration : void 0) || 1000) + ")");
+      return setTimeout(this.doAnimation, ((ref1 = this.config) != null ? ref1.duration : void 0) || 1000);
     };
 
     AbstractFormsliderLoader.prototype.doAnimation = function() {};
@@ -775,6 +929,10 @@
       this.doAnimation = bind(this.doAnimation, this);
       return SimpleLoader.__super__.constructor.apply(this, arguments);
     }
+
+    SimpleLoader.config = {
+      duration: 1000
+    };
 
     SimpleLoader.prototype.doAnimation = function() {
       return this.stop();
@@ -823,7 +981,6 @@
       if (this.config.updateHash) {
         hash = "#" + index;
       }
-      this.logger.debug('pushCurrentHistoryState', hash);
       return history.pushState({
         index: index,
         time: this.time
@@ -832,6 +989,9 @@
 
     BrowserHistoryController.prototype.handleHistoryChange = function(event) {
       var ref, state;
+      if (this.formslider.locking.locked) {
+        return;
+      }
       if (!((ref = event.originalEvent) != null ? ref.state : void 0)) {
         return;
       }
@@ -1166,6 +1326,7 @@
       this._set = bind(this._set, this);
       this.doUpdate = bind(this.doUpdate, this);
       this.slidesThatCount = bind(this.slidesThatCount, this);
+      this.setCountMax = bind(this.setCountMax, this);
       this.init = bind(this.init, this);
       return AbstractFormsliderProgressBar.__super__.constructor.apply(this, arguments);
     }
@@ -1182,18 +1343,53 @@
     };
 
     AbstractFormsliderProgressBar.prototype.init = function() {
+      this.on('after.next', (function(_this) {
+        return function() {
+          return _this.currentIndex++;
+        };
+      })(this));
+      this.on('after.prev', (function(_this) {
+        return function() {
+          return _this.currentIndex--;
+        };
+      })(this));
       this.on('after', this.doUpdate);
+      this.on('ready', (function(_this) {
+        return function() {
+          _this.setCountMax();
+          return _this._set(_this.currentIndex);
+        };
+      })(this));
       this.visible = true;
-      this.countMax = this.slidesThatCount();
       this.wrapper = $(this.config.selectorWrapper);
       this.config = this.configWithDataFrom(this.wrapper);
       this.progressText = $(this.config.selectorText, this.wrapper);
       this.bar = $(this.config.selectorProgress, this.wrapper);
       this.bar.css('transition-duration', (this.config.animationSpeed / 1000) + 's');
-      return this._set(0);
+      return this.currentIndex = 0;
     };
 
     AbstractFormsliderProgressBar.prototype.set = function(indexFromZero, percent) {};
+
+    AbstractFormsliderProgressBar.prototype.setCountMax = function(slide) {
+      var possibleCountMax, ref;
+      if (slide == null) {
+        slide = null;
+      }
+      if (!((ref = this.config) != null ? ref.dataKeyForMaxLength : void 0)) {
+        this.countMax = this.slidesThatCount();
+        return;
+      }
+      if (slide === null) {
+        slide = this.slideByIndex();
+      }
+      possibleCountMax = $(slide).data(this.config.dataKeyForMaxLength);
+      if (!possibleCountMax) {
+        return;
+      }
+      possibleCountMax = parseInt(possibleCountMax, 10);
+      return this.countMax = possibleCountMax;
+    };
 
     AbstractFormsliderProgressBar.prototype.slidesThatCount = function() {
       var j, len, ref, role, substract;
@@ -1207,20 +1403,19 @@
     };
 
     AbstractFormsliderProgressBar.prototype.doUpdate = function(_event, current, direction, prev) {
-      var index;
-      index = this.index();
+      this.setCountMax(current);
       if (!this.shouldBeVisible(current)) {
-        this._set(index);
+        this._set(this.currentIndex);
         return this.hide();
       }
       this.show();
-      return this._set(index);
+      return this._set(this.currentIndex);
     };
 
     AbstractFormsliderProgressBar.prototype._set = function(indexFromZero) {
       var percent;
-      if (indexFromZero > this.countMax) {
-        indexFromZero = this.countMax;
+      if (indexFromZero > this.countMax - 1) {
+        indexFromZero = this.countMax - 1;
       }
       if (indexFromZero < 0) {
         indexFromZero = 0;
@@ -1339,8 +1534,19 @@
         plugin.inform('jquery.formslider.version', plugin.formslider.config.version);
         if (plugin.formslider.plugins.isLoaded('JqueryTracking')) {
           plugin.inform('channel', $.tracking.channel());
-          return plugin.inform('campaign', $.tracking.campaign());
+          plugin.inform('campaign', $.tracking.campaign());
+          return JqueryTrackingGHelper.getClientId(function(id) {
+            return plugin.inform('clientId', id);
+          });
         }
+      },
+      buildHiddenInput: function(name, value) {
+        return $('<input>', {
+          type: 'hidden',
+          name: "info[" + name + "]",
+          "class": 'info',
+          value: value
+        });
       }
     };
 
@@ -1359,11 +1565,7 @@
 
     TrackSessionInformation.prototype.inform = function(name, value) {
       this.track(name, value, 'info');
-      return this.container.append($('<input>', {
-        type: 'hidden',
-        name: "info[" + name + "]",
-        value: value
-      }));
+      return this.container.append(this.config.buildHiddenInput(name, value));
     };
 
     return TrackSessionInformation;
@@ -1406,7 +1608,7 @@
 
     TrackUserInteraction.prototype.setupQuestionAnswerTracking = function() {
       return this.on('question-answered', (function(_this) {
-        return function(event, $answer, value, slideIndex) {
+        return function(event, questionId, answerId, value, slideIndex) {
           var eventName;
           eventName = _this.config.questionAnsweredEvent;
           _this.track(eventName, slideIndex);
@@ -1600,21 +1802,16 @@
     extend(SlideVisibility, superClass);
 
     function SlideVisibility() {
-      this.hide = bind(this.hide, this);
-      this.hideAdjescentSlides = bind(this.hideAdjescentSlides, this);
+      this.hideOtherSlides = bind(this.hideOtherSlides, this);
       this.showNextSlide = bind(this.showNextSlide, this);
       this.init = bind(this.init, this);
       return SlideVisibility.__super__.constructor.apply(this, arguments);
     }
 
-    SlideVisibility.config = {
-      hideAnimationDuration: 300
-    };
-
     SlideVisibility.prototype.init = function() {
       this.on('before', this.showNextSlide);
-      this.on('after', this.hideAdjescentSlides);
-      this.hide(this.slides, 0);
+      this.on('after', this.hideOtherSlides);
+      this.hide(this.slides);
       return this.show(this.slideByIndex());
     };
 
@@ -1622,25 +1819,16 @@
       return this.show(next);
     };
 
-    SlideVisibility.prototype.hideAdjescentSlides = function(event, current, direction, prev) {
-      this.hide(this.slideByIndex(this.index() + 1));
-      return this.hide(this.slideByIndex(this.index() - 1));
+    SlideVisibility.prototype.hideOtherSlides = function(event, current, direction, prev) {
+      return this.hide(this.slides.not(current));
     };
 
-    SlideVisibility.prototype.hide = function(slide, duration) {
-      if (duration == null) {
-        duration = null;
-      }
-      if (duration === null) {
-        duration = this.config.hideAnimationDuration;
-      }
-      return $(slide).animate({
-        opacity: 0
-      }, duration).data('slide-visibility', 0);
+    SlideVisibility.prototype.hide = function(slide) {
+      return $(slide).css('opacity', 0).data('slide-visibility', 0);
     };
 
     SlideVisibility.prototype.show = function(slide) {
-      return $(slide).finish().css('opacity', 1).data('slide-visibility', 1);
+      return $(slide).css('opacity', 1).data('slide-visibility', 1);
     };
 
     return SlideVisibility;
@@ -1662,14 +1850,14 @@
       name = data.shift();
       tags = name.split('.');
       name = tags.shift();
-      if (this.listener[name] == null) {
-        return;
-      }
       event = {
         type: name,
         tags: tags,
         canceled: false
       };
+      if (this.listener[name] == null) {
+        return event;
+      }
       ref = this.listener[name];
       for (j = 0, len = ref.length; j < len; j++) {
         listener = ref[j];
@@ -1802,19 +1990,19 @@
     };
 
     Logger.prototype.warn = function() {
-      var ref;
+      var ref, ref1;
       arguments[0] = this.namespace + "::" + arguments[0];
-      if ($.debug.isEnabled()) {
-        return (ref = $.debug).warn.apply(ref, arguments);
+      if ((ref = $.debug) != null ? ref.isEnabled() : void 0) {
+        return (ref1 = $.debug).warn.apply(ref1, arguments);
       }
       return typeof console !== "undefined" && console !== null ? typeof console.warn === "function" ? console.warn.apply(console, arguments) : void 0 : void 0;
     };
 
     Logger.prototype.error = function() {
-      var ref;
+      var ref, ref1;
       arguments[0] = this.namespace + "::" + arguments[0];
-      if ($.debug.isEnabled()) {
-        return (ref = $.debug).error.apply(ref, arguments);
+      if ((ref = $.debug) != null ? ref.isEnabled() : void 0) {
+        return (ref1 = $.debug).error.apply(ref1, arguments);
       }
       return typeof console !== "undefined" && console !== null ? typeof console.error === "function" ? console.error.apply(console, arguments) : void 0 : void 0;
     };
@@ -2043,6 +2231,7 @@
       selector: '.formslider > .slide'
     },
     pluginsGlobalConfig: {
+      questionSelector: '.question-input',
       answersSelector: '.answers',
       answerSelector: '.answer',
       answerSelectedClass: 'selected'
@@ -2053,54 +2242,61 @@
       }, {
         "class": 'NativeOrderController'
       }, {
-        "class": 'AddSlideClasses'
+        "class": 'SlideVisibility'
       }, {
-        "class": 'AnswerClick'
-      }, {
-        "class": 'InputFocus'
-      }, {
-        "class": 'JqueryValidate'
-      }, {
-        "class": 'InputNormalizer'
-      }, {
-        "class": 'InputSync'
-      }, {
-        "class": 'NextOnKey'
-      }, {
-        "class": 'ArrowNavigation'
-      }, {
-        "class": 'TabIndexSetter'
-      }, {
-        "class": 'NextOnClick'
-      }, {
-        "class": 'LoadingState'
-      }, {
-        "class": 'ProgressBarPercent'
-      }, {
-        "class": 'TrackUserInteraction'
-      }, {
-        "class": 'SimpleLoader'
-      }, {
-        "class": 'ContactSlide'
-      }, {
-        "class": 'ConfirmationSlide'
+        "class": 'LazyLoad'
       }, {
         "class": 'EqualHeight'
       }, {
         "class": 'ScrollUp'
       }, {
-        "class": 'LazyLoad'
+        "class": 'LoadingState'
+      }, {
+        "class": 'ProgressBarPercent'
+      }, {
+        "class": 'AnswerMemory'
+      }, {
+        "class": 'AnswerClick'
+      }, {
+        "class": 'JqueryValidate'
+      }, {
+        "class": 'TabIndexSetter'
+      }, {
+        "class": 'InputSync'
+      }, {
+        "class": 'InputNormalizer'
+      }, {
+        "class": 'InputFocus'
+      }, {
+        "class": 'FormSubmission'
+      }, {
+        "class": 'NavigateOnClick'
+      }, {
+        "class": 'NavigateOnKey'
+      }, {
+        "class": 'TrackUserInteraction'
+      }, {
+        "class": 'TrackSessionInformation'
+      }, {
+        "class": 'SimpleLoader'
+      }, {
+        "class": 'AddSlideClasses'
       }
     ]
   };
 
   jQuery.fn.formslider = function(config) {
-    var $this;
-    $this = $(this);
-    if (config) {
-      $this.data('formslider', new FormSlider($this, config));
+    var $this, instance;
+    if (config == null) {
+      config = null;
     }
-    return $this.data('formslider');
+    $this = $(this);
+    instance = $this.data('formslider');
+    if (!instance || config !== null) {
+      $this.data('formslider', new FormSlider($this, config || {}));
+      instance = $this.data('formslider');
+    }
+    return instance;
   };
 
 }).call(this);

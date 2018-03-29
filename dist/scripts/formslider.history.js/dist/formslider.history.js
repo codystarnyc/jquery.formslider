@@ -37,7 +37,6 @@
       if (this.config.updateUrl) {
         hash = "?slide=" + index;
       }
-      this.logger.debug('pushCurrentHistoryState', "index:" + index);
       return History.pushState({
         index: index,
         time: this.time
@@ -46,6 +45,9 @@
 
     HistoryJsController.prototype.handleHistoryChange = function(event) {
       var ref, state;
+      if (this.formslider.locking.locked) {
+        return;
+      }
       state = History.getState();
       if (!((state != null ? (ref = state.data) != null ? ref.index : void 0 : void 0) > -1)) {
         return;

@@ -1,6 +1,10 @@
 class @AddSlideClasses extends AbstractFormsliderPlugin
+  @config =
+    slideVisitedClass: 'slide-visited'
+
   init: =>
     @slides.each(@_doWithSlide)
+    @on('after', @addVisitedClass)
 
   _doWithSlide: (index, slide) =>
     $slide = $(slide)
@@ -27,3 +31,7 @@ class @AddSlideClasses extends AbstractFormsliderPlugin
     id = $slide.data('id')
     id = $slide.data('role') if id == undefined
     $slide.addClass("slide-id-#{id}")
+
+  addVisitedClass: (event, current, direction, prev) =>
+    $(prev).addClass(@config.slideVisitedClass)
+    $(current).addClass(@config.slideVisitedClass)

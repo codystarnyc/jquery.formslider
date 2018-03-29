@@ -32,6 +32,9 @@ formslider.plugins.load({
 ```
 
 ### Changelog
+##### 1.1.1
+  * only react if slider is unlocked
+
 ##### 1.1.0
   * rename `HistoryJsPlugin` -> `HistoryJsController` follow formslider 1.1 naming style
   * memorize index

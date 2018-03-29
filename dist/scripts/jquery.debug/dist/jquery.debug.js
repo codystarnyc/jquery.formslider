@@ -16,7 +16,7 @@
     JQueryDebug.options = {
       cookieName: 'debug',
       urlParam: 'debug',
-      developmentHosts: ['127.0', '192.168', 'localhost']
+      developmentHosts: ['127.0', '192.168', 'localhost', '0.0.0.0']
     };
 
     function JQueryDebug(options1) {
@@ -104,12 +104,12 @@
     };
 
     JQueryDebug.prototype._log = function(type, args) {
-      var err;
+      var err, ref;
       if (!this.debugEnabled) {
         return;
       }
       try {
-        return this._console[type].apply(this._console, args);
+        return (ref = this._console[type]) != null ? ref.apply(this._console, args) : void 0;
       } catch (_error) {
         err = _error;
       }

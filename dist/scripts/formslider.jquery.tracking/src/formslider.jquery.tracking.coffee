@@ -2,11 +2,11 @@ class @JqueryTracking extends AbstractFormsliderPlugin
   @config =
     initialize: true
     eventCategory: 'formslider'
-    trackFormSubmission: true
+    listenOnFormSubmissionPlugin: true
     conversionErrorEvantName: 'conversion-error'
 
     # this is only relevant if initialize is set to true
-    sessionLifeTimeDays: 1 #s ync with google analytics session lifetime
+    sessionLifeTimeDays: 1 #sync with google analytics session lifetime
     cookiePrefix:      'tracking_'
     cookiePath:        '.example.com'
     sourceParamName:   'utm_source'
@@ -22,9 +22,9 @@ class @JqueryTracking extends AbstractFormsliderPlugin
 
     @on('track', @onTrack)
 
-    return unless @config.trackFormSubmission
+    return unless @config.listenOnFormSubmissionPlugin
 
-    submissionPlugin = @formslider.plugins.get('FormSubmissionPlugin')
+    submissionPlugin = @formslider.plugins.get('FormSubmission')
     if submissionPlugin
       @on(submissionPlugin.config.successEventName, @onTrackConversion)
       @on(submissionPlugin.config.errorEventName,   @onTrackConversionError)
