@@ -1,5 +1,20 @@
 # Changelog
 
+##### 1.2.2
+  * introduce `JqueryAnimate` plugin, animations based on data attributes
+  * prevent `Formslider` from duplicate `ready` event triggering
+  * make `FormsubmitterSubmit` default
+  * `JqueryInputValidator` now listens on natural form submissions per default
+  * `NavigateOnKey` supports now `preventDefault`
+
+##### 1.2.1
+  * update dependencies
+
+##### 1.2.0
+  * replace `JqueryValidate` with `JqueryInputValidator` (JqueryValidate is now independent plugin: https://github.com/formslider/formslider.jquery-validation)
+  * extract `InputForceMaxlength`
+  * add coverage reporter
+
 ##### 1.1.10
   * fix `JqueryValidate` transition prevention
   * better integration tests for `JqueryValidate`

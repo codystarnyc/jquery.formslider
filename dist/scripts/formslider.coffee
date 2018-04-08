@@ -56,7 +56,7 @@
         # form
         { class: 'AnswerMemory'             }
         { class: 'AnswerClick'              }
-        { class: 'JqueryValidate'           }
+        { class: 'JqueryInputValidator'     }
         { class: 'TabIndexSetter'           }
         { class: 'InputSync'                }
         { class: 'InputNormalizer'          }

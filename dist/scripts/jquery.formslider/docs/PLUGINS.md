@@ -83,6 +83,7 @@ These plugins can be used to extend the formslider:
   * [formslider.dramatic.loader](https://github.com/formslider/formslider.dramatic.loader)
   * [formslider.hitory.js](https://github.com/formslider/formslider.hitory.js)
   * [formslider.nouislider](https://github.com/formslider/formslider.nouislider)
+  * [formslider.jquery-validation](https://github.com/formslider/formslider.jquery-validation) *old validation implementation
 
 ### form plugins
 ##### *AnswerClick*
@@ -121,15 +122,15 @@ config: {
   formSelector: 'form',
 
   submitter: {
-    class: 'FormSubmitterCollect',
-    endpoint: '#',
-    method:   'POST'
-    visitedSlideSelector: '.slide-visited'
-  }
+    class: 'FormSubmitterSubmit' // you should add novalidato to your form
+  }    
 
   // submitter: {
-  //   class: 'FormSubmitterSubmit'
-  // }    
+  //   class: 'FormSubmitterCollect',
+  //   endpoint: '#',
+  //   method:   'POST'
+  //   visitedSlideSelector: '.slide-visited'
+  // }
 
   // make sure to load https://github.com/jquery-form/form
   // submitter: {
@@ -147,6 +148,17 @@ Default configuration:
 config: {
   selector: 'input:visible',
   disableOnMobile: true
+}
+```
+
+
+##### *InputForceMaxlength*
+Adds javascript to inputs and textareas that truncates the input by given length when attribute 'data-force-maxlength'.
+Default configuration:
+```js
+config: {
+  selector: 'input, textarea',
+  forceMaxLengthJs: "javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
 }
 ```
 
@@ -179,31 +191,28 @@ config: {
 }
 ```
 
-
-##### *JqueryValidate*
-Validates inputs on current slide before leaving this slide. Will stop leaving when not all inputs are valid. Uses [jquery-validation](https://github.com/jquery-validation/jquery-validation).
-
-Default configuration:
+##### *JqueryInputValidator*
+Validates inputs, selects and textareas by html5 attributes (see: [jquery.input.validator](https://github.com/creative-workflow/jquery.input.validator)).
 ```js
-config: {
-  selector: 'input:visible:not([readonly])',
-  validateOnEvents: ['leaving.next'],
-  forceMaxLengthJs: "javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);",
-  pattern:{
-    numeric: '\\d*',
-    tel: '^[0-9/\\-\\+\\s\\(\\)]*$'
+config:{
+  selectors:{
+    elements: 'input, textarea, select',
+    ignore:   ':hidden, [readonly]',
   },
+  validateOnEvents: ['leaving.next'],
+  formSelector: 'form',  // set to null if ou dont which to listen for natural form submit
   messages:{
-    required:  'Required',
-    maxlength: 'To long',
-    minlength: 'To short',
-    tel:       'Enter valid phone number',
-    email:     'Enter valid email',
-    number:    'Enter valid number',
-    pattern:   'Invalid input'
+    generic:   'invalid',
+    email:     'invalid email',
+    tel:       'invalid phone number',
+    number:    'invalid number',
+    minlength: 'to short',
+    maxlength: 'to long',
+    required:  'required'
   }
 }
 ```
+
 
 The plugin automatically detects the following attributes:
 ```bash
@@ -215,29 +224,14 @@ The plugin automatically detects the following attributes:
   * type="tel"
   * pattern="..."
   * data-force-max-length="1"   # will truncate input if longer
-  * data-without-spinner"1"     # will prevent spinner input on number types
 ```
 
 The Plugin triggers the following events:
 ```coffee
 @trigger("validation.valid.#{currentRole}", currentSlide)
-@trigger("validation.invalid.#{currentRole}", currentSlide)
+@trigger("validation.invalid.#{currentRole}", currentSlide, errors=[])
 $(window).trigger('resize') # if one ore more inputs are invalid -> height could be adjusted
 ```
-
-_Note:_ This plugin will throw an error if no surrounding form tag is present.
-
-_Note:_ `data-without-spinner"1"` needs some additional styling:
-```sass
-input.without-spinner
-  -moz-appearance: textfield
-
-input.without-spinner::-webkit-outer-spin-button,
-input.without-spinner::-webkit-inner-spin-button
-  -webkit-appearance: none
-  margin: 0
-```
-
 
 
 ###  generic plugins
@@ -387,6 +381,7 @@ config: {
       selector: 'input',
       action: 'next',
       code: 13,
+      prevent: true,  // prevents natural behaviour
       wait: 100
     },
     { // left arrow
@@ -507,6 +502,56 @@ config: {
 ```
 Listens also on event `do-equal-height`. To trigger this event: `@trigger('do-equal-height', slideToEqualize)`.
 
+
+##### *JqueryAnimate*
+Exactlecutes animations absed on data attributes.
+Default configuration:
+```js
+config: {
+  dataPrefix:     'animate', // means data-animate
+  defaultDuration: 600
+}
+```
+
+*Api:*
+Just add a data attribute like `data-animate='{...}'` to an existing element or add an hidden element.
+
+The animation will be executed on the element it self or on the element found by the property `selector`.
+```html
+<div data-animate='{"selector": ".animation-target"}'></div>
+<span class="animation-target"></div>
+```
+
+The Animation will be executed when the event(s) fires that you specify by the `on` property:
+```html
+<div data-animate='{"on": "leaving.question, leaving.zipcode"}'></div>
+```
+
+Before the animation starts you can set css attributes via the property `css`.
+
+```html
+<div data-animate='{"css": {"opacity": 0}}'></div>
+```
+
+These Properties are regulating the animation:
+```coffee
+  animate: { }      # animation properties, see jquery.animate
+  duration: 600     # duration for the animation
+  delay: 0          # wait before animation starts
+  stop: true        # stop other queued animations
+  easing: 'swing'   # easing, see jquery.animate
+  once: false       # run animation exactly once
+```
+
+The `complete` property is a nested animation object like this which will be executed when the animation finishes.
+```coffee
+  complete: [nested animation object]
+```
+
+*Example:*
+```html
+<div data-animate='{"on": "ready, before.question", "css": {"opacity": 0}, "animate": {"opacity": 1}}'>huhu</div>
+```
 
 ##### *LazyLoad*
 Load images from the next slides.

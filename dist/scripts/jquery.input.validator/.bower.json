@@ -1,0 +1,35 @@
+{
+  "name": "jquery.input.validator",
+  "version": "1.0.15",
+  "homepage": "https://github.com/creative-workflow/jquery.input.validator",
+  "authors": [
+    "Tom Hanoldt <tom@creative-workflow.berlin>"
+  ],
+  "description": "This jquery plugin helps to handle html input validation. It uses strict html attributes to map the validation rules and is easy extendable.",
+  "main": "src/jquery.input.validator.coffee",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "jquery",
+    "validation"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "node_modules",
+    "bower_components",
+    "spec"
+  ],
+  "dependencies": {
+    "jquery": ">=1.10.2"
+  },
+  "_release": "1.0.15",
+  "_resolution": {
+    "type": "version",
+    "tag": "1.0.15",
+    "commit": "0ed11041fb27e2a5dc5dbfc5650638d95b1d7011"
+  },
+  "_source": "https://github.com/creative-workflow/jquery.input.validator.git",
+  "_target": "^1.0.15",
+  "_originalSource": "jquery.input.validator"
+}

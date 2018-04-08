@@ -1,0 +1,12 @@
+language: node_js
+node_js:
+  - "node"
+
+before_script:
+  - npm install -g grunt-cli bower
+  - bower install
+
+script: grunt build --verbose
+
+after_script:
+  - grunt coveralls:default

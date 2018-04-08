@@ -1,4 +1,4 @@
-# jquery.formslider [![Build Status](https://travis-ci.org/formslider/jquery.formslider.svg?branch=master)](https://travis-ci.org/formslider/jquery.formslider) [![Contribute](https://img.shields.io/badge/Contribution-Open-brightgreen.svg)](docs/CONTRIBUTING.md) [![Code Climate](https://codeclimate.com/github/formslider/jquery.formslider/badges/gpa.svg)](https://codeclimate.com/github/formslider/jquery.formslider) [![npm](https://img.shields.io/npm/dt/jquery.formslider.svg)](https://www.npmjs.com/package/jquery.formslider) [![Beerpay](https://beerpay.io/formslider/jquery.formslider/badge.svg?style=flat)](https://beerpay.io/formslider/jquery.formslider)
+# jquery.formslider [![Build Status](https://travis-ci.org/formslider/jquery.formslider.svg?branch=master)](https://travis-ci.org/formslider/jquery.formslider) [![Coverage Status](https://coveralls.io/repos/github/formslider/jquery.formslider/badge.svg)](https://coveralls.io/github/formslider/jquery.formslider) [![Code Climate](https://codeclimate.com/github/formslider/jquery.formslider/badges/gpa.svg)](https://codeclimate.com/github/formslider/jquery.formslider) [![npm](https://img.shields.io/npm/dt/jquery.formslider.svg)](https://www.npmjs.com/package/jquery.formslider) [![Beerpay](https://beerpay.io/formslider/jquery.formslider/badge.svg?style=flat)](https://beerpay.io/formslider/jquery.formslider)
 
 [![NPM](https://nodei.co/npm/jquery.formslider.png)](https://nodei.co/npm/jquery.formslider/)
 
@@ -43,7 +43,7 @@ This functionality is provided by core or optional plugins. You can also develop
   * InputFocus                    # focusses first input on current slide
   * InputNormalizer               # does some normalization on inputs
   * InputSync                     # syncs inputs with the same name
-  * JqueryValidate                # validates inputs before leaving a slide, uses jquery-validate
+  * JqueryInputValidator          # Validates inputs, selects and textareas by html5 attributes.
 
 # generic plugins
   * AddSlideClasses               # adds classes based on role and index

@@ -3,6 +3,7 @@
 #= include plugins/**/*.coffee
 #= include lib/**/*.coffee
 
+
 # the controller aka heart of the formslider
 class @FormSlider
   @config = null # see below
@@ -15,6 +16,7 @@ class @FormSlider
 
     @setupConfig(config)
     @firstInteraction = false
+    @ready            = false
     @events           = new EventManager(@logger)
     @locking          = new Locking(true)
     @setupDriver()
@@ -81,6 +83,7 @@ class @FormSlider
     setTimeout(@locking.unlock, @config.silenceAfterTransition)
 
   onReady: =>
+    return if @ready
     @ready = true
     @events.trigger('ready')
     @locking.unlock()
@@ -138,6 +141,7 @@ class @FormSlider
       { class: 'EqualHeight'              }
       { class: 'ScrollUp'                 }
       { class: 'LoadingState'             }
+      { class: 'JqueryAnimate'            }
 
       # progressbar
       { class: 'ProgressBarPercent'       }
@@ -145,12 +149,13 @@ class @FormSlider
       # form
       { class: 'AnswerMemory'             }
       { class: 'AnswerClick'              }
-      { class: 'JqueryValidate'           }
+      { class: 'JqueryInputValidator'     }
       { class: 'TabIndexSetter'           }
       { class: 'InputSync'                }
       { class: 'InputNormalizer'          }
       { class: 'InputFocus'               }
       { class: 'FormSubmission'           }
+      { class: 'InputForceMaxlength'      }
 
       # navigation
       { class: 'NavigateOnClick'          }
