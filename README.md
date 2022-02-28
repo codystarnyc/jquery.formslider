@@ -43,24 +43,12 @@ Available commands:
  setup                  setup dependencies for this application
 ```
 
-### Ressources
+### Resources
   * [jquery.formslider](https://github.com/formslider/jquery.formslider/)
   * [Easy-Website-Generator](https://github.com/easy-website-generator/)
   * [Easy-Terminal-App](https://github.com/creative-workflow/easy-terminal-app)
-  * [Creative-Workflow](https://github.com/creative-workflow)
-  * [www.tomhanoldt.info](http://www.tomhanoldt.info)
 
-# jquery.formslider [![Build Status](https://travis-ci.org/formslider/jquery.formslider.svg?branch=master)](https://travis-ci.org/formslider/jquery.formslider) [![Coverage Status](https://coveralls.io/repos/github/formslider/jquery.formslider/badge.svg)](https://coveralls.io/github/formslider/jquery.formslider) [![Code Climate](https://codeclimate.com/github/formslider/jquery.formslider/badges/gpa.svg)](https://codeclimate.com/github/formslider/jquery.formslider) [![npm](https://img.shields.io/npm/dt/jquery.formslider.svg)](https://www.npmjs.com/package/jquery.formslider) [![Beerpay](https://beerpay.io/formslider/jquery.formslider/badge.svg?style=flat)](https://beerpay.io/formslider/jquery.formslider)
 
-[![NPM](https://nodei.co/npm/jquery.formslider.png)](https://nodei.co/npm/jquery.formslider/)
-
-This jquery.formslider integrates a modified [Flexslider](https:gulp//github.com/formslider/FlexSlider) with logical slide pages that can have features and behaviors provided by plugins.
-
-The main goal is to have different actions and policies triggered depending on what role the actual slide is. For example: You can stop going forward when a formula input is invalid.
-
-The jquery.formslider runs in production, is performance optimized, full responsive and touch capable. You can easily write you own plugins and implement custom slide behaviors.
-
-Check out the demo implementation: [formslider.github.io](https://formslider.github.io/).
 
 ## Installation
 ```bash
