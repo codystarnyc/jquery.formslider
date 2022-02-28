@@ -1,1 +1,21 @@
-(function(){this.Tooltips=function(){function t(t){$(t).each(function(){var t;return t=$(this),t.tooltipster({theme:t.data("tooltip-theme")||"tooltipster-light",contentAsHTML:t.data("tooltip-html")||!0,animation:t.data("tooltip-animation")||"grow",position:t.data("tooltip-position")||"bottom",maxWidth:t.data("tooltip-max-width")||null})})}return t}()}).call(this);
+(function() {
+  this.Tooltips = (function() {
+    function Tooltips(selector) {
+      $(selector).each(function() {
+        var $this;
+        $this = $(this);
+        return $this.tooltipster({
+          theme: $this.data('tooltip-theme') || 'tooltipster-light',
+          contentAsHTML: $this.data('tooltip-html') || true,
+          animation: $this.data('tooltip-animation') || 'grow',
+          position: $this.data('tooltip-position') || 'bottom',
+          maxWidth: $this.data('tooltip-max-width') || null
+        });
+      });
+    }
+
+    return Tooltips;
+
+  })();
+
+}).call(this);
