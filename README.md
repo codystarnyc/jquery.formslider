@@ -162,16 +162,7 @@ Check out this guide: [FORMSLIDER](docs/FORMSLIDER.md)
   * https://codeclimate.com/github/formslider/jquery.formslider
   * http://bower.io/search/?q=jquery.formslider
 
-### Authors
-
-  [Tom Hanoldt](https://www.tomhanoldt.info)
 
 # Contributing
 
 Check out the [Contributing Guidelines](docs/CONTRIBUTING.md)
-
-
-## Support on Beerpay
-Hey dude! Help me out for a couple of :beers:!
-
-[![Beerpay](https://beerpay.io/formslider/jquery.formslider/badge.svg?style=beer)](https://beerpay.io/formslider/jquery.formslider)  [![Beerpay](https://beerpay.io/formslider/jquery.formslider/make-wish.svg?style=flat)](https://beerpay.io/formslider/jquery.formslider?focus=wish)
