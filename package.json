@@ -1,12 +1,18 @@
 {
-  "name": "jquery.formslider.github.io",
+  "name": "https://github.com/codystarnyc/jquery.formslider.git",
   "description": "dsfdsfdsf",
   "license": "MIT",
+  "version": "1.0.0",
+  "engines": {
+    "node": "6.14.x"
+  },
+  
   "scripts": {
     "generate": "gulp generate-and-exit --production",
     "serve": "gulp serve",
     "#postinstall - doesnt work with travis": "bower install"
   },
+ 
   "dependencies": {
     "browser-sync": "^2.13.0",
     "colors": "^1.1.2",
