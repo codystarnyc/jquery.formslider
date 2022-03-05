@@ -1,1 +1,27 @@
-(function(){this.Animation=function(){function t(t){var i,n,o,s,e,h,a,p;for(this.options=t,this.animatedElements=[],h=$(this.options.selector),s=0,e=h.length;s<e;s++){o=h[s],i=$(o),this.animatedElements.push(i),i.options=$.extend(!0,{},this.options),a=i.data();for(n in a)p=a[n],n in this.options&&(i.options[n]=p)}}return t}()}).call(this);
+(function() {
+  this.Animation = (function() {
+    function Animation(options) {
+      var $el, data_key, el, i, len, ref, ref1, value;
+      this.options = options;
+      this.animatedElements = [];
+      ref = $(this.options.selector);
+      for (i = 0, len = ref.length; i < len; i++) {
+        el = ref[i];
+        $el = $(el);
+        this.animatedElements.push($el);
+        $el.options = $.extend(true, {}, this.options);
+        ref1 = $el.data();
+        for (data_key in ref1) {
+          value = ref1[data_key];
+          if (data_key in this.options) {
+            $el.options[data_key] = value;
+          }
+        }
+      }
+    }
+
+    return Animation;
+
+  })();
+
+}).call(this);
