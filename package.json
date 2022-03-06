@@ -9,7 +9,7 @@
     "build": "gulp",
     "start": "node app.js",
     "generate": "gulp generate-and-exit --production",
-    "serve": "browser-sync start --no-open --server --files \"dist/css/*.css, dist/js/*.js, **/*.html, !node_modules/**/*.html\"",
+    "serve": "gulp serve",
     "#postinstall - doesnt work with travis": "bower install"
   },
   "dependencies": {
