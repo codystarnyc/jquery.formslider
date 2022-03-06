@@ -48,21 +48,21 @@ development: &default
 
 
   # browser-sync
- # server:
- #   port: 9294
- #   open: "external"
- #   notify: true
- #   startPath: 'index.html'
- #   server:
- #     baseDir: './dist'
- #   ui:
- #     port: 8080
-  #    weinre:
-  #      port: 9090
-  #  ghostMode:
-  #    clicks: true
-  #    forms: true
-   #   scroll: true
+  server:
+    port: 9294
+    open: "external"
+    notify: true
+    startPath: 'index.html'
+    server:
+      baseDir: './dist'
+    ui:
+      port: 8080
+      weinre:
+        port: 9090
+    ghostMode:
+      clicks: true
+      forms: true
+      scroll: true
 
   # do not change unless you know why ;)
   generators:
