@@ -3,7 +3,8 @@
   "description": "dsfdsfdsf",
   "license": "MIT",
   "engines": {
-    "node": "6.14.x",
+    "node": "6.14.4"
+  },
   "scripts": {
     "generate": "gulp generate-and-exit --production",
     "serve": "gulp serve",
