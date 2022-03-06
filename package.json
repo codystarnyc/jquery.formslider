@@ -2,6 +2,8 @@
   "name": "jquery.formslider.github.io",
   "description": "dsfdsfdsf",
   "license": "MIT",
+  "engines": {
+    "node": "6.14.4",
   "scripts": {
     "generate": "gulp generate-and-exit --production",
     "serve": "gulp serve",
