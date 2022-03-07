@@ -50,8 +50,8 @@ development: &default
   # browser-sync
   server:
     port: 9294
-    open: "external"
-    notify: true
+    open: !process.env.NODE_ENV === 'production'
+    notify: false
     startPath: 'index.html'
     server:
       baseDir: './dist'
