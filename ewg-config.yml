@@ -50,8 +50,8 @@ development: &default
   # browser-sync
   server:
     port: 9294
-    open: false
-    notify: false
+    open: "external"
+    notify: true
     startPath: 'index.html'
     server:
       baseDir: './dist'
