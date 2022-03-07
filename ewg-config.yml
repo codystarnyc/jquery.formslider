@@ -51,7 +51,7 @@ development: &default
   server:
     port: 9294
     open: false
-    notify: false
+    notify: true
     startPath: 'index.html'
     server:
       baseDir: './dist'
