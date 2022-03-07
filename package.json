@@ -5,12 +5,22 @@
   "engines": {
     "node": "6.14.4"
   },
+    "keywords": [
+    "cli",
+    "command",
+    "static",
+    "http",
+    "https",
+    "http-server",
+    "https-server",
+    "server"
+  ],
   "scripts": {
-    "build": "gulp",
-    "start": "node app.js",
-    "generate": "gulp generate-and-exit --production",
-    "serve": "gulp serve",
-    "#postinstall - doesnt work with travis": "bower install"
+    "dev": "node_modules/.bin/gulp watch",
+    "build": "node_modules/.bin/gulp",
+    "start": "node ./bin/http-server",
+    "test": "tap --reporter=spec test/*.test.js",
+    "test-watch": "tap --reporter=spec --watch test/*.test.js"
   },
   "dependencies": {
     "browser-sync": "^2.13.0",
